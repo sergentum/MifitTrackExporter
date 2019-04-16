@@ -1,13 +1,13 @@
-package cn.com.smartdevices.bracelet.gps.ui.sport.detail.export;
+package cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core;
 
 public class PrintTcx {
     private Track track;
 
-    PrintTcx(Track track) {
+    public PrintTcx(Track track) {
         this.track = track;
     }
 
-    public String printTrack() {
+    public String print() {
         return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "\n" +
                 "<TrainingCenterDatabase " + "\n" +
                 "xsi:schemaLocation=\"" +

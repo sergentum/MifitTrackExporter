@@ -1,18 +1,18 @@
-package cn.com.smartdevices.bracelet.gps.ui.sport.detail.export;
+package cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Track {
-    long startTime;
-    long duration;
-    long endTime;
-    int distance;
-    int activityType;
-    int size;
+    public long startTime;
+    public long duration;
+    public long endTime;
+    public int distance;
+    public int activityType;
+    public int size;
 
     ArrayList<Integer> pause;
-    ArrayList<TrackPoint> trackPoints = new ArrayList<>();
+    public ArrayList<TrackPoint> trackPoints = new ArrayList<>();
 
     private static HashMap<Integer, String> activityTypeMapping = new HashMap<>();
 

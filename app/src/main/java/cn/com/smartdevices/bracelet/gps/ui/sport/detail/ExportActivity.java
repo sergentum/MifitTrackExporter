@@ -4,15 +4,14 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.*;
-import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.ExportTrack;
-import com.example.username.mifittrackexporter.MainActivity;
+import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.TrackExportStarter;
+import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.TrackExporter;
 import com.example.username.mifittrackexporter.R;
 
 public class ExportActivity extends AppCompatActivity implements View.OnClickListener {
@@ -90,8 +89,8 @@ public class ExportActivity extends AppCompatActivity implements View.OnClickLis
                 Toast toast = Toast.makeText(getApplicationContext(),
                         "button pressed!!", Toast.LENGTH_SHORT);
                 toast.show();
-                ExportTrack exportTrack = new ExportTrack(this);
-                exportTrack.K_showTracks();
+                TrackExportStarter trackExportStarter = new TrackExportStarter(this);
+                trackExportStarter.K_showTracks();
 
                 break;
             default:

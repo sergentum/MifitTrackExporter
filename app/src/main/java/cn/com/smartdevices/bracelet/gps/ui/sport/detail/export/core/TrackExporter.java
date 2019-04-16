@@ -1,32 +1,26 @@
-package cn.com.smartdevices.bracelet.gps.ui.sport.detail.export;
+package cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core;
 
-import android.Manifest;
 import android.app.AlertDialog;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Toast;
-import cn.com.smartdevices.bracelet.gps.ui.sport.detail.android.ChooseTrackClickListener;
-import cn.com.smartdevices.bracelet.gps.ui.sport.detail.android.DBConnector;
-import cn.com.smartdevices.bracelet.gps.ui.sport.detail.android.DBHelper;
-import com.example.username.mifittrackexporter.MainActivity;
+import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.ChooseTrackClickListener;
+import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.DBConnector;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
-import java.sql.*;
-import java.util.*;
+import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.FileLogger.writeStringToFile;
 
-import static android.content.ContentValues.TAG;
-import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.WriteFile.writeStringToFile;
-
-public class ExportTrack {
+public class TrackExporter {
     AppCompatActivity activity;
-
-    private SQLiteDatabase sqLiteDB;
-    private DBHelper dbHelper;
 
     // todo add settings
     public static boolean debug = true;
@@ -45,7 +39,7 @@ public class ExportTrack {
     public static final String DEBUG_EXT = "-raw.csv";
     public static final String TCX_EXT = ".tcx";
 
-    public ExportTrack(AppCompatActivity activity) {
+    public TrackExporter(AppCompatActivity activity) {
         this.activity = activity;
     }
 
@@ -58,9 +52,6 @@ public class ExportTrack {
     }
 
     public static void launchExport() {
-        MLogger mLogger = new MLogger(getDebugPath() + DEBUG_LOG_FILE);
-        mLogger.log("export started");
-
         List<RawTrackData> rawDataTracks = readRawDataFromDb();
         for (RawTrackData rawDataTrack : rawDataTracks) {
             writeStringToFile(rawDataTrack.toString(), getDebugPath() + rawDataTrack.startTime + DEBUG_EXT);
@@ -68,9 +59,8 @@ public class ExportTrack {
             Track track = compileDataToTrack(rawDataTrack);
 
             PrintTcx printTcx = new PrintTcx(track);
-            writeStringToFile(printTcx.printTrack(), getFullPath() + getFileName(track) + TCX_EXT);
+            writeStringToFile(printTcx.print(), getFullPath() + getFileName(track) + TCX_EXT);
         }
-        mLogger.log("export finished");
     }
 
     private static String getFileName(Track track) {
@@ -248,47 +238,5 @@ public class ExportTrack {
         return rawTrackDataList;
     }
 
-    public void K_showTracks() {
-        ArrayList<RawTrackData> rawTrackDataList = new ArrayList<>();
-        Connection conn = null;
 
-//            String url = "jdbc:sqlite:origin.db";
-        DBConnector dbConnector = new DBConnector(activity, "tmp.db");
-        String databaseFullName = dbConnector.getDatabaseFullName();
-        Log.d("mifit", databaseFullName);
-        dbConnector = new DBConnector(activity, databaseFullName);
-
-        dbConnector.open();
-        Cursor cursor = dbConnector.sqLiteDB.rawQuery("" +
-                "   SELECT datetime(TRACKDATA.TRACKID, 'unixepoch', 'localtime'),\n" +
-                "       TRACKDATA.TYPE,\n" +
-                "       TRACKRECORD.DISTANCE,\n" +
-                "       TRACKRECORD.COSTTIME\n" +
-                "       FROM TRACKDATA, TRACKRECORD\n" +
-                "       WHERE TRACKDATA.TRACKID = TRACKRECORD.TRACKID ;", null);
-
-        ArrayList<String> arrayList = new ArrayList<>();
-        while (!cursor.isAfterLast()) {
-            int columnCount = cursor.getColumnCount();
-            String trackDesc = "";
-            for (int i = 0; i < columnCount; i++) {
-                trackDesc = trackDesc + cursor.getString(i) + " ";
-            }
-            arrayList.add(trackDesc);
-        }
-        cursor.close();
-        dbConnector.close();
-
-        for (String s : arrayList) {
-            Log.d("mifit", s);
-        }
-
-
-        ChooseTrackClickListener trackChooseListener = new ChooseTrackClickListener(activity, new String[]{"1a", "2a"});
-
-        AlertDialog.Builder alert = new AlertDialog.Builder(activity);
-        alert.setTitle("title");
-        alert.setItems(arrayList.toArray(new String[arrayList.size()]), trackChooseListener);
-        alert.create().show();
-    }
 }

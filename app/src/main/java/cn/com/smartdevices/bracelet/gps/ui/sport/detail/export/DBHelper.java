@@ -1,8 +1,9 @@
-package cn.com.smartdevices.bracelet.gps.ui.sport.detail.android;
+package cn.com.smartdevices.bracelet.gps.ui.sport.detail.export;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.FileLogger;
 
 public class DBHelper extends SQLiteOpenHelper {
     public DBHelper(Context context, String dbName) {

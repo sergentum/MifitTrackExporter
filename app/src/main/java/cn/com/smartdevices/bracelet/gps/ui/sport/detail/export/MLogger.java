@@ -6,12 +6,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
+import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.FileLogger.checkOrCreateFilePath;
+
 public class MLogger {
     private String filePath;
 
     MLogger(String filePath) {
         this.filePath = filePath;
-        if (PrintDebug.checkOrCreateFilePath(filePath)) {
+        if (checkOrCreateFilePath(filePath)) {
             System.out.println("File path exist or created");
         } else {
             System.out.println("Can't find or create File path");

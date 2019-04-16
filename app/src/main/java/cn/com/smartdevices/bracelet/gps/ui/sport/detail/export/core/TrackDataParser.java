@@ -1,10 +1,10 @@
-package cn.com.smartdevices.bracelet.gps.ui.sport.detail.export;
+package cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
 
-import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.ExportTrack.SEMICOLON;
+import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.TrackExporter.SEMICOLON;
 
 public class TrackDataParser {
 
@@ -114,7 +114,7 @@ public class TrackDataParser {
 
     private static Step parseStep(String stepAsString) {
         if (stepAsString.length() > 3) {
-            String[] stepParts = stepAsString.split(ExportTrack.COMMA);
+            String[] stepParts = stepAsString.split(TrackExporter.COMMA);
             int first = Integer.parseInt(stepParts[0]);
             int second = Integer.parseInt(stepParts[1]);
             int stride = Integer.parseInt(stepParts[2]);
@@ -132,7 +132,7 @@ public class TrackDataParser {
         }
         ArrayList<Integer> hrPoints = new ArrayList<>();
         String startHrAsString = BULKHR_split[0];
-        String[] startHr = startHrAsString.split(ExportTrack.COMMA);
+        String[] startHr = startHrAsString.split(TrackExporter.COMMA);
         int count = (startHr[0].length() > 0) ? Integer.parseInt(startHr[0]) : 1;
         int hrValue = Integer.parseInt(startHr[1]);
         for (int i = 0; i < count; i++) {
@@ -141,7 +141,7 @@ public class TrackDataParser {
 
         for (int i = 1; i < BULKHR_split.length; i++) {
             String hrPointAsString = BULKHR_split[i];
-            String[] hrPointAsArr = hrPointAsString.split(ExportTrack.COMMA);
+            String[] hrPointAsArr = hrPointAsString.split(TrackExporter.COMMA);
             int hrIncrement = Integer.parseInt(hrPointAsArr[1]);
 
             hrValue += hrIncrement;
@@ -204,7 +204,7 @@ public class TrackDataParser {
         if (llString.length() < 3) {
             return null;
         }
-        String[] stringCoords = llString.split(ExportTrack.COMMA);
+        String[] stringCoords = llString.split(TrackExporter.COMMA);
         if (stringCoords.length > 1) {
             long currentLat = Long.parseLong(stringCoords[0]);
             long currentLon = Long.parseLong(stringCoords[1]);

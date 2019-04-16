@@ -1,18 +1,18 @@
-package cn.com.smartdevices.bracelet.gps.ui.sport.detail.export;
+package cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
 public class TrackPoint {
-    Long timestamp;
-    Long latitude;
-    Long longitude;
-    Long altitude;
-    Integer heartRate;
-    Integer pace;
-    Integer cadence;
-    Integer stride;
+    public Long timestamp;
+    public Long latitude;
+    public Long longitude;
+    public Long altitude;
+    public Integer heartRate;
+    public Integer pace;
+    public Integer cadence;
+    public Integer stride;
 
     @Override
     public String toString() {

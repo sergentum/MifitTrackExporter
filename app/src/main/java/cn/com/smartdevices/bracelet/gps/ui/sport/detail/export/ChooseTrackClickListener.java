@@ -1,4 +1,4 @@
-package cn.com.smartdevices.bracelet.gps.ui.sport.detail.android;
+package cn.com.smartdevices.bracelet.gps.ui.sport.detail.export;
 
 import android.content.Context;
 import android.content.DialogInterface;
