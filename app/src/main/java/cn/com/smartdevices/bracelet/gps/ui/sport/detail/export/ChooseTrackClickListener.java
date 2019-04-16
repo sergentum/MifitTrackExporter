@@ -10,17 +10,17 @@ import java.util.ArrayList;
 import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.TrackExportStarter.TAG;
 
 public class ChooseTrackClickListener implements DialogInterface.OnClickListener {
-    private AppCompatActivity activity;
+    private TrackExportStarter starter;
     private ArrayList<Long> trackIds;
 
-    public ChooseTrackClickListener(AppCompatActivity appCompatActivity, ArrayList<Long> trackIds) {
-        this.activity = appCompatActivity;
+    public ChooseTrackClickListener(TrackExportStarter starter, ArrayList<Long> trackIds) {
+        this.starter = starter;
         this.trackIds = trackIds;
     }
 
     public void onClick(DialogInterface dialogInterface, int i) {
         Log.d(TAG, "got " + i + " chosen");
         Log.d(TAG, "found " + trackIds.get(i) + " id");
-        // TODO: 2019-04-16 call export starter to read db and to call trackexporter
+        starter.readRawDataWithId(trackIds.get(i));
     }
 }

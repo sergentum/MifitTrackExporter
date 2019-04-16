@@ -16,73 +16,105 @@ import java.util.TreeMap;
 public class TrackExportStarter {
     public static final String TAG = "mifit";
     private AppCompatActivity activity;
+    private String dbPath;
+    private static final String TRACK_ID_QUERY = "   SELECT TRACKRECORD.TRACKID," +
+            "       TRACKDATA.TYPE," +
+            "       TRACKRECORD.DISTANCE," +
+            "       TRACKRECORD.COSTTIME" +
+            "       FROM TRACKDATA, TRACKRECORD" +
+            "       WHERE TRACKDATA.TRACKID = TRACKRECORD.TRACKID ;";
+
+    private static final String TRACK_DATA_QUERY =
+            "SELECT " +
+                    "TRACKDATA.TRACKID," +
+                    "TRACKDATA.SIZE," +
+                    "TRACKDATA.BULKLL," +
+                    "TRACKDATA.BULKGAIT," +
+                    "TRACKDATA.BULKAL," +
+                    "TRACKDATA.BULKTIME," +
+                    "TRACKDATA.BULKHR," +
+                    "TRACKDATA.BULKPACE," +
+                    "TRACKDATA.BULKPAUSE," +
+                    "TRACKDATA.BULKSPEED," +
+                    "TRACKDATA.TYPE," +
+                    "TRACKDATA.BULKFLAG," +
+                    "TRACKRECORD.COSTTIME," +
+                    "TRACKRECORD.ENDTIME, " +
+                    "TRACKRECORD.DISTANCE " +
+                    "FROM TRACKDATA, TRACKRECORD " +
+                    "WHERE TRACKDATA.TRACKID = TRACKRECORD.TRACKID " +
+                    "AND TRACKDATA.TRACKID = ";
 
     public TrackExportStarter(AppCompatActivity activity) {
         this.activity = activity;
+        DBHelper dbHelper = new DBHelper(activity);
+        dbPath = dbHelper.getDbPath();
     }
 
-    // find DB path
-
-    // read track ids
-
-    // call track exporter with raw query data
-
     public void showTracks() {
-        DBConnector dbConnector1 = new DBConnector(activity);
-        String databaseFullName1 = dbConnector1.getDbPath();
-        if (databaseFullName1 == null) {
+        if (dbPath == null) {
             Toast.makeText(activity, "database not found", Toast.LENGTH_SHORT).show();
         } else {
-            SQLiteDatabase sqLiteDatabase = activity.openOrCreateDatabase(databaseFullName1, Context.MODE_PRIVATE, null);
+            try (
+                    SQLiteDatabase sqLiteDatabase = activity.openOrCreateDatabase(dbPath, Context.MODE_PRIVATE, null);
+                    Cursor cursor = sqLiteDatabase.rawQuery(TRACK_ID_QUERY, null);
+            ) {
+                cursor.moveToFirst();
+                Map<Long, TrackHeader> trackHeaderMap = new TreeMap<>();
+                StringBuilder stringBuilder = new StringBuilder();
+                while (!cursor.isAfterLast()) {
+                    for (int i = 0; i < cursor.getColumnCount(); i++) {
+                        stringBuilder.append(cursor.getString(i)).append(" ");
+                    }
+                    stringBuilder.append("\n");
 
-            Cursor cursor = sqLiteDatabase.rawQuery("" +
-                    "   SELECT TRACKRECORD.TRACKID," +
-                    "       TRACKDATA.TYPE," +
-                    "       TRACKRECORD.DISTANCE," +
-                    "       TRACKRECORD.COSTTIME" +
-                    "       FROM TRACKDATA, TRACKRECORD" +
-                    "       WHERE TRACKDATA.TRACKID = TRACKRECORD.TRACKID ;", null);
-
-            cursor.moveToFirst();
-            Map<Long, TrackHeader> trackHeaderMap = new TreeMap<>();
-            StringBuilder stringBuilder = new StringBuilder();
-            while (!cursor.isAfterLast()) {
-                for (int i = 0; i < cursor.getColumnCount(); i++) {
-                    stringBuilder.append(cursor.getString(i)).append(" ");
+                    TrackHeader trackHeader = new TrackHeader();
+                    long trackId = cursor.getLong(0);
+                    trackHeader.id = trackId;
+                    trackHeader.type = cursor.getInt(1);
+                    trackHeader.distance = cursor.getInt(2);
+                    trackHeader.duration = cursor.getInt(3);
+                    trackHeaderMap.put(trackId, trackHeader);
+                    cursor.moveToNext();
                 }
-                stringBuilder.append("\n");
+                cursor.close();
+                sqLiteDatabase.close();
 
-                TrackHeader trackHeader = new TrackHeader();
-                long trackId = cursor.getLong(0);
-                trackHeader.id = trackId;
-                trackHeader.type = cursor.getInt(1);
-                trackHeader.distance = cursor.getInt(2);
-                trackHeader.duration = cursor.getInt(3);
-                trackHeaderMap.put(trackId, trackHeader);
-                cursor.moveToNext();
+                Log.d(TAG, stringBuilder.toString());
+                Toast.makeText(activity, stringBuilder.toString(), Toast.LENGTH_SHORT).show();
+
+                ArrayList<Long> trackIds = new ArrayList<>();
+                String[] trackDesc = new String[trackHeaderMap.size()];
+                Set<Map.Entry<Long, TrackHeader>> entries = trackHeaderMap.entrySet();
+                int i = 0;
+                for (Map.Entry<Long, TrackHeader> entry : entries) {
+                    trackIds.add(entry.getKey());
+                    trackDesc[i] = entry.getValue().toString();
+                    i++;
+                }
+
+                ChooseTrackClickListener trackChooseListener = new ChooseTrackClickListener(this, trackIds);
+
+                AlertDialog.Builder alert = new AlertDialog.Builder(activity);
+                alert.setTitle("title");
+                alert.setItems(trackDesc, trackChooseListener);
+                alert.create().show();
+            } catch (Exception e) {
+                Log.e(TAG, "showTracks():" + e.getMessage());
             }
-            cursor.close();
-            sqLiteDatabase.close();
+        }
+    }
 
-            Log.d(TAG, stringBuilder.toString());
-            Toast.makeText(activity, stringBuilder.toString(), Toast.LENGTH_SHORT).show();
+    public void readRawDataWithId(long id) {
+        try (SQLiteDatabase sqLiteDatabase = activity.openOrCreateDatabase(dbPath, Context.MODE_PRIVATE, null);
+             Cursor cursor = sqLiteDatabase.rawQuery(TRACK_DATA_QUERY + id, null);
+             ) {
+            cursor.moveToFirst();
+            // TODO: 2019-04-16 read data to rawtrackdata and call export
 
-            ArrayList<Long> trackIds = new ArrayList<>();
-            String[] trackDesc = new String[trackHeaderMap.size()];
-            Set<Map.Entry<Long, TrackHeader>> entries = trackHeaderMap.entrySet();
-            int i = 0;
-            for (Map.Entry<Long, TrackHeader> entry : entries) {
-                trackIds.add(entry.getKey());
-                trackDesc[i] = entry.getValue().toString();
-                i++;
-            }
 
-            ChooseTrackClickListener trackChooseListener = new ChooseTrackClickListener(activity, trackIds);
-
-            AlertDialog.Builder alert = new AlertDialog.Builder(activity);
-            alert.setTitle("title");
-            alert.setItems(trackDesc, trackChooseListener);
-            alert.create().show();
+        } catch (Exception e) {
+            Log.e(TAG, "readRawDataWithId(" + id + "):" + e.getMessage());
         }
     }
 }

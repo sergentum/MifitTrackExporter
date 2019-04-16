@@ -20,10 +20,10 @@ import java.io.FileWriter;
 
 import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.TrackExportStarter.TAG;
 
-public class DBConnector {
+public class DBHelper {
     private Context context;
 
-    public DBConnector(Context context) {
+    public DBHelper(Context context) {
         this.context = context;
     }
 

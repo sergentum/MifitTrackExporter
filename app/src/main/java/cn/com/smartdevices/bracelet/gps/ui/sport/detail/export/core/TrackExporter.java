@@ -1,11 +1,6 @@
 package cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core;
 
-import android.app.AlertDialog;
-import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.ChooseTrackClickListener;
-import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.DBConnector;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
