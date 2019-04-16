@@ -20,42 +20,38 @@ import java.io.FileWriter;
 
 import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.TrackExportStarter.TAG;
 
-public class DBHelper {
+class DBHelper {
+    private static final String TMP_DB_QUERY = "" +
+            "CREATE TABLE IF NOT EXISTS dummy " +
+            "(\"_id\"  INTEGER primary key autoincrement, \n" +
+            "  \"CALENDAR\" INTEGER )";
+
     private Context context;
 
-    public DBHelper(Context context) {
+    DBHelper(Context context) {
         this.context = context;
     }
 
     @TargetApi(Build.VERSION_CODES.M)
-    public boolean checkStoragePermission() {
+    private boolean checkStoragePermission() {
         int permissionCheckRead = ContextCompat.checkSelfPermission(context,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (permissionCheckRead != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                // Show an expanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
                 ActivityCompat.requestPermissions((Activity) context,
                         new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 220);
             } else {
-                // No explanation needed, we can request the permission.
-
                 ActivityCompat.requestPermissions((Activity) context,
                         new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                         220);
-
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
             }
             return false;
         } else
             return true;
     }
 
-    public String getDbPath() {
+    String getDbPath() {
         String result = null;
         if (checkStoragePermission()) {
             Log.d(TAG, "storage write permission granted");
@@ -69,7 +65,7 @@ public class DBHelper {
         return result;
     }
 
-    public String checkExtDb() {
+    private String checkExtDb() {
         String result = null;
         String mifit_dir_path = Environment.getExternalStorageDirectory().getPath() + "/" + TrackExporter.getFullPath();
         FileLogger.checkOrCreateFilePath(mifit_dir_path);
@@ -97,7 +93,7 @@ public class DBHelper {
         return result;
     }
 
-    public String findOriginDb() {
+    private String findOriginDb() {
         String dbName = "origin_db";
         String dbJournal = "journal";
         String pathToDb = dbPathFinder();
@@ -120,19 +116,10 @@ public class DBHelper {
 
     private String dbPathFinder() {
         SQLiteDatabase sqLiteDatabase = context.openOrCreateDatabase("tmp.db", Context.MODE_PRIVATE, null);
-        sqLiteDatabase.execSQL("create table IF NOT EXISTS dummy (" +
-                "\"_id\"  INTEGER \n" +
-                "    primary key \n" +
-                "  autoincrement, \n" +
-                "  \"CALENDAR\"                INTEGER" +
-                ") ");
-//        sqLiteDatabase.execSQL("insert into dummy (\"_id\", \"CALENDAR\") VALUES (1 , 2) ");
-//            sqLiteDatabase.execSQL();
+        sqLiteDatabase.execSQL(TMP_DB_QUERY);
         String path = sqLiteDatabase.getPath();
         Toast.makeText(context, path, Toast.LENGTH_SHORT).show();
         sqLiteDatabase.close();
-
-
         return path;
     }
 }

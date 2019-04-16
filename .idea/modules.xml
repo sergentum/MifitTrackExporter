@@ -3,8 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/MifitTrackExporter.iml" filepath="$PROJECT_DIR$/.idea/MifitTrackExporter.iml" />
-      <module fileurl="file://$PROJECT_DIR$/MifitTrackExporter.iml" filepath="$PROJECT_DIR$/MifitTrackExporter.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

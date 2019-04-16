@@ -1,10 +1,7 @@
 package cn.com.smartdevices.bracelet.gps.ui.sport.detail.export;
 
-import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Toast;
 import java.util.ArrayList;
 
 import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.TrackExportStarter.TAG;
@@ -13,7 +10,7 @@ public class ChooseTrackClickListener implements DialogInterface.OnClickListener
     private TrackExportStarter starter;
     private ArrayList<Long> trackIds;
 
-    public ChooseTrackClickListener(TrackExportStarter starter, ArrayList<Long> trackIds) {
+    ChooseTrackClickListener(TrackExportStarter starter, ArrayList<Long> trackIds) {
         this.starter = starter;
         this.trackIds = trackIds;
     }

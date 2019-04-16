@@ -1,6 +1,5 @@
 package cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core;
 
-import android.support.v7.app.AppCompatActivity;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -15,7 +14,6 @@ import java.util.TreeMap;
 import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.FileLogger.writeStringToFile;
 
 public class TrackExporter {
-    AppCompatActivity activity;
 
     // todo add settings
     public static boolean debug = true;
@@ -34,8 +32,8 @@ public class TrackExporter {
     public static final String DEBUG_EXT = "-raw.csv";
     public static final String TCX_EXT = ".tcx";
 
-    public TrackExporter(AppCompatActivity activity) {
-        this.activity = activity;
+    public TrackExporter(String devicePath) {
+        DEVICE_PATH = devicePath;
     }
 
     public static String getFullPath() {
@@ -46,13 +44,12 @@ public class TrackExporter {
         return DEVICE_PATH + MIFIT_PATH + DEBUG_OUT_PATH;
     }
 
-    public static void launchExport() {
-        List<RawTrackData> rawDataTracks = readRawDataFromDb();
-        for (RawTrackData rawDataTrack : rawDataTracks) {
-            writeStringToFile(rawDataTrack.toString(), getDebugPath() + rawDataTrack.startTime + DEBUG_EXT);
+    public void launchExport(ArrayList<RawQueryData> rawTrackDataList) {
+        for (RawQueryData rawQueryData : rawTrackDataList) {
+            RawTrackData rawTrackData = RawDataParser.parseRawData(rawQueryData);
+            writeStringToFile(rawTrackData.toString(), getDebugPath() + rawTrackData.startTime + DEBUG_EXT);
 
-            Track track = compileDataToTrack(rawDataTrack);
-
+            Track track = compileDataToTrack(rawTrackData);
             PrintTcx printTcx = new PrintTcx(track);
             writeStringToFile(printTcx.print(), getFullPath() + getFileName(track) + TCX_EXT);
         }
@@ -161,7 +158,6 @@ public class TrackExporter {
             resultPoints.add(coordPoint);
         }
 
-        // todo compile leftover points coords and cadence
         System.out.println("Coord points map after join:" + coordPointsMap.size());
         return resultPoints;
     }
@@ -216,8 +212,8 @@ public class TrackExporter {
             ResultSet rs = statement.executeQuery(args);
             ResultSetMetaData rsmd = rs.getMetaData();
             while (rs.next()) {
-                RawTrackData rawData = TrackDataParser.parseRawData(rs, rsmd);
-                rawTrackDataList.add(rawData);
+//                RawTrackData rawData = TrackDataParser.parseRawData(rs, rsmd);
+//                rawTrackDataList.add(rawData);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());

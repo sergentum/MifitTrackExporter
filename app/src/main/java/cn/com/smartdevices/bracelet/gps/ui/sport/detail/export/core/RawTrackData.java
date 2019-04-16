@@ -3,21 +3,6 @@ package cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core;
 import java.util.ArrayList;
 
 public class RawTrackData {
-    //
-//            1 TRACKID -1554201133-
-//            2 SIZE -49-
-//            3 BULKLL 49
-//            4 BULKGAIT 108
-//            5 BULKAL 49
-//            6 BULKTIME 49
-//            7 BULKHR 93
-//            8 BULKPACE 49
-//            9 BULKPAUSE 1--
-//            10 TYPE -1-
-//            11 BULKFLAG 49
-//            12 COSTTIME -216-
-//            13 ENDTIME -1554201349-
-//
     // theese fields aren't bulked
     public long startTime;
     public long endTime;

@@ -1,102 +1,38 @@
 package cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core;
 
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
 
 import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.TrackExporter.SEMICOLON;
 
-public class TrackDataParser {
+public class RawDataParser {
 
-    public static RawTrackData parseRawData(ResultSet resultSet, ResultSetMetaData rsmd) {
+    public static RawTrackData parseRawData(RawQueryData rawQueryData) {
         RawTrackData rawTrackData = new RawTrackData();
-        long startTime = 0;
-        long endTime = 0;
-        int costTime = 0;
-        int size = 0;
-        int distance = 0;
-        int activityType = 0;
-        String BULKLL = "";
-        String BULKGAIT = "";
-        String BULKAL = "";
-        String BULKTIME = "";
-        String BULKHR = "";
-        String BULKPACE = "";
-        String BULKFLAG = "";
         try {
-            for (int i = 1; i <= rsmd.getColumnCount(); i++) {
-                String columnName = rsmd.getColumnName(i);
-                System.out.print(i + " " + columnName + " ");
-                String columnValue = resultSet.getString(i);
-                if (columnName.contains("BULK")) {
-                    if (columnValue != null) {
-                        String[] BULK_split = columnValue.split(SEMICOLON);
-                        System.out.print(BULK_split.length);
-                    }
-                } else {
-                    System.out.print("-" + columnValue + "-");
-                }
-                System.out.println("");
+            rawTrackData.startTime = Long.parseLong(rawQueryData.startTime);
+            rawTrackData.endTime = Long.parseLong(rawQueryData.endTime);
+            rawTrackData.costTime = Integer.parseInt(rawQueryData.costTime);
+            rawTrackData.distance = Integer.parseInt(rawQueryData.distance);
+            rawTrackData.activityType = Integer.parseInt(rawQueryData.activityType);
 
-                if (columnValue != null) {
-                    if (columnName.equalsIgnoreCase("TRACKID")) {
-                        startTime = Long.parseLong(columnValue);
-                    } else if (columnName.equalsIgnoreCase("ENDTIME")) {
-                        endTime = Long.parseLong(columnValue);
-                    } else if (columnName.equalsIgnoreCase("COSTTIME")) {
-                        costTime = Integer.parseInt(columnValue);
-                    } else if (columnName.equalsIgnoreCase("SIZE")) {
-                        size = Integer.parseInt(columnValue);
-                    } else if (columnName.equalsIgnoreCase("TYPE")) {
-                        activityType = Integer.parseInt(columnValue);
-                    } else if (columnName.equalsIgnoreCase("DISTANCE")) {
-                        distance = Integer.parseInt(columnValue);
-                    } else if (columnName.equalsIgnoreCase("BULKLL")) {
-                        BULKLL = columnValue;
-                    } else if (columnName.equalsIgnoreCase("BULKGAIT")) {
-                        BULKGAIT = columnValue;
-                    } else if (columnName.equalsIgnoreCase("BULKAL")) {
-                        BULKAL = columnValue;
-                    } else if (columnName.equalsIgnoreCase("BULKTIME")) {
-                        BULKTIME = columnValue;
-                    } else if (columnName.equalsIgnoreCase("BULKHR")) {
-                        BULKHR = columnValue.replace(";,", ";1,");
-                    } else if (columnName.equalsIgnoreCase("BULKPACE")) {
-                        BULKPACE = columnValue;
-                    } else if (columnName.equalsIgnoreCase("BULKFLAG")) {
-                        BULKFLAG = columnValue;
-                    }
-                }
-            }
+            rawTrackData.times = parseTime(rawQueryData.BULKTIME);
+            rawTrackData.coordinates = parseCoordinates(rawQueryData.BULKLL, rawQueryData.BULKAL);
 
+            // sometimes size is zero but actually data is exist
+            int size = Integer.parseInt(rawQueryData.size);
+            rawTrackData.size = size != 0 ? size : rawTrackData.times.size();
+
+            ArrayList<Integer> integers = parseHR(rawQueryData.BULKHR);
+            rawTrackData.hrPoints = integers;
+            System.out.println("hrPointsSize:" + integers.size());
+
+            rawTrackData.steps = parseSteps(rawQueryData.BULKGAIT);
         } catch (Exception e) {
             e.printStackTrace();
             // error while parsing rawData in column with value
             // TODO: 2019-04-09 log error
             // TODO: 2019-04-09 add multilog to logcat and file
         }
-
-        System.out.println();
-
-        rawTrackData.startTime = startTime;
-        rawTrackData.endTime = endTime;
-        rawTrackData.costTime = costTime;
-        rawTrackData.distance = distance;
-        rawTrackData.activityType = activityType;
-
-        rawTrackData.times = parseTime(BULKTIME);
-        rawTrackData.coordinates = parseCoordinates(BULKLL, BULKAL);
-
-        // sometimes size is zero but actually data is exist
-        size = size != 0 ? size : rawTrackData.times.size();
-        rawTrackData.size = size;
-
-        ArrayList<Integer> integers = parseHR(BULKHR);
-        rawTrackData.hrPoints = integers;
-        System.out.println("hrPointsSize:" + integers.size());
-
-        rawTrackData.steps = parseSteps(BULKGAIT);
-
         return rawTrackData;
     }
 
