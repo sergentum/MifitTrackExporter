@@ -13,6 +13,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.FileLogger;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.TrackExporter;
 import java.io.File;
 import java.io.FileWriter;
@@ -21,12 +22,9 @@ import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.TrackExpor
 
 public class DBConnector {
     private Context context;
-    public SQLiteDatabase sqLiteDB;
-//    public DBHelper dbHelper;
 
     public DBConnector(Context context) {
         this.context = context;
-//        this.dbHelper = new DBHelper(context, dbName);
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -74,6 +72,7 @@ public class DBConnector {
     public String checkExtDb() {
         String result = null;
         String mifit_dir_path = Environment.getExternalStorageDirectory().getPath() + "/" + TrackExporter.getFullPath();
+        FileLogger.checkOrCreateFilePath(mifit_dir_path);
         File mifit_dir = new File(mifit_dir_path);
         Log.d(TAG, "search for local db in :" + mifit_dir_path);
         if (mifit_dir.exists()) {
@@ -120,16 +119,6 @@ public class DBConnector {
     }
 
     private String dbPathFinder() {
-//        FileLogger fileLogger = new FileLogger();
-//        String createCommand = " CREATE TABLE IF NOT EXISTS ";
-//        String tableName = " tmpTable ";
-//        String tableSchema = " (dummy1 INTEGER, dummy2 TEXT) ";
-//
-//        sqLiteDB.execSQL(createCommand + tableName + tableSchema);
-//        File file = new File(sqLiteDB.getPath());
-//        String result = file.getParent();
-//        fileLogger.log("dbPathFinder :" + result);
-
         SQLiteDatabase sqLiteDatabase = context.openOrCreateDatabase("tmp.db", Context.MODE_PRIVATE, null);
         sqLiteDatabase.execSQL("create table IF NOT EXISTS dummy (" +
                 "\"_id\"  INTEGER \n" +

@@ -38,7 +38,11 @@ public class Track {
     }
 
     public String getActivityTypeDescription() {
-        return activityTypeMapping.get(activityType);
+        return getActivityTypeDescription(activityType);
+    }
+
+    public static String getActivityTypeDescription(int i) {
+        return activityTypeMapping.get(i);
     }
 
     public ArrayList<Integer> getPause() {

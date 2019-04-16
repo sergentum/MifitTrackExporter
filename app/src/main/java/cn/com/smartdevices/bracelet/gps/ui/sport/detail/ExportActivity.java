@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.*;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.TrackExportStarter;
-import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.TrackExporter;
 import com.example.username.mifittrackexporter.R;
 
 public class ExportActivity extends AppCompatActivity implements View.OnClickListener {
@@ -90,7 +89,7 @@ public class ExportActivity extends AppCompatActivity implements View.OnClickLis
                         "button pressed!!", Toast.LENGTH_SHORT);
                 toast.show();
                 TrackExportStarter trackExportStarter = new TrackExportStarter(this);
-                trackExportStarter.K_showTracks();
+                trackExportStarter.showTracks();
 
                 break;
             default:
