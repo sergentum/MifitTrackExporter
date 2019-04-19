@@ -9,9 +9,9 @@ class PrintTcx {
 
     String print() {
         return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "\n" +
-                "<TrainingCenterDatabase " + "\n" +
-                "xsi:schemaLocation=\"" +
-                "http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2 " +
+                "<TrainingCenterDatabase " +
+                "xsi:schemaLocation=\"" + "\n" +
+                "http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2 " + "\n" +
                 "http://www.garmin.com/xmlschemas/TrainingCenterDatabasev2.xsd\" " + "\n" +
                 "xmlns:ns5=\"http://www.garmin.com/xmlschemas/ActivityGoals/v1\" " + "\n" +
                 "xmlns:ns3=\"http://www.garmin.com/xmlschemas/ActivityExtension/v2\" " + "\n" +

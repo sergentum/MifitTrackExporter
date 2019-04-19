@@ -17,16 +17,17 @@ public class Track {
     private static HashMap<Integer, String> activityTypeMapping = new HashMap<>();
 
     static {
-        activityTypeMapping.put(0, "Running");
+        String defaultActivity = "Running";
+        activityTypeMapping.put(0, defaultActivity);
         activityTypeMapping.put(1, "Outdoor running");
-        activityTypeMapping.put(2, "Running");
-        activityTypeMapping.put(3, "Running");
-        activityTypeMapping.put(4, "Running");
-        activityTypeMapping.put(5, "Running");
+        activityTypeMapping.put(2, defaultActivity);
+        activityTypeMapping.put(3, defaultActivity);
+        activityTypeMapping.put(4, defaultActivity);
+        activityTypeMapping.put(5, defaultActivity);
         activityTypeMapping.put(6, "Walking");
-        activityTypeMapping.put(7, "Running");
+        activityTypeMapping.put(7, defaultActivity);
         activityTypeMapping.put(8, "Treadmill");
-        activityTypeMapping.put(9, "Running");
+        activityTypeMapping.put(9, "Outdoor Cycling");
     }
 
     String getStartTimeAsDate() {

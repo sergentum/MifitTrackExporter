@@ -19,7 +19,7 @@ class RawDataParser {
             rawTrackData.coordinates = parseCoordinates(rawQueryData.BULKLL, rawQueryData.BULKAL);
 
             // sometimes size is zero but actually data is exist
-            int size = Integer.parseInt(rawQueryData.size);
+            int size = (rawQueryData.size != null && rawQueryData.size.length() > 0) ? Integer.parseInt(rawQueryData.size) : 0;
             rawTrackData.size = size != 0 ? size : rawTrackData.times.size();
 
             ArrayList<Integer> integers = parseHR(rawQueryData.BULKHR);
@@ -38,6 +38,9 @@ class RawDataParser {
 
     private static ArrayList<Step> parseSteps(String BULKGAIT) {
         ArrayList<Step> steps = new ArrayList<>();
+        if (BULKGAIT == null || BULKGAIT.length() < 1) {
+            return steps;
+        }
         String[] BULKGAIT_split = BULKGAIT.split(SEMICOLON);
         for (String stepString : BULKGAIT_split) {
             Step step = parseStep(stepString);

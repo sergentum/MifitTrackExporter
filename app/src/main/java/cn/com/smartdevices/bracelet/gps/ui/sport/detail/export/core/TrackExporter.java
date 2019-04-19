@@ -1,5 +1,6 @@
 package cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core;
 
+import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.FileHelper;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -11,7 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.FileLogger.writeStringToFile;
+import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.FileHelper.writeStringToFile;
+
 
 public class TrackExporter {
 
@@ -24,16 +26,18 @@ public class TrackExporter {
     static final String CSV_COLUMN_DELIMITER = ";";
 
     // TODO: 2019-04-13 create full path
-    private static String DEVICE_PATH = "";
+    public static String DEVICE_PATH = "";
     // I HATE YOU DEVELOPER WHEN YOU PUT YOUR F*CKING FILES INTO THE ROOT OF MY STORAGE
     private static String MIFIT_PATH = "Android/Mifit/";
     private static final String DEBUG_OUT_PATH = "debug/";
-    static final String DEBUG_LOG_FILE = "log.txt";
+    public static final String DEBUG_LOG_FILE = "log.txt";
     private static final String RAW_CSV = "-raw.csv";
     private static final String TCX_EXT = ".tcx";
 
-    public TrackExporter(String devicePath) {
-        DEVICE_PATH = devicePath;
+    static FileHelper fileHelper;
+
+    public TrackExporter(FileHelper fileHelper) {
+        fileHelper = fileHelper;
     }
 
     public static String getFullPath() {
@@ -56,9 +60,8 @@ public class TrackExporter {
     }
 
     private static String getFileName(Track track) {
-        return String.format("%s %s %d",
+        return String.format("%s_%d",
                 TrackPoint.formatTimestampHumanReadable(track.startTime),
-                track.getActivityTypeDescription(),
                 track.distance);
     }
 

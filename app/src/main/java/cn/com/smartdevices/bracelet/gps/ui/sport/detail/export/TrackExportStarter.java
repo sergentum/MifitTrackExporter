@@ -11,6 +11,7 @@ import android.widget.Toast;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.RawQueryData;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.TrackExporter;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.TrackHeader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
@@ -21,6 +22,7 @@ public class TrackExportStarter {
     static final String TAG = "mifit";
     private AppCompatActivity activity;
     private String dbPath;
+    static FileHelper FILE_HELPER;
 
     private static final String TRACK_ID_QUERY = "   SELECT TRACKRECORD.TRACKID," +
             "       TRACKDATA.TYPE," +
@@ -52,8 +54,17 @@ public class TrackExportStarter {
 
     public TrackExportStarter(AppCompatActivity activity) {
         this.activity = activity;
-        DBHelper dbHelper = new DBHelper(activity);
-        dbPath = dbHelper.getDbPath();
+        TrackExporter.DEVICE_PATH = Environment.getExternalStorageDirectory().getPath() + "/";
+
+        FILE_HELPER = new FileHelper(activity);
+
+        if (FILE_HELPER.logWriter != null) {
+            DBHelper dbHelper = new DBHelper(activity);
+            dbPath = dbHelper.getDbPath();
+        } else {
+            Toast.makeText(activity, "fileHelper wasn't created", Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "fileHelper wasn't created");
+        }
     }
 
     public void showTracks() {
@@ -85,7 +96,7 @@ public class TrackExportStarter {
                 cursor.close();
                 sqLiteDatabase.close();
 
-                Log.d(TAG, stringBuilder.toString());
+                FILE_HELPER.log(stringBuilder.toString());
                 Toast.makeText(activity, stringBuilder.toString(), Toast.LENGTH_SHORT).show();
 
                 ArrayList<Long> trackIds = new ArrayList<>();
@@ -101,11 +112,11 @@ public class TrackExportStarter {
                 ChooseTrackClickListener trackChooseListener = new ChooseTrackClickListener(this, trackIds);
 
                 AlertDialog.Builder alert = new AlertDialog.Builder(activity);
-                alert.setTitle("title");
+                alert.setTitle("Choose track to export:");
                 alert.setItems(trackDesc, trackChooseListener);
                 alert.create().show();
             } catch (Exception e) {
-                Log.e(TAG, "showTracks():" + e.getMessage());
+                FILE_HELPER.log("showTracks():" + e.getMessage());
             }
         }
     }
@@ -153,11 +164,11 @@ public class TrackExportStarter {
                 }
                 rawQueryDataArrayList.add(rawQueryData);
             }
-            TrackExporter trackExporter = new TrackExporter(Environment.getExternalStorageDirectory().getPath());
+            TrackExporter trackExporter = new TrackExporter(FILE_HELPER);
             trackExporter.launchExport(rawQueryDataArrayList);
 
         } catch (Exception e) {
-            Log.e(TAG, "readRawDataWithId(" + id + "):" + e.getMessage());
+            FILE_HELPER.log("readRawDataWithId(" + id + "):" + e.getMessage());
         }
     }
 }

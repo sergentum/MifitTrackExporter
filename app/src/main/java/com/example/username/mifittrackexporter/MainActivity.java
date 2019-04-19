@@ -29,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+        Intent intent = new Intent(this, ExportActivity.class);
+        startActivity(intent);
     }
 
     @Override
