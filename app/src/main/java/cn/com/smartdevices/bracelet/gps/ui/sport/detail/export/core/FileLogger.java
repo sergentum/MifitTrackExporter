@@ -30,7 +30,7 @@ public class FileLogger {
         }
     }
 
-    public static void writeStringToFile(String output, String fileName) {
+    static void writeStringToFile(String output, String fileName) {
         try (
                 FileWriter fileWriter = new FileWriter(fileName)
         ) {

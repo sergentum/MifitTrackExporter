@@ -3,24 +3,25 @@ package cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core;
 import java.util.ArrayList;
 
 public class RawTrackData {
+
     // theese fields aren't bulked
-    public long startTime;
-    public long endTime;
-    public int distance;
-    public int costTime;
-    public int activityType;
+    long startTime;
+    long endTime;
+    int distance;
+    int costTime;
+    int activityType;
     public int size;
 
     // theese data is synced between each other, so it's size should be equal
-    public ArrayList<Integer> times = new ArrayList<>();
-    public ArrayList<Coordinate> coordinates = new ArrayList<>();
+    ArrayList<Integer> times = new ArrayList<>();
+    ArrayList<Coordinate> coordinates = new ArrayList<>();
     ArrayList<Integer> flags = new ArrayList<>();
     ArrayList<Integer> paces = new ArrayList<>();
     ArrayList<Integer> speeds = new ArrayList<>();
 
-    public ArrayList<Integer> hrPoints = new ArrayList<>();
+    ArrayList<Integer> hrPoints = new ArrayList<>();
 
-    public ArrayList<Step> steps = new ArrayList<>();
+    ArrayList<Step> steps = new ArrayList<>();
 
     @Override
     public String toString() {

@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.TrackExporter.SEMICOLON;
 
-public class RawDataParser {
+class RawDataParser {
 
-    public static RawTrackData parseRawData(RawQueryData rawQueryData) {
+    static RawTrackData parseRawData(RawQueryData rawQueryData) {
         RawTrackData rawTrackData = new RawTrackData();
         try {
             rawTrackData.startTime = Long.parseLong(rawQueryData.startTime);

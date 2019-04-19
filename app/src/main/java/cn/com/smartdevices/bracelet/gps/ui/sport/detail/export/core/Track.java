@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Track {
-    public long startTime;
-    public long duration;
-    public long endTime;
-    public int distance;
-    public int activityType;
-    public int size;
+    long startTime;
+    long duration;
+    long endTime;
+    int distance;
+    int activityType;
+    int size;
 
     ArrayList<Integer> pause;
-    public ArrayList<TrackPoint> trackPoints = new ArrayList<>();
+    ArrayList<TrackPoint> trackPoints = new ArrayList<>();
 
     private static HashMap<Integer, String> activityTypeMapping = new HashMap<>();
 
@@ -29,28 +29,20 @@ public class Track {
         activityTypeMapping.put(9, "Running");
     }
 
-    public String getStartTimeAsDate() {
+    String getStartTimeAsDate() {
         return TrackPoint.formatTimestamp(startTime);
     }
 
-    public String getEndTimeAsDate() {
+    private String getEndTimeAsDate() {
         return TrackPoint.formatTimestamp(endTime);
     }
 
-    public String getActivityTypeDescription() {
+    String getActivityTypeDescription() {
         return getActivityTypeDescription(activityType);
     }
 
-    public static String getActivityTypeDescription(int i) {
+    static String getActivityTypeDescription(int i) {
         return activityTypeMapping.get(i);
-    }
-
-    public ArrayList<Integer> getPause() {
-        return pause;
-    }
-
-    public int getSize() {
-        return size;
     }
 
     private String printTrackPoints() {

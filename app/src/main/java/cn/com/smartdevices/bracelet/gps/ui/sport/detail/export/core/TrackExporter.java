@@ -18,19 +18,19 @@ public class TrackExporter {
     // todo add settings
     public static boolean debug = true;
 
-    public static final String COMMA = ",";
-    public static final String SEMICOLON = ";";
-    public static final String EMPTY_VALUE = "-";
-    public static final String CSV_COLUMN_DELIMITER = ";";
+    static final String COMMA = ",";
+    static final String SEMICOLON = ";";
+    static final String EMPTY_VALUE = "-";
+    static final String CSV_COLUMN_DELIMITER = ";";
 
     // TODO: 2019-04-13 create full path
-    public static String DEVICE_PATH = "";
+    private static String DEVICE_PATH = "";
     // I HATE YOU DEVELOPER WHEN YOU PUT YOUR F*CKING FILES INTO THE ROOT OF MY STORAGE
-    public static String MIFIT_PATH = "Android/Mifit/";
-    public static final String DEBUG_OUT_PATH = "debug/";
-    public static final String DEBUG_LOG_FILE = "log.txt";
-    public static final String DEBUG_EXT = "-raw.csv";
-    public static final String TCX_EXT = ".tcx";
+    private static String MIFIT_PATH = "Android/Mifit/";
+    private static final String DEBUG_OUT_PATH = "debug/";
+    static final String DEBUG_LOG_FILE = "log.txt";
+    private static final String RAW_CSV = "-raw.csv";
+    private static final String TCX_EXT = ".tcx";
 
     public TrackExporter(String devicePath) {
         DEVICE_PATH = devicePath;
@@ -47,7 +47,7 @@ public class TrackExporter {
     public void launchExport(ArrayList<RawQueryData> rawTrackDataList) {
         for (RawQueryData rawQueryData : rawTrackDataList) {
             RawTrackData rawTrackData = RawDataParser.parseRawData(rawQueryData);
-            writeStringToFile(rawTrackData.toString(), getDebugPath() + rawTrackData.startTime + DEBUG_EXT);
+            writeStringToFile(rawTrackData.toString(), getDebugPath() + rawTrackData.startTime + RAW_CSV);
 
             Track track = compileDataToTrack(rawTrackData);
             PrintTcx printTcx = new PrintTcx(track);
@@ -116,8 +116,8 @@ public class TrackExporter {
             stepTrackPointsMap.put(timestamp, trackPoint);
         }
 
-//        String debugPoints = PrintDebug.printRawPoints(rawTrackData.startTime, hrTrackPoints, coordTrackPList, stepTrackPoints);
-//        WriteFile.writeStringToFile(debugPoints, getDebugPath() + rawTrackData.startTime + "-points.csv");
+        String debugPoints = PrintDebug.printRawPoints(hrTrackPoints, coordTrackPointMap, stepTrackPointsMap);
+        writeStringToFile(debugPoints, getDebugPath() + rawTrackData.startTime + "-points.csv");
 
         track.trackPoints = joinPointArrays(hrTrackPoints, coordTrackPointMap, stepTrackPointsMap);
         return track;

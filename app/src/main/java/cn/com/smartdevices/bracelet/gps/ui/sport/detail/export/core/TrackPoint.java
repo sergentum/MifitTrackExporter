@@ -5,14 +5,14 @@ import java.util.Date;
 import java.util.TimeZone;
 
 public class TrackPoint {
-    public Long timestamp;
-    public Long latitude;
-    public Long longitude;
-    public Long altitude;
-    public Integer heartRate;
-    public Integer pace;
-    public Integer cadence;
-    public Integer stride;
+    Long timestamp;
+    Long latitude;
+    Long longitude;
+    Long altitude;
+    Integer heartRate;
+    Integer pace;
+    Integer cadence;
+    Integer stride;
 
     @Override
     public String toString() {
@@ -32,21 +32,21 @@ public class TrackPoint {
     /**
      * @return formatted timestamp https://en.wikipedia.org/wiki/ISO_8601
      */
-    public static String formatTimestamp(long timestamp) {
+    static String formatTimestamp(long timestamp) {
         Date date = new Date(timestamp * 1000);
         SimpleDateFormat yyyyMMddTHHmmssSDF = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         yyyyMMddTHHmmssSDF.setTimeZone(TimeZone.getTimeZone("UTC"));
         return yyyyMMddTHHmmssSDF.format(date);
     }
 
-    public static String formatTimestampHumanReadable(long timestamp) {
+    static String formatTimestampHumanReadable(long timestamp) {
         Date date = new Date(timestamp * 1000);
         SimpleDateFormat yyyyMMddTHHmmssSDF = new SimpleDateFormat("yyyy-MM-dd_HH-mm");
         yyyyMMddTHHmmssSDF.setTimeZone(TimeZone.getTimeZone("UTC"));
         return yyyyMMddTHHmmssSDF.format(date);
     }
 
-    public String getLatitudeString() {
+    String getLatitudeString() {
         String latString = latitude.toString();
         int latL = latString.length();
         if (latL > 0) {
@@ -56,7 +56,7 @@ public class TrackPoint {
         }
     }
 
-    public String getLongitudeString() {
+    String getLongitudeString() {
         String lonString = longitude.toString();
         int lonL = lonString.length();
         if (lonL > 0) {
@@ -66,7 +66,7 @@ public class TrackPoint {
         }
     }
 
-    public String getAltitudeString() {
+    String getAltitudeString() {
         String altString = altitude.toString();
         int altL = altString.length();
         if (altL > 2) {
