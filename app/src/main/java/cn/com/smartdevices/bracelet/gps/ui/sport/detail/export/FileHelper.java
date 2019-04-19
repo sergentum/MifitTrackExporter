@@ -60,7 +60,7 @@ public class FileHelper implements Closeable {
             return true;
     }
 
-    void log(String... args) {
+    public void log(String... args) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(new Date()).append("\r\n");
         for (String arg : args) {

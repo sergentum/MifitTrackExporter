@@ -1,10 +1,12 @@
 package cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core;
 
+import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.FileHelper;
 import java.util.ArrayList;
 
 import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.TrackExporter.SEMICOLON;
 
 class RawDataParser {
+    public static FileHelper logger;
 
     static RawTrackData parseRawData(RawQueryData rawQueryData) {
         RawTrackData rawTrackData = new RawTrackData();
@@ -22,16 +24,13 @@ class RawDataParser {
             int size = (rawQueryData.size != null && rawQueryData.size.length() > 0) ? Integer.parseInt(rawQueryData.size) : 0;
             rawTrackData.size = size != 0 ? size : rawTrackData.times.size();
 
-            ArrayList<Integer> integers = parseHR(rawQueryData.BULKHR);
-            rawTrackData.hrPoints = integers;
-            System.out.println("hrPointsSize:" + integers.size());
+            ArrayList<Integer> HRs = parseHR(rawQueryData.BULKHR);
+            rawTrackData.hrPoints = HRs;
+            System.out.println("hrPointsSize:" + HRs.size());
 
             rawTrackData.steps = parseSteps(rawQueryData.BULKGAIT);
         } catch (Exception e) {
-            e.printStackTrace();
-            // error while parsing rawData in column with value
-            // TODO: 2019-04-09 log error
-            // TODO: 2019-04-09 add multilog to logcat and file
+
         }
         return rawTrackData;
     }

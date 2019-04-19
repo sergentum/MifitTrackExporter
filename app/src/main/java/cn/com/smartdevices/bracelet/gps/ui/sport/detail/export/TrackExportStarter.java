@@ -13,6 +13,7 @@ import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.TrackExporte
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.TrackHeader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -81,6 +82,12 @@ public class TrackExportStarter {
                 while (!cursor.isAfterLast()) {
                     for (int i = 0; i < cursor.getColumnCount(); i++) {
                         stringBuilder.append(cursor.getString(i)).append(" ");
+                        if (i == 0) {
+                            String string = cursor.getString(i);
+                            long l = Long.parseLong(string);
+                            Date date = new Date(l * 1000);
+                            stringBuilder.append(date + " ");
+                        }
                     }
                     stringBuilder.append("\n");
 
@@ -97,11 +104,11 @@ public class TrackExportStarter {
                 sqLiteDatabase.close();
 
                 FILE_HELPER.log(stringBuilder.toString());
-                Toast.makeText(activity, stringBuilder.toString(), Toast.LENGTH_SHORT).show();
 
                 ArrayList<Long> trackIds = new ArrayList<>();
                 String[] trackDesc = new String[trackHeaderMap.size()];
-                Set<Map.Entry<Long, TrackHeader>> entries = trackHeaderMap.entrySet();
+                Set<Map.Entry<Long, TrackHeader>> entries =
+                        ((TreeMap<Long, TrackHeader>) trackHeaderMap).descendingMap().entrySet();
                 int i = 0;
                 for (Map.Entry<Long, TrackHeader> entry : entries) {
                     trackIds.add(entry.getKey());

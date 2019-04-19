@@ -28,14 +28,8 @@ class DBHelper {
 
     String getDbPath() {
         String result = checkExtDb();
-        if (result != null) {
-            FILE_HELPER.log("ext db found:" + result);
-        } else {
-            FILE_HELPER.log("ext db not found");
+        if (result == null) {
             result = findOriginDb();
-            if (result != null) {
-                FILE_HELPER.log("origin db found:" + result);
-            }
         }
         return result;
     }

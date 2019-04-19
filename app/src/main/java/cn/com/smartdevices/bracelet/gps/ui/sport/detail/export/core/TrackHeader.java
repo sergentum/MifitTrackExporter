@@ -1,5 +1,7 @@
 package cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core;
 
+import java.util.concurrent.TimeUnit;
+
 public class TrackHeader {
     public long id;
     public int type;
@@ -15,19 +17,22 @@ public class TrackHeader {
     }
 
     private String getDuration() {
-        // TODO: 2019-04-16 format duration
-        return duration / 60 + " min ";
+        long hrs = TimeUnit.SECONDS.toHours(duration);
+        long min = TimeUnit.SECONDS.toMinutes(duration) - TimeUnit.HOURS.toMinutes(hrs);
+        long sec = duration - TimeUnit.MINUTES.toSeconds(TimeUnit.SECONDS.toMinutes(duration));
+        return String.format("%02d:%02d:%02d", hrs, min, sec);
     }
 
     private String getDistance() {
-        // TODO: 2019-04-16 format distance
-        return distance / 1000 + " m ";
+        int km = distance / 1000;
+        int m = distance - (km * 1000);
+        return String.format("%10d.%03d km", km, m);
     }
 
     @Override
     public String toString() {
         return getTimestamp()
-                + getActivityType()
+                + getActivityType()  + "\n"
                 + getDuration()
                 + getDistance()
                 ;

@@ -18,14 +18,13 @@ import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.FileHelper
 public class TrackExporter {
 
     // todo add settings
-    public static boolean debug = true;
+    private static boolean debug = true;
 
     static final String COMMA = ",";
     static final String SEMICOLON = ";";
     static final String EMPTY_VALUE = "-";
     static final String CSV_COLUMN_DELIMITER = ";";
 
-    // TODO: 2019-04-13 create full path
     public static String DEVICE_PATH = "";
     // I HATE YOU DEVELOPER WHEN YOU PUT YOUR F*CKING FILES INTO THE ROOT OF MY STORAGE
     private static String MIFIT_PATH = "Android/Mifit/";
@@ -34,10 +33,10 @@ public class TrackExporter {
     private static final String RAW_CSV = "-raw.csv";
     private static final String TCX_EXT = ".tcx";
 
-    static FileHelper fileHelper;
+    private FileHelper fileLogger;
 
-    public TrackExporter(FileHelper fileHelper) {
-        fileHelper = fileHelper;
+    public TrackExporter(FileHelper fileLogger) {
+        this.fileLogger = fileLogger;
     }
 
     public static String getFullPath() {
@@ -50,6 +49,7 @@ public class TrackExporter {
 
     public void launchExport(ArrayList<RawQueryData> rawTrackDataList) {
         for (RawQueryData rawQueryData : rawTrackDataList) {
+            RawDataParser.logger = fileLogger;
             RawTrackData rawTrackData = RawDataParser.parseRawData(rawQueryData);
             writeStringToFile(rawTrackData.toString(), getDebugPath() + rawTrackData.startTime + RAW_CSV);
 
@@ -65,7 +65,7 @@ public class TrackExporter {
                 track.distance);
     }
 
-    private static Track compileDataToTrack(RawTrackData rawTrackData) {
+    private Track compileDataToTrack(RawTrackData rawTrackData) {
         Track track = new Track();
         long timestamp = rawTrackData.startTime;
 
@@ -119,21 +119,24 @@ public class TrackExporter {
             stepTrackPointsMap.put(timestamp, trackPoint);
         }
 
-        String debugPoints = PrintDebug.printRawPoints(hrTrackPoints, coordTrackPointMap, stepTrackPointsMap);
-        writeStringToFile(debugPoints, getDebugPath() + rawTrackData.startTime + "-points.csv");
+        if (debug) {
+            String debugPoints = PrintDebug.printRawPoints(hrTrackPoints, coordTrackPointMap, stepTrackPointsMap);
+            writeStringToFile(debugPoints, getDebugPath() + rawTrackData.startTime + "-points.csv");
+        }
 
         track.trackPoints = joinPointArrays(hrTrackPoints, coordTrackPointMap, stepTrackPointsMap);
         return track;
     }
 
-    private static ArrayList<TrackPoint> joinPointArrays(
+    private ArrayList<TrackPoint> joinPointArrays(
             ArrayList<TrackPoint> hrPoints,
             Map<Long, TrackPoint> coordPointsMap,
             Map<Long, TrackPoint> stepPointsMap
     ) {
-        System.out.println("Coord points map before join:" + coordPointsMap.size());
+        if (debug) {
+            fileLogger.log("Coord points map before join:" + coordPointsMap.size());
+        }
         ArrayList<TrackPoint> resultPoints = new ArrayList<>();
-        int i = 0;
         long timestamp;
         TrackPoint lastHrPoint = null;
         for (TrackPoint hrPoint : hrPoints) {
@@ -147,7 +150,6 @@ public class TrackExporter {
                 joinPoints(hrPoint, stepPoint);
                 stepPointsMap.remove(timestamp);
             }
-            i++;
             resultPoints.add(hrPoint);
             lastHrPoint = hrPoint;
         }
@@ -160,8 +162,6 @@ public class TrackExporter {
             joinPoints(coordPoint, lastHrPoint);
             resultPoints.add(coordPoint);
         }
-
-        System.out.println("Coord points map after join:" + coordPointsMap.size());
         return resultPoints;
     }
 
