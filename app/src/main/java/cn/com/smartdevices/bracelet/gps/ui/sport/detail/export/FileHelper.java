@@ -1,12 +1,6 @@
 package cn.com.smartdevices.bracelet.gps.ui.sport.detail.export;
 
-import android.Manifest;
-import android.annotation.TargetApi;
-import android.content.pm.PackageManager;
-import android.os.Build;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import android.app.Activity;
 import android.util.Log;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.TrackExporter;
 import java.io.Closeable;
@@ -20,45 +14,23 @@ import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.TrackExpor
 public class FileHelper implements Closeable {
 
     FileWriter logWriter;
-    private AppCompatActivity activity;
+    private Activity activity;
 
-    FileHelper(AppCompatActivity activity) {
+    FileHelper(Activity activity) {
         this.activity = activity;
         String filePath = TrackExporter.getDebugPath();
-        if (checkStoragePermission()) {
-            Log.d(TAG, "write storage permission granted");
-            if (checkPathExistAndCreate(filePath)) {
-                String logFilePath = filePath + TrackExporter.DEBUG_LOG_FILE;
-                try {
-                    logWriter = new FileWriter(logFilePath);
-                    Log.d(TAG, "fileLogger created:" + logWriter);
-                } catch (IOException e) {
-                    Log.e(TAG, e.getMessage() + logWriter);
-                }
+        Log.d(TAG, "write storage permission granted");
+        if (checkPathExistAndCreate(filePath)) {
+            String logFilePath = filePath + TrackExporter.DEBUG_LOG_FILE;
+            try {
+                logWriter = new FileWriter(logFilePath);
+                Log.d(TAG, "fileLogger created:" + logWriter);
+            } catch (IOException e) {
+                Log.e(TAG, e.getMessage() + logWriter);
             }
-        } else {
-            Log.d(TAG, "write storage permission denied");
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
-    private boolean checkStoragePermission() {
-        int permissionCheckRead = ContextCompat.checkSelfPermission(activity,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if (permissionCheckRead != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                ActivityCompat.requestPermissions(activity,
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 220);
-            } else {
-                ActivityCompat.requestPermissions(activity,
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        220);
-            }
-            return false;
-        } else
-            return true;
-    }
 
     public void log(String... args) {
         StringBuilder stringBuilder = new StringBuilder();
@@ -85,7 +57,7 @@ public class FileHelper implements Closeable {
         }
     }
 
-    static boolean checkPathExistAndCreate(String filePath){
+    static boolean checkPathExistAndCreate(String filePath) {
         File file = new File(filePath);
         if (file.exists()) {
             Log.d(TAG, "file exists:" + filePath);

@@ -56,6 +56,8 @@ public class TrackExporter {
             Track track = compileDataToTrack(rawTrackData);
             PrintTcx printTcx = new PrintTcx(track);
             writeStringToFile(printTcx.print(), getFullPath() + getFileName(track) + TCX_EXT);
+
+            // TODO: 2019-04-22 success notification
         }
     }
 

@@ -15,8 +15,6 @@ public class ChooseTrackClickListener implements DialogInterface.OnClickListener
     }
 
     public void onClick(DialogInterface dialogInterface, int i) {
-//        TrackExportStarter.FILE_HELPER.log("got " + i + " chosen");
-//        TrackExportStarter.FILE_HELPER.log("found " + trackIds.get(i) + " id");
         starter.readRawDataWithId(trackIds.get(i));
         FILE_HELPER.close();
     }

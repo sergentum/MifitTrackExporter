@@ -1,9 +1,11 @@
 package cn.com.smartdevices.bracelet.gps.ui.sport.detail;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -85,16 +87,33 @@ public class ExportActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.export_btn:
-                Toast toast = Toast.makeText(getApplicationContext(),
-                        "button pressed!!", Toast.LENGTH_SHORT);
-                toast.show();
-                TrackExportStarter trackExportStarter = new TrackExportStarter(this);
-                trackExportStarter.showTracks();
-
-                break;
-            default:
-                Toast.makeText(getApplicationContext(), v.getId() + "clicked", Toast.LENGTH_SHORT).show();
+                if (checkStoragePermission()) {
+                    TrackExportStarter trackExportStarter = new TrackExportStarter(this);
+                    trackExportStarter.showTracks();
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            "don't have write storage permission", Toast.LENGTH_SHORT).show();
+                }
                 break;
         }
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    private boolean checkStoragePermission() {
+        int permissionCheckRead = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (permissionCheckRead != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 220);
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        220);
+            }
+            return false;
+        } else
+            return true;
     }
 }

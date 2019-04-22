@@ -1,18 +1,12 @@
 package cn.com.smartdevices.bracelet.gps.ui.sport.detail.export;
 
+import android.app.Activity;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Environment;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.widget.Toast;
-
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.TrackExporter;
 import java.io.File;
-import java.io.FileWriter;
 
 import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.TrackExportStarter.FILE_HELPER;
-import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.TrackExportStarter.TAG;
 
 class DBHelper {
     private static final String TMP_DB_QUERY = "" +
@@ -20,9 +14,9 @@ class DBHelper {
             "(\"_id\"  INTEGER primary key autoincrement, \n" +
             "  \"CALENDAR\" INTEGER )";
 
-    private AppCompatActivity activity;
+    private Activity activity;
 
-    DBHelper(AppCompatActivity activity) {
+    DBHelper(Activity activity) {
         this.activity = activity;
     }
 
@@ -48,14 +42,15 @@ class DBHelper {
                     if (!curFile.isDirectory() && curFile.getName().contains("origin.db")) {
                         result = curFile.getPath();
                         FILE_HELPER.log("ext db found:" + result);
-                        break;
+                        return result;
                     }
                 }
             } catch (Exception ex) {
                 FILE_HELPER.log("checkExtDb():" + ex.getMessage());
             }
         }
-        return result;
+        FILE_HELPER.log("ext db not found");
+        return null;
     }
 
     private String findOriginDb() {
@@ -72,19 +67,21 @@ class DBHelper {
                 if (!curFile.isDirectory() && curFile.getName().startsWith(dbName) && !curFile.getName().contains(dbJournal)) {
                     result = curFile.getPath();
                     FILE_HELPER.log("origin db found:" + result);
-                    break;
+                    return result;
                 }
             }
         }
-        return result;
+        FILE_HELPER.log("origin db not found");
+        return null;
     }
 
     private String dbPathFinder() {
         SQLiteDatabase sqLiteDatabase = activity.openOrCreateDatabase("tmp.db", Context.MODE_PRIVATE, null);
         sqLiteDatabase.execSQL(TMP_DB_QUERY);
-        String path = sqLiteDatabase.getPath();
-        Toast.makeText(activity, path, Toast.LENGTH_SHORT).show();
+        String tmpDbPath = sqLiteDatabase.getPath();
         sqLiteDatabase.close();
-        return path;
+        File tmpDb = new File(tmpDbPath);
+        FILE_HELPER.log("origin db path:" + tmpDb.getParent());
+        return tmpDb.getParent();
     }
 }

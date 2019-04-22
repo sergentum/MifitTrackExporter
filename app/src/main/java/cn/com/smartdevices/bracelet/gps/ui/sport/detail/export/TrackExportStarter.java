@@ -1,17 +1,16 @@
 package cn.com.smartdevices.bracelet.gps.ui.sport.detail.export;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.RawQueryData;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.TrackExporter;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.TrackHeader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
@@ -21,7 +20,7 @@ import java.util.TreeMap;
 
 public class TrackExportStarter {
     static final String TAG = "mifit";
-    private AppCompatActivity activity;
+    private Activity activity;
     private String dbPath;
     static FileHelper FILE_HELPER;
 
@@ -53,7 +52,7 @@ public class TrackExportStarter {
                     "WHERE TRACKDATA.TRACKID = TRACKRECORD.TRACKID " +
                     "AND TRACKDATA.TRACKID = ";
 
-    public TrackExportStarter(AppCompatActivity activity) {
+    public TrackExportStarter(Activity activity) {
         this.activity = activity;
         TrackExporter.DEVICE_PATH = Environment.getExternalStorageDirectory().getPath() + "/";
 
@@ -86,7 +85,7 @@ public class TrackExportStarter {
                             String string = cursor.getString(i);
                             long l = Long.parseLong(string);
                             Date date = new Date(l * 1000);
-                            stringBuilder.append(date + " ");
+                            stringBuilder.append(date).append(" ");
                         }
                     }
                     stringBuilder.append("\n");
