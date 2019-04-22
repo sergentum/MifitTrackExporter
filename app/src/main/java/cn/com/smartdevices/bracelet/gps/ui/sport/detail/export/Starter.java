@@ -3,6 +3,7 @@ package cn.com.smartdevices.bracelet.gps.ui.sport.detail.export;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
@@ -11,6 +12,9 @@ import android.widget.Toast;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.RawQueryData;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.TrackExporter;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.TrackHeader;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
@@ -18,11 +22,16 @@ import java.util.Set;
 import java.util.TreeMap;
 
 
-public class TrackExportStarter {
-    static final String TAG = "mifit";
+public class Starter {
+    private static final String TAG = "mifit";
     private Activity activity;
     private String dbPath;
-    static FileHelper FILE_HELPER;
+    private String logFilePath;
+
+    private static final String TMP_DB_QUERY = "" +
+            "CREATE TABLE IF NOT EXISTS dummy " +
+            "(\"_id\"  INTEGER primary key autoincrement, \n" +
+            "  \"CALENDAR\" INTEGER )";
 
     private static final String TRACK_ID_QUERY = "   SELECT TRACKRECORD.TRACKID," +
             "       TRACKDATA.TYPE," +
@@ -52,15 +61,12 @@ public class TrackExportStarter {
                     "WHERE TRACKDATA.TRACKID = TRACKRECORD.TRACKID " +
                     "AND TRACKDATA.TRACKID = ";
 
-    public TrackExportStarter(Activity activity) {
+    public Starter(Activity activity) {
         this.activity = activity;
         TrackExporter.DEVICE_PATH = Environment.getExternalStorageDirectory().getPath() + "/";
 
-        FILE_HELPER = new FileHelper(activity);
-
-        if (FILE_HELPER.logWriter != null) {
-            DBHelper dbHelper = new DBHelper(activity);
-            dbPath = dbHelper.getDbPath();
+        if (checkFilePath()) {
+            dbPath = getDbPath();
         } else {
             Toast.makeText(activity, "fileHelper wasn't created", Toast.LENGTH_SHORT).show();
             Log.e(TAG, "fileHelper wasn't created");
@@ -102,7 +108,7 @@ public class TrackExportStarter {
                 cursor.close();
                 sqLiteDatabase.close();
 
-                FILE_HELPER.log(stringBuilder.toString());
+                log(stringBuilder.toString());
 
                 ArrayList<Long> trackIds = new ArrayList<>();
                 String[] trackDesc = new String[trackHeaderMap.size()];
@@ -122,12 +128,26 @@ public class TrackExportStarter {
                 alert.setItems(trackDesc, trackChooseListener);
                 alert.create().show();
             } catch (Exception e) {
-                FILE_HELPER.log("showTracks():" + e.getMessage());
+                log("showTracks():" + e.getMessage());
             }
         }
     }
 
-    void readRawDataWithId(long id) {
+    public class ChooseTrackClickListener implements DialogInterface.OnClickListener {
+        private Starter starter;
+        private ArrayList<Long> trackIds;
+
+        ChooseTrackClickListener(Starter starter, ArrayList<Long> trackIds) {
+            this.starter = starter;
+            this.trackIds = trackIds;
+        }
+
+        public void onClick(DialogInterface dialogInterface, int i) {
+            starter.readRawDataWithId(trackIds.get(i));
+        }
+    }
+
+    private void readRawDataWithId(long id) {
         try (SQLiteDatabase sqLiteDatabase = activity.openOrCreateDatabase(dbPath, Context.MODE_PRIVATE, null);
              Cursor cursor = sqLiteDatabase.rawQuery(TRACK_DATA_QUERY + id, null)
              ) {
@@ -170,11 +190,137 @@ public class TrackExportStarter {
                 }
                 rawQueryDataArrayList.add(rawQueryData);
             }
-            TrackExporter trackExporter = new TrackExporter(FILE_HELPER);
+            TrackExporter trackExporter = new TrackExporter(this);
             trackExporter.launchExport(rawQueryDataArrayList);
 
         } catch (Exception e) {
-            FILE_HELPER.log("readRawDataWithId(" + id + "):" + e.getMessage());
+            log("readRawDataWithId(" + id + "):" + e.getMessage());
         }
+    }
+
+    private String getDbPath() {
+        String result = checkExtDb();
+        if (result == null) {
+            result = findOriginDb();
+        }
+        return result;
+    }
+
+    private String checkExtDb() {
+        String result = null;
+        String mifit_dir_path = TrackExporter.getFullPath();
+        checkIfPathExistAndCreate(mifit_dir_path);
+        File mifit_dir = new File(mifit_dir_path);
+        log("search for local db in:" + mifit_dir_path);
+        if (mifit_dir.exists()) {
+            try {
+                String[] list = mifit_dir.list();
+                for (String fileName : list) {
+                    File curFile = new File(mifit_dir_path, fileName);
+                    if (!curFile.isDirectory() && curFile.getName().contains("origin.db")) {
+                        result = curFile.getPath();
+                        log("ext db found:" + result);
+                        return result;
+                    }
+                }
+            } catch (Exception ex) {
+                log("checkExtDb():" + ex.getMessage());
+            }
+        }
+        log("ext db not found");
+        return null;
+    }
+
+    private String findOriginDb() {
+        String dbName = "origin_db";
+        String dbJournal = "journal";
+        String pathToDb = dbPathFinder();
+        String result;
+        File directory = new File(pathToDb);
+        String[] list = directory.list();
+        if (list != null) {
+            for (String file : list) {
+                directory = new File(pathToDb, file);
+                File curFile = directory;
+                if (!curFile.isDirectory() && curFile.getName().startsWith(dbName) && !curFile.getName().contains(dbJournal)) {
+                    result = curFile.getPath();
+                    log("origin db found:" + result);
+                    return result;
+                }
+            }
+        }
+        log("origin db not found");
+        return null;
+    }
+
+    private String dbPathFinder() {
+        SQLiteDatabase sqLiteDatabase = activity.openOrCreateDatabase("tmp.db", Context.MODE_PRIVATE, null);
+        sqLiteDatabase.execSQL(TMP_DB_QUERY);
+        String tmpDbPath = sqLiteDatabase.getPath();
+        sqLiteDatabase.close();
+        File tmpDb = new File(tmpDbPath);
+        log("origin db path:" + tmpDb.getParent());
+        return tmpDb.getParent();
+    }
+
+    private boolean checkFilePath() {
+        String filePath = TrackExporter.getDebugPath();
+        if (checkIfPathExistAndCreate(filePath)) {
+            logFilePath = filePath + TrackExporter.DEBUG_LOG_FILE;
+            return log(".");
+        } else {
+            return false;
+        }
+    }
+
+    public boolean log(String... args) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(new Date()).append("\r\n");
+        for (String arg : args) {
+            stringBuilder.append(arg).append("\r\n");
+        }
+        try (
+                FileWriter fileWriter = new FileWriter(logFilePath, true)
+        ) {
+            Log.d(TAG, stringBuilder.toString());
+            fileWriter.write(stringBuilder.toString());
+            fileWriter.flush();
+        } catch (Exception e) {
+            Log.e(TAG, "ex while logging:" + e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    public static void writeStringToFile(String output, String fileName) {
+        try (
+                FileWriter fileWriter = new FileWriter(fileName)
+        ) {
+            fileWriter.write(output);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private boolean checkIfPathExistAndCreate(String filePath) {
+        File file = new File(filePath);
+        if (file.exists()) {
+            Log.d(TAG, "file exists:" + filePath);
+            return true;
+        } else {
+            Log.d(TAG, "file doesn't exists:" + filePath);
+            if (file.mkdirs()) {
+                Log.d(TAG, "filepath created:" + filePath);
+                return true;
+            } else {
+                Log.e(TAG, "filepath can't be created:" + filePath);
+            }
+        }
+        return false;
+    }
+
+    public void showToast(String string, int length) {
+        Toast.makeText(activity,
+                string, length).show();
     }
 }

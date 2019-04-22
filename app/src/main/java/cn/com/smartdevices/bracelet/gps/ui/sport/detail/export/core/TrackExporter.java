@@ -1,6 +1,6 @@
 package cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core;
 
-import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.FileHelper;
+import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.Starter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -12,13 +12,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.FileHelper.writeStringToFile;
+import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.Starter.writeStringToFile;
 
 
 public class TrackExporter {
 
     // todo add settings
-    private static boolean debug = true;
+    private static boolean debug = false;
 
     static final String COMMA = ",";
     static final String SEMICOLON = ";";
@@ -33,14 +33,18 @@ public class TrackExporter {
     private static final String RAW_CSV = "-raw.csv";
     private static final String TCX_EXT = ".tcx";
 
-    private FileHelper fileLogger;
+    private Starter starter;
 
-    public TrackExporter(FileHelper fileLogger) {
-        this.fileLogger = fileLogger;
+    public TrackExporter(Starter starter) {
+        this.starter = starter;
     }
 
     public static String getFullPath() {
         return DEVICE_PATH + MIFIT_PATH;
+    }
+
+    public static String getShortPath() {
+        return MIFIT_PATH;
     }
 
     public static String getDebugPath() {
@@ -48,16 +52,18 @@ public class TrackExporter {
     }
 
     public void launchExport(ArrayList<RawQueryData> rawTrackDataList) {
+        RawDataParser.starter = starter;
         for (RawQueryData rawQueryData : rawTrackDataList) {
-            RawDataParser.logger = fileLogger;
             RawTrackData rawTrackData = RawDataParser.parseRawData(rawQueryData);
             writeStringToFile(rawTrackData.toString(), getDebugPath() + rawTrackData.startTime + RAW_CSV);
 
             Track track = compileDataToTrack(rawTrackData);
             PrintTcx printTcx = new PrintTcx(track);
-            writeStringToFile(printTcx.print(), getFullPath() + getFileName(track) + TCX_EXT);
+            String fileName = getFullPath() + getFileName(track) + TCX_EXT;
+            writeStringToFile(printTcx.print(), fileName);
 
-            // TODO: 2019-04-22 success notification
+            String filePath = getShortPath() + getFileName(track) + TCX_EXT;
+            starter.showToast(filePath + " saved", 1);
         }
     }
 
@@ -136,7 +142,7 @@ public class TrackExporter {
             Map<Long, TrackPoint> stepPointsMap
     ) {
         if (debug) {
-            fileLogger.log("Coord points map before join:" + coordPointsMap.size());
+            starter.log("Coord points map before join:" + coordPointsMap.size());
         }
         ArrayList<TrackPoint> resultPoints = new ArrayList<>();
         long timestamp;

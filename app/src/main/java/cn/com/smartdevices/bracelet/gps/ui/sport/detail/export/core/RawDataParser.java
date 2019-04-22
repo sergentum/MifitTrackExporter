@@ -1,12 +1,12 @@
 package cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core;
 
-import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.FileHelper;
+import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.Starter;
 import java.util.ArrayList;
 
 import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.TrackExporter.SEMICOLON;
 
 class RawDataParser {
-    public static FileHelper logger;
+    public static Starter starter;
 
     static RawTrackData parseRawData(RawQueryData rawQueryData) {
         RawTrackData rawTrackData = new RawTrackData();

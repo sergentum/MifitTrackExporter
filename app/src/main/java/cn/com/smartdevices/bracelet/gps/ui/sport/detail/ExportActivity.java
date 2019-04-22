@@ -12,9 +12,11 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.*;
-import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.TrackExportStarter;
+import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.Starter;
 import com.example.username.mifittrackexporter.R;
 
+// The activity allow to test export feature with empty android project
+// It shouldn't be copied in mifit project
 public class ExportActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
@@ -88,8 +90,8 @@ public class ExportActivity extends AppCompatActivity implements View.OnClickLis
         switch (v.getId()) {
             case R.id.export_btn:
                 if (checkStoragePermission()) {
-                    TrackExportStarter trackExportStarter = new TrackExportStarter(this);
-                    trackExportStarter.showTracks();
+                    Starter starter = new Starter(this);
+                    starter.showTracks();
                 } else {
                     Toast.makeText(getApplicationContext(),
                             "don't have write storage permission", Toast.LENGTH_SHORT).show();
@@ -100,6 +102,7 @@ public class ExportActivity extends AppCompatActivity implements View.OnClickLis
 
     @TargetApi(Build.VERSION_CODES.M)
     private boolean checkStoragePermission() {
+        // TODO: 2019-04-22 check if it works actually
         int permissionCheckRead = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (permissionCheckRead != PackageManager.PERMISSION_GRANTED) {
