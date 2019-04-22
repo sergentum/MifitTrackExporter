@@ -6,9 +6,13 @@ import java.util.ArrayList;
 import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.TrackExporter.SEMICOLON;
 
 class RawDataParser {
-    public static Starter starter;
+    private Starter starter;
 
-    static RawTrackData parseRawData(RawQueryData rawQueryData) {
+    public RawDataParser(Starter starter) {
+        this.starter = starter;
+    }
+
+    RawTrackData parseRawData(RawQueryData rawQueryData) {
         RawTrackData rawTrackData = new RawTrackData();
         try {
             rawTrackData.startTime = Long.parseLong(rawQueryData.startTime);
@@ -30,12 +34,12 @@ class RawDataParser {
 
             rawTrackData.steps = parseSteps(rawQueryData.BULKGAIT);
         } catch (Exception e) {
-
+            starter.log("ex while parsing: " + e.getMessage());
         }
         return rawTrackData;
     }
 
-    private static ArrayList<Step> parseSteps(String BULKGAIT) {
+    private ArrayList<Step> parseSteps(String BULKGAIT) {
         ArrayList<Step> steps = new ArrayList<>();
         if (BULKGAIT == null || BULKGAIT.length() < 1) {
             return steps;
@@ -50,7 +54,7 @@ class RawDataParser {
         return steps;
     }
 
-    private static Step parseStep(String stepAsString) {
+    private Step parseStep(String stepAsString) {
         if (stepAsString.length() > 3) {
             String[] stepParts = stepAsString.split(TrackExporter.COMMA);
             int first = Integer.parseInt(stepParts[0]);
@@ -63,7 +67,7 @@ class RawDataParser {
         }
     }
 
-    private static ArrayList<Integer> parseHR(String BULKHR) {
+    private ArrayList<Integer> parseHR(String BULKHR) {
         String[] BULKHR_split = BULKHR.split(SEMICOLON);
         if (BULKHR_split.length < 1) {
             return new ArrayList<>();
@@ -91,11 +95,10 @@ class RawDataParser {
         return hrPoints;
     }
 
-    private static ArrayList<Integer> parseTime(String BULKTIME) {
+    private ArrayList<Integer> parseTime(String BULKTIME) {
         ArrayList<Integer> times = new ArrayList<>();
         if (BULKTIME.length() > 1) {
             String[] BULKTIME_split = BULKTIME.split(SEMICOLON);
-            int secondsFromStart = 0;
             int firstNumber = 0;
             for (int index = 0; index < BULKTIME_split.length; index++) {
                 String timeString = BULKTIME_split[index];
@@ -118,7 +121,7 @@ class RawDataParser {
         return times;
     }
 
-    private static ArrayList<Coordinate> parseCoordinates(String BULKLL, String BULKAL) {
+    private ArrayList<Coordinate> parseCoordinates(String BULKLL, String BULKAL) {
         String[] BULKLL_stringArr = BULKLL.split(SEMICOLON);
         String[] BULKAL_split = BULKAL.split(SEMICOLON);
 
@@ -137,7 +140,7 @@ class RawDataParser {
         return coordinates;
     }
 
-    private static Coordinate parseCoordinate(String llString, String alString, Coordinate prevCoord) {
+    private Coordinate parseCoordinate(String llString, String alString, Coordinate prevCoord) {
         // it can't be shorter that "0,0"
         if (llString.length() < 3) {
             return null;

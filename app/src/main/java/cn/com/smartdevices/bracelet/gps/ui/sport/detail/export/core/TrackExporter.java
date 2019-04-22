@@ -1,14 +1,7 @@
 package cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core;
 
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.Starter;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -27,7 +20,7 @@ public class TrackExporter {
 
     public static String DEVICE_PATH = "";
     // I HATE YOU DEVELOPER WHEN YOU PUT YOUR F*CKING FILES INTO THE ROOT OF MY STORAGE
-    private static String MIFIT_PATH = "Android/Mifit/";
+    private static String EXPORT_PATH = "Android/Mifit/";
     private static final String DEBUG_OUT_PATH = "debug/";
     public static final String DEBUG_LOG_FILE = "log.txt";
     private static final String RAW_CSV = "-raw.csv";
@@ -40,21 +33,22 @@ public class TrackExporter {
     }
 
     public static String getFullPath() {
-        return DEVICE_PATH + MIFIT_PATH;
+        return DEVICE_PATH + EXPORT_PATH;
     }
 
     public static String getShortPath() {
-        return MIFIT_PATH;
+        return EXPORT_PATH;
     }
 
     public static String getDebugPath() {
-        return DEVICE_PATH + MIFIT_PATH + DEBUG_OUT_PATH;
+        return DEVICE_PATH + EXPORT_PATH + DEBUG_OUT_PATH;
     }
 
     public void launchExport(ArrayList<RawQueryData> rawTrackDataList) {
-        RawDataParser.starter = starter;
+        RawDataParser rawDataParser = new RawDataParser(starter);
         for (RawQueryData rawQueryData : rawTrackDataList) {
-            RawTrackData rawTrackData = RawDataParser.parseRawData(rawQueryData);
+            long start = System.currentTimeMillis();
+            RawTrackData rawTrackData = rawDataParser.parseRawData(rawQueryData);
             writeStringToFile(rawTrackData.toString(), getDebugPath() + rawTrackData.startTime + RAW_CSV);
 
             Track track = compileDataToTrack(rawTrackData);
@@ -63,7 +57,8 @@ public class TrackExporter {
             writeStringToFile(printTcx.print(), fileName);
 
             String filePath = getShortPath() + getFileName(track) + TCX_EXT;
-            starter.showToast(filePath + " saved", 1);
+            long stop = System.currentTimeMillis();
+            starter.showToast(filePath + " saved in " + (stop - start) + " ms ", 1);
         }
     }
 
@@ -183,62 +178,4 @@ public class TrackExporter {
             p1.stride = p2.stride != null ? p2.stride : p1.stride;
         }
     }
-
-
-    private static List<RawTrackData> readRawDataFromDb() {
-        ArrayList<RawTrackData> rawTrackDataList = new ArrayList<>();
-        Connection conn = null;
-        try {
-            // db parameters
-//            String url = "jdbc:sqlite:origin_db_pause.db";
-            String url = "jdbc:sqlite:origin.db";
-            // create a connection to the database
-            conn = DriverManager.getConnection(url);
-
-            System.out.println("Connection to SQLite has been established.");
-
-            Statement statement = conn.createStatement();
-
-            String args = "SELECT " +
-                    "TRACKDATA.TRACKID," +
-                    "TRACKDATA.SIZE," +
-                    "TRACKDATA.BULKLL," +
-                    "TRACKDATA.BULKGAIT," +
-                    "TRACKDATA.BULKAL," +
-                    "TRACKDATA.BULKTIME," +
-                    "TRACKDATA.BULKHR," +
-                    "TRACKDATA.BULKPACE," +
-                    "TRACKDATA.BULKPAUSE," +
-                    "TRACKDATA.BULKSPEED," +
-                    "TRACKDATA.TYPE," +
-                    "TRACKDATA.BULKFLAG," +
-                    "TRACKRECORD.COSTTIME," +
-                    "TRACKRECORD.ENDTIME, " +
-                    "TRACKRECORD.DISTANCE " +
-                    "FROM TRACKDATA, TRACKRECORD " +
-                    "WHERE TRACKDATA.TRACKID = TRACKRECORD.TRACKID "
-//                            "AND TRACKDATA.TRACKID = 1554686813"
-                    ;
-
-            ResultSet rs = statement.executeQuery(args);
-            ResultSetMetaData rsmd = rs.getMetaData();
-            while (rs.next()) {
-//                RawTrackData rawData = TrackDataParser.parseRawData(rs, rsmd);
-//                rawTrackDataList.add(rawData);
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } finally {
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
-            }
-        }
-        return rawTrackDataList;
-    }
-
-
 }

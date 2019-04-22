@@ -68,8 +68,8 @@ public class Starter {
         if (checkFilePath()) {
             dbPath = getDbPath();
         } else {
-            Toast.makeText(activity, "fileHelper wasn't created", Toast.LENGTH_SHORT).show();
-            Log.e(TAG, "fileHelper wasn't created");
+            Toast.makeText(activity, "can't get access to filesystem", Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "can't get access to filesystem");
         }
     }
 
@@ -207,7 +207,7 @@ public class Starter {
     }
 
     private String checkExtDb() {
-        String result = null;
+        String result;
         String mifit_dir_path = TrackExporter.getFullPath();
         checkIfPathExistAndCreate(mifit_dir_path);
         File mifit_dir = new File(mifit_dir_path);
@@ -220,6 +220,7 @@ public class Starter {
                     if (!curFile.isDirectory() && curFile.getName().contains("origin.db")) {
                         result = curFile.getPath();
                         log("ext db found:" + result);
+                        showToast("ext db found:" + result, 0);
                         return result;
                     }
                 }
