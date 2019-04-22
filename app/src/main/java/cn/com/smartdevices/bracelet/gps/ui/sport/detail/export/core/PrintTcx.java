@@ -1,5 +1,9 @@
 package cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core;
 
+import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.Model.*;
+
+import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.Model.formatTimestamp;
+
 class PrintTcx {
     private Track track;
 
@@ -20,7 +24,7 @@ class PrintTcx {
                 "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">" + "\n" +
                 "<Activities>" + "\n" +
                 "<Activity Sport=\"" + track.getActivityTypeDescription() + "\">" + "\n" +
-                "<Id>" + TrackPoint.formatTimestamp(track.startTime) + "</Id>" + "\n" +
+                "<Id>" + formatTimestamp(track.startTime) + "</Id>" + "\n" +
                 "<Lap StartTime=\"" + track.getStartTimeAsDate() + "\">" + "\n" +
                 "<TotalTimeSeconds>" + (track.endTime - track.startTime) + "</TotalTimeSeconds>" + "\n" +
                 "<DistanceMeters>" + track.distance + "</DistanceMeters>" + "\n" +
@@ -35,7 +39,7 @@ class PrintTcx {
 
     private String printTcxTime(Long timestamp) {
         return "<Time>" +
-                TrackPoint.formatTimestamp(timestamp) +
+                formatTimestamp(timestamp) +
                 "</Time>";
     }
 

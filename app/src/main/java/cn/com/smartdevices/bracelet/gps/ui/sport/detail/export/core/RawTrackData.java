@@ -14,14 +14,14 @@ public class RawTrackData {
 
     // theese data is synced between each other, so it's size should be equal
     ArrayList<Integer> times = new ArrayList<>();
-    ArrayList<Coordinate> coordinates = new ArrayList<>();
+    ArrayList<Model.Coordinate> coordinates = new ArrayList<>();
     ArrayList<Integer> flags = new ArrayList<>();
     ArrayList<Integer> paces = new ArrayList<>();
     ArrayList<Integer> speeds = new ArrayList<>();
 
     ArrayList<Integer> hrPoints = new ArrayList<>();
 
-    ArrayList<Step> steps = new ArrayList<>();
+    ArrayList<Model.Step> steps = new ArrayList<>();
 
     @Override
     public String toString() {
@@ -48,7 +48,7 @@ public class RawTrackData {
         rowCount = rowCount > coordinates.size() ? rowCount : coordinates.size();
         for (int i = 0; i < rowCount; i++) {
             if (i < coordinates.size()) {
-                Coordinate coordinate = coordinates.get(i);
+                Model.Coordinate coordinate = coordinates.get(i);
                 stringBuilder.append(coordinate.altitude).append(TrackExporter.CSV_COLUMN_DELIMITER);
                 stringBuilder.append(coordinate.latitude).append(TrackExporter.CSV_COLUMN_DELIMITER);
                 stringBuilder.append(coordinate.longitude).append(TrackExporter.CSV_COLUMN_DELIMITER);
@@ -68,7 +68,7 @@ public class RawTrackData {
             }
 
             if (i < steps.size()) {
-                Step step = steps.get(i);
+                Model.Step step = steps.get(i);
                 stringBuilder.append(step.first).append(TrackExporter.CSV_COLUMN_DELIMITER);
                 stringBuilder.append(step.second).append(TrackExporter.CSV_COLUMN_DELIMITER);
                 stringBuilder.append(step.cadence).append(TrackExporter.CSV_COLUMN_DELIMITER);

@@ -6,6 +6,9 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.Starter.writeStringToFile;
+import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.Model.formatTimestampHumanReadable;
+
+import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.Model.*;
 
 
 public class TrackExporter {
@@ -64,7 +67,7 @@ public class TrackExporter {
 
     private static String getFileName(Track track) {
         return String.format("%s_%d",
-                TrackPoint.formatTimestampHumanReadable(track.startTime),
+                formatTimestampHumanReadable(track.startTime),
                 track.distance);
     }
 
@@ -111,8 +114,8 @@ public class TrackExporter {
 
         timestamp = rawTrackData.startTime;
         Map<Long, TrackPoint> stepTrackPointsMap = new TreeMap<>();
-        ArrayList<Step> steps = rawTrackData.steps;
-        for (Step step : steps) {
+        ArrayList<Model.Step> steps = rawTrackData.steps;
+        for (Model.Step step : steps) {
             TrackPoint trackPoint = new TrackPoint();
 
             trackPoint.cadence = step.cadence;

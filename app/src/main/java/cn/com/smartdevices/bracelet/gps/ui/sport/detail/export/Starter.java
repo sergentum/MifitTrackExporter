@@ -11,7 +11,7 @@ import android.util.Log;
 import android.widget.Toast;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.RawQueryData;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.TrackExporter;
-import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.TrackHeader;
+import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.Model.TrackHeader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;

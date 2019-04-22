@@ -3,6 +3,9 @@ package cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
+import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.Model.*;
+
+import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.Model.formatTimestamp;
 
 class PrintDebug {
     static String printRawPoints(
@@ -19,7 +22,7 @@ class PrintDebug {
 
             if (i < hrTrackPoints.size()) {
                 TrackPoint trackPoint = hrTrackPoints.get(i);
-                trackPointsBuilder.append(TrackPoint.formatTimestamp(trackPoint.timestamp)).append(TrackExporter.CSV_COLUMN_DELIMITER);
+                trackPointsBuilder.append(formatTimestamp(trackPoint.timestamp)).append(TrackExporter.CSV_COLUMN_DELIMITER);
                 trackPointsBuilder.append(trackPoint.heartRate).append(TrackExporter.CSV_COLUMN_DELIMITER);
             } else {
                 trackPointsBuilder.append(TrackExporter.EMPTY_VALUE).append(TrackExporter.CSV_COLUMN_DELIMITER);
@@ -31,7 +34,7 @@ class PrintDebug {
                 trackPointsBuilder.append(trackPoint.altitude).append(TrackExporter.CSV_COLUMN_DELIMITER);
                 trackPointsBuilder.append(trackPoint.latitude).append(TrackExporter.CSV_COLUMN_DELIMITER);
                 trackPointsBuilder.append(trackPoint.longitude).append(TrackExporter.CSV_COLUMN_DELIMITER);
-                trackPointsBuilder.append(TrackPoint.formatTimestamp(trackPoint.timestamp)).append(TrackExporter.CSV_COLUMN_DELIMITER);
+                trackPointsBuilder.append(formatTimestamp(trackPoint.timestamp)).append(TrackExporter.CSV_COLUMN_DELIMITER);
             } else {
                 trackPointsBuilder.append(TrackExporter.EMPTY_VALUE).append(TrackExporter.CSV_COLUMN_DELIMITER);
                 trackPointsBuilder.append(TrackExporter.EMPTY_VALUE).append(TrackExporter.CSV_COLUMN_DELIMITER);
@@ -41,7 +44,7 @@ class PrintDebug {
 
             if (iteratorSteps.hasNext()) {
                 TrackPoint trackPoint = iteratorSteps.next().getValue();
-                trackPointsBuilder.append(TrackPoint.formatTimestamp(trackPoint.timestamp)).append(TrackExporter.CSV_COLUMN_DELIMITER);
+                trackPointsBuilder.append(formatTimestamp(trackPoint.timestamp)).append(TrackExporter.CSV_COLUMN_DELIMITER);
                 trackPointsBuilder.append("second").append(TrackExporter.CSV_COLUMN_DELIMITER);
                 trackPointsBuilder.append(trackPoint.cadence).append(TrackExporter.CSV_COLUMN_DELIMITER);
                 trackPointsBuilder.append(trackPoint.stride).append(TrackExporter.CSV_COLUMN_DELIMITER);

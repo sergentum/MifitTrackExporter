@@ -39,14 +39,14 @@ class RawDataParser {
         return rawTrackData;
     }
 
-    private ArrayList<Step> parseSteps(String BULKGAIT) {
-        ArrayList<Step> steps = new ArrayList<>();
+    private ArrayList<Model.Step> parseSteps(String BULKGAIT) {
+        ArrayList<Model.Step> steps = new ArrayList<>();
         if (BULKGAIT == null || BULKGAIT.length() < 1) {
             return steps;
         }
         String[] BULKGAIT_split = BULKGAIT.split(SEMICOLON);
         for (String stepString : BULKGAIT_split) {
-            Step step = parseStep(stepString);
+            Model.Step step = parseStep(stepString);
             if (step != null) {
                 steps.add(step);
             }
@@ -54,14 +54,14 @@ class RawDataParser {
         return steps;
     }
 
-    private Step parseStep(String stepAsString) {
+    private Model.Step parseStep(String stepAsString) {
         if (stepAsString.length() > 3) {
             String[] stepParts = stepAsString.split(TrackExporter.COMMA);
             int first = Integer.parseInt(stepParts[0]);
             int second = Integer.parseInt(stepParts[1]);
             int stride = Integer.parseInt(stepParts[2]);
             int cadence = Integer.parseInt(stepParts[3]);
-            return new Step(first, second, stride, cadence);
+            return new Model.Step(first, second, stride, cadence);
         } else {
             return null;
         }
@@ -121,16 +121,16 @@ class RawDataParser {
         return times;
     }
 
-    private ArrayList<Coordinate> parseCoordinates(String BULKLL, String BULKAL) {
+    private ArrayList<Model.Coordinate> parseCoordinates(String BULKLL, String BULKAL) {
         String[] BULKLL_stringArr = BULKLL.split(SEMICOLON);
         String[] BULKAL_split = BULKAL.split(SEMICOLON);
 
-        ArrayList<Coordinate> coordinates = new ArrayList<>();
+        ArrayList<Model.Coordinate> coordinates = new ArrayList<>();
         if (BULKLL_stringArr.length > 1) {
-            Coordinate coordinate = parseCoordinate(BULKLL_stringArr[0], BULKAL_split[0], null);
+            Model.Coordinate coordinate = parseCoordinate(BULKLL_stringArr[0], BULKAL_split[0], null);
             coordinates.add(coordinate);
             for (int i = 1; i < BULKLL_stringArr.length; i++) {
-                Coordinate currentCoordinate = parseCoordinate(BULKLL_stringArr[i], BULKAL_split[i], coordinate);
+                Model.Coordinate currentCoordinate = parseCoordinate(BULKLL_stringArr[i], BULKAL_split[i], coordinate);
                 coordinates.add(currentCoordinate);
                 // here we save base for the next iteration
                 coordinate = currentCoordinate;
@@ -140,7 +140,7 @@ class RawDataParser {
         return coordinates;
     }
 
-    private Coordinate parseCoordinate(String llString, String alString, Coordinate prevCoord) {
+    private Model.Coordinate parseCoordinate(String llString, String alString, Model.Coordinate prevCoord) {
         // it can't be shorter that "0,0"
         if (llString.length() < 3) {
             return null;
@@ -152,12 +152,12 @@ class RawDataParser {
             long currentAlt = Long.parseLong(alString);
             if (prevCoord == null) {
                 // that's the first point, used as base
-                return new Coordinate(currentLat, currentLon, currentAlt);
+                return new Model.Coordinate(currentLat, currentLon, currentAlt);
             } else {
                 // that means we have prev coords and we know only changes, instead of actual coordinates
                 currentLat += prevCoord.latitude;
                 currentLon += prevCoord.longitude;
-                return new Coordinate(currentLat, currentLon, currentAlt);
+                return new Model.Coordinate(currentLat, currentLon, currentAlt);
             }
         } else {
             return null;
