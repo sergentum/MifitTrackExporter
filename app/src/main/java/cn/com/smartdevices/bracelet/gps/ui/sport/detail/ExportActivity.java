@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.*;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.Starter;
 import com.example.username.mifittrackexporter.R;
+import java.util.Locale;
 
 // The activity allow to test export feature with empty android project
 // It shouldn't be copied in mifit project

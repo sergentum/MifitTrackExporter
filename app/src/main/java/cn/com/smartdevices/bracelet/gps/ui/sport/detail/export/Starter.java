@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
-import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.RawQueryData;
+import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.RawData.*;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.TrackExporter;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.Model.TrackHeader;
 import java.io.File;
@@ -17,6 +17,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -64,6 +65,9 @@ public class Starter {
     public Starter(Activity activity) {
         this.activity = activity;
         TrackExporter.DEVICE_PATH = Environment.getExternalStorageDirectory().getPath() + "/";
+
+        // TODO: 2019-04-23 add ru lang
+        String language = Locale.getDefault().getLanguage();
 
         if (checkFilePath()) {
             dbPath = getDbPath();
@@ -152,46 +156,46 @@ public class Starter {
              Cursor cursor = sqLiteDatabase.rawQuery(TRACK_DATA_QUERY + id, null)
              ) {
             cursor.moveToFirst();
-            ArrayList<RawQueryData> rawQueryDataArrayList = new ArrayList<>();
+            ArrayList<QueryData> queryDataArrayList = new ArrayList<>();
             if (!cursor.isAfterLast()) {
-                RawQueryData rawQueryData = new RawQueryData();
+                QueryData queryData = new QueryData();
                 for (int i = 0; i < cursor.getColumnCount(); i++){
                     String columnValue = cursor.getString(i);
                     String columnName = cursor.getColumnName(i);
                     if (columnValue != null) {
                         if (columnName.equalsIgnoreCase("TRACKID")) {
-                            rawQueryData.startTime = columnValue;
+                            queryData.startTime = columnValue;
                         } else if (columnName.equalsIgnoreCase("ENDTIME")) {
-                            rawQueryData.endTime = columnValue;
+                            queryData.endTime = columnValue;
                         } else if (columnName.equalsIgnoreCase("COSTTIME")) {
-                            rawQueryData.costTime = columnValue;
+                            queryData.costTime = columnValue;
                         } else if (columnName.equalsIgnoreCase("SIZE")) {
-                            rawQueryData.size = columnValue;
+                            queryData.size = columnValue;
                         } else if (columnName.equalsIgnoreCase("TYPE")) {
-                            rawQueryData.activityType = columnValue;
+                            queryData.activityType = columnValue;
                         } else if (columnName.equalsIgnoreCase("DISTANCE")) {
-                            rawQueryData.distance = columnValue;
+                            queryData.distance = columnValue;
                         } else if (columnName.equalsIgnoreCase("BULKLL")) {
-                            rawQueryData.BULKLL = columnValue;
+                            queryData.BULKLL = columnValue;
                         } else if (columnName.equalsIgnoreCase("BULKGAIT")) {
-                            rawQueryData.BULKGAIT = columnValue;
+                            queryData.BULKGAIT = columnValue;
                         } else if (columnName.equalsIgnoreCase("BULKAL")) {
-                            rawQueryData.BULKAL = columnValue;
+                            queryData.BULKAL = columnValue;
                         } else if (columnName.equalsIgnoreCase("BULKTIME")) {
-                            rawQueryData.BULKTIME = columnValue;
+                            queryData.BULKTIME = columnValue;
                         } else if (columnName.equalsIgnoreCase("BULKHR")) {
-                            rawQueryData.BULKHR = columnValue.replace(";,", ";1,");
+                            queryData.BULKHR = columnValue.replace(";,", ";1,");
                         } else if (columnName.equalsIgnoreCase("BULKPACE")) {
-                            rawQueryData.BULKPACE = columnValue;
+                            queryData.BULKPACE = columnValue;
                         } else if (columnName.equalsIgnoreCase("BULKFLAG")) {
-                            rawQueryData.BULKFLAG = columnValue;
+                            queryData.BULKFLAG = columnValue;
                         }
                     }
                 }
-                rawQueryDataArrayList.add(rawQueryData);
+                queryDataArrayList.add(queryData);
             }
             TrackExporter trackExporter = new TrackExporter(this);
-            trackExporter.launchExport(rawQueryDataArrayList);
+            trackExporter.launchExport(queryDataArrayList);
 
         } catch (Exception e) {
             log("readRawDataWithId(" + id + "):" + e.getMessage());

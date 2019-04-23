@@ -2,6 +2,7 @@ package cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core;
 
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.Starter;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -9,6 +10,7 @@ import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.Starter.wr
 import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.Model.formatTimestampHumanReadable;
 
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.Model.*;
+import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.RawData.*;
 
 
 public class TrackExporter {
@@ -39,7 +41,7 @@ public class TrackExporter {
         return DEVICE_PATH + EXPORT_PATH;
     }
 
-    public static String getShortPath() {
+    private static String getShortPath() {
         return EXPORT_PATH;
     }
 
@@ -47,17 +49,17 @@ public class TrackExporter {
         return DEVICE_PATH + EXPORT_PATH + DEBUG_OUT_PATH;
     }
 
-    public void launchExport(ArrayList<RawQueryData> rawTrackDataList) {
-        RawDataParser rawDataParser = new RawDataParser(starter);
-        for (RawQueryData rawQueryData : rawTrackDataList) {
+    public void launchExport(ArrayList<QueryData> rawTrackDataList) {
+        for (QueryData queryData : rawTrackDataList) {
+            RawData rawData = new RawData(starter, queryData);
             long start = System.currentTimeMillis();
-            RawTrackData rawTrackData = rawDataParser.parseRawData(rawQueryData);
+            RawTrackData rawTrackData = rawData.parseRawData();
             writeStringToFile(rawTrackData.toString(), getDebugPath() + rawTrackData.startTime + RAW_CSV);
 
             Track track = compileDataToTrack(rawTrackData);
-            PrintTcx printTcx = new PrintTcx(track);
+            String tcx = Printer.printTcx(track);
             String fileName = getFullPath() + getFileName(track) + TCX_EXT;
-            writeStringToFile(printTcx.print(), fileName);
+            writeStringToFile(tcx, fileName);
 
             String filePath = getShortPath() + getFileName(track) + TCX_EXT;
             long stop = System.currentTimeMillis();
@@ -66,7 +68,7 @@ public class TrackExporter {
     }
 
     private static String getFileName(Track track) {
-        return String.format("%s_%d",
+        return String.format(Locale.US, "%s_%d",
                 formatTimestampHumanReadable(track.startTime),
                 track.distance);
     }
@@ -126,7 +128,7 @@ public class TrackExporter {
         }
 
         if (debug) {
-            String debugPoints = PrintDebug.printRawPoints(hrTrackPoints, coordTrackPointMap, stepTrackPointsMap);
+            String debugPoints = Printer.printRawPoints(hrTrackPoints, coordTrackPointMap, stepTrackPointsMap);
             writeStringToFile(debugPoints, getDebugPath() + rawTrackData.startTime + "-points.csv");
         }
 

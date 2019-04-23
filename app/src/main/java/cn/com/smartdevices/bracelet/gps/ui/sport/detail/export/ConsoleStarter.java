@@ -1,6 +1,7 @@
 package cn.com.smartdevices.bracelet.gps.ui.sport.detail.export;
 
-import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.RawTrackData;
+import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.RawData.*;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;

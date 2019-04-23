@@ -25,7 +25,7 @@ public class Model {
         activityTypeMapping.put(9, "Outdoor Cycling");
     }
 
-    public static String getActivityTypeDescription(int i) {
+    private static String getActivityTypeDescription(int i) {
         return activityTypeMapping.get(i);
     }
 
@@ -56,9 +56,6 @@ public class Model {
             this.latitude = latitude;
             this.longitude = longitude;
             this.altitude = altitude;
-        }
-
-        public Coordinate() {
         }
     }
 
@@ -179,7 +176,7 @@ public class Model {
         int activityType;
         int size;
 
-        ArrayList<Integer> pause;
+//        ArrayList<Integer> pause;
         ArrayList<TrackPoint> trackPoints = new ArrayList<>();
 
         String getStartTimeAsDate() {
