@@ -63,7 +63,9 @@ public class TrackExporter {
 
             String filePath = getShortPath() + getFileName(track) + TCX_EXT;
             long stop = System.currentTimeMillis();
-            starter.showToast(filePath + " saved in " + (stop - start) + " ms ", 1);
+            String successMessage = filePath + " saved in " + (stop - start) + " ms ";
+            starter.log(successMessage);
+            starter.showToast(successMessage, 1);
         }
     }
 
