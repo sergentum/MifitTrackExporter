@@ -5,16 +5,22 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.*;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.Starter;
+import com.example.username.mifittrackexporter.EndomondoSynchronizer;
 import com.example.username.mifittrackexporter.R;
+import com.example.username.mifittrackexporter.Synchronizer;
+import java.io.File;
 import java.util.Locale;
 
 // The activity allow to test export feature with empty android project
@@ -92,8 +98,19 @@ public class ExportActivity extends AppCompatActivity implements View.OnClickLis
         switch (v.getId()) {
             case R.id.export_btn:
                 if (checkStoragePermission()) {
-                    Starter starter = new Starter(this);
-                    starter.showTracks();
+//                    Starter starter = new Starter(this);
+//                    starter.showTracks();
+                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                    StrictMode.setThreadPolicy(policy);
+                    EndomondoSynchronizer endomondoSynchronizer = new EndomondoSynchronizer();
+//                    Synchronizer.Status connect = endomondoSynchronizer.connect();
+                    String path = Environment.getExternalStorageDirectory().getPath();
+                    SQLiteDatabase sqLiteDatabase = SQLiteDatabase.openOrCreateDatabase(path + "/Android/end/runnerup.db", null);
+//                    endomondoSynchronizer.upload(sqLiteDatabase, 3);
+                    sqLiteDatabase.close();
+
+                    ExportView exportView = new ExportView(this);
+                    this.setContentView(exportView);
                 } else {
                     Toast.makeText(getApplicationContext(),
                             "don't have write storage permission", Toast.LENGTH_SHORT).show();
