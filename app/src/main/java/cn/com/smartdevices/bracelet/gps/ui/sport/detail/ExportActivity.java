@@ -15,6 +15,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.*;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.Starter;
 import com.example.username.mifittrackexporter.EndomondoSynchronizer;
@@ -109,8 +110,28 @@ public class ExportActivity extends AppCompatActivity implements View.OnClickLis
 //                    endomondoSynchronizer.upload(sqLiteDatabase, 3);
                     sqLiteDatabase.close();
 
-                    ExportView exportView = new ExportView(this);
-                    this.setContentView(exportView);
+//                    ExportView exportView = new ExportView(this);
+//                    this.setContentView(exportView, exportView.getLayoutParams());
+
+
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,LinearLayout.LayoutParams.FILL_PARENT);
+                    final LinearLayout linearLayout = new LinearLayout (this);
+
+                    Button btn1 = new Button(this);
+                    btn1.setText("Button_text");
+                    linearLayout.addView(btn1);
+                    btn1.setOnClickListener(new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View v) {
+                            // put code on click operation
+                            Toast onClick = Toast.makeText(ExportActivity.this, "onClick", Toast.LENGTH_SHORT);
+                            onClick.show();
+                        }
+                    });
+
+                    setContentView(linearLayout, layoutParams);
+
                 } else {
                     Toast.makeText(getApplicationContext(),
                             "don't have write storage permission", Toast.LENGTH_SHORT).show();

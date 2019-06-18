@@ -1,32 +1,44 @@
 package cn.com.smartdevices.bracelet.gps.ui.sport.detail;
 
 import android.content.Context;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 public class ExportView extends View {
-    public ExportView(Context context) {
+    LinearLayout.LayoutParams layoutParams;
+
+    public ExportView(final Context context) {
         super(context);
-////        this.add
-//        // Создание LayoutParams c шириной и высотой по содержимому
-//        LinearLayout.LayoutParams lParams = new LinearLayout.LayoutParams(
-//                wrapContent, wrapContent);
-//        // переменная для хранения значения выравнивания
-//        // по умолчанию пусть будет LEFT
-//        int btnGravity = Gravity.LEFT;
-//
-//        // переносим полученное значение выравнивания в LayoutParams
-//        lParams.gravity = btnGravity;
-//
-//        // создаем Button, пишем текст и добавляем в LinearLayout
-//        Button btnNew = new Button(context);
-//        btnNew.setText(etName.getText().toString());
-//        llMain.addView(btnNew, lParams);
+        layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,LinearLayout.LayoutParams.FILL_PARENT);
+
+        System.out.println("ExportView created");
+        LinearLayout l_layout = new LinearLayout(context);
+        l_layout.setOrientation(LinearLayout.VERTICAL);
+        l_layout.setLayoutParams(new LinearLayout.LayoutParams(100, 100));
+        Button btn1 = new Button(context);
+        btn1.setText("Button_text");
+
+        l_layout.addView(btn1);
+
+        btn1.setOnClickListener(new OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                // put code on click operation
+                Toast onClick = Toast.makeText(context, "onClick", Toast.LENGTH_SHORT);
+                onClick.show();
+            }
+        });
     }
 
     public void init(){
+        System.out.println("ExportView init");
+    }
 
+    @Override
+    public LinearLayout.LayoutParams getLayoutParams() {
+        return layoutParams;
     }
 }
