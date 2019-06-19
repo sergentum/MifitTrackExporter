@@ -3,6 +3,9 @@ package cn.com.smartdevices.bracelet.gps.ui.sport.detail;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
@@ -11,6 +14,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.support.v4.app.ActivityCompat;
+
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
@@ -27,6 +31,8 @@ import java.util.Locale;
 // The activity allow to test export feature with empty android project
 // It shouldn't be copied in mifit project
 public class ExportActivity extends AppCompatActivity implements View.OnClickListener {
+    TestFragment fragment;
+    FragmentTransaction fTrans;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +98,12 @@ public class ExportActivity extends AppCompatActivity implements View.OnClickLis
         } else {
             // Permission has already been granted
         }
+
+        fragment = new TestFragment();
+        fTrans = getFragmentManager().beginTransaction();
+//                    fTrans.show(fragment);
+        fTrans.replace(R.id.frgmCont, fragment);
+        fTrans.commit();
     }
 
     @Override
@@ -110,27 +122,34 @@ public class ExportActivity extends AppCompatActivity implements View.OnClickLis
 //                    endomondoSynchronizer.upload(sqLiteDatabase, 3);
                     sqLiteDatabase.close();
 
+                    fragment.changeColor();
 //                    ExportView exportView = new ExportView(this);
-//                    this.setContentView(exportView, exportView.getLayoutParams());
+//                    setContentView(exportView, exportView.getLayoutParams());
 
 
-                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,LinearLayout.LayoutParams.FILL_PARENT);
-                    final LinearLayout linearLayout = new LinearLayout (this);
+//                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+//                            LinearLayout.LayoutParams.FILL_PARENT,
+//                            LinearLayout.LayoutParams.FILL_PARENT);
+//                    LinearLayout linearLayout = new LinearLayout (this);
+//
+//                    Button btn1 = new Button(this);
+//                    btn1.setText("Button_text");
+//                    linearLayout.addView(btn1);
+//                    btn1.setOnClickListener(new View.OnClickListener()
+//                    {
+//                        @Override
+//                        public void onClick(View v) {
+//                            // put code on click operation
+//                            Toast onClick = Toast.makeText(ExportActivity.this, "onClick", Toast.LENGTH_SHORT);
+//                            onClick.show();
+//                        }
+//                    });
+//
+//                    setContentView(linearLayout, layoutParams);
 
-                    Button btn1 = new Button(this);
-                    btn1.setText("Button_text");
-                    linearLayout.addView(btn1);
-                    btn1.setOnClickListener(new View.OnClickListener()
-                    {
-                        @Override
-                        public void onClick(View v) {
-                            // put code on click operation
-                            Toast onClick = Toast.makeText(ExportActivity.this, "onClick", Toast.LENGTH_SHORT);
-                            onClick.show();
-                        }
-                    });
+                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-                    setContentView(linearLayout, layoutParams);
 
                 } else {
                     Toast.makeText(getApplicationContext(),
