@@ -147,8 +147,8 @@ public class ExportActivity extends AppCompatActivity implements View.OnClickLis
 //
 //                    setContentView(linearLayout, layoutParams);
 
-                    FragmentManager fragmentManager = getFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                    FragmentManager fragmentManager = getFragmentManager();
+//                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
 
                 } else {
