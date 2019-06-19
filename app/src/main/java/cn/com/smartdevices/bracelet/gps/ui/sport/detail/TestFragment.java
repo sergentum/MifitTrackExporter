@@ -43,7 +43,7 @@ public class TestFragment extends Fragment {
             view.setBackgroundColor(i);
             System.out.println("color changed to:" + i);
         } else {
-            System.out.println("view :" + view);
+            System.out.println("view = null");
         }
     }
 }
