@@ -32,7 +32,7 @@ public class TestFragment extends Fragment {
             }
         });
 
-        container.addView(button);
+//        container.addView(button);
         random = new Random();
         return view;
     }

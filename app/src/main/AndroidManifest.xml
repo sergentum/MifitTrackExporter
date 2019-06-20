@@ -21,6 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="cn.com.smartdevices.bracelet.gps.ui.sport.detail.ExportActivity"></activity>
+        <activity android:name="cn.com.smartdevices.bracelet.gps.ui.sport.detail.ExportActivity"/>
+        <activity android:name="cn.com.smartdevices.bracelet.gps.ui.sport.detail.CodeActivity"/>
     </application>
 </manifest>

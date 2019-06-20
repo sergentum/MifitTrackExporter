@@ -1,36 +1,39 @@
 package com.example.username.mifittrackexporter;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.FrameLayout;
+import cn.com.smartdevices.bracelet.gps.ui.sport.detail.CodeActivity;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.ExportActivity;
-import com.example.username.mifittrackexporter.util.FormValues;
-import com.example.username.mifittrackexporter.util.SyncHelper;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.UUID;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import javax.net.ssl.SSLEngineResult;
+import cn.com.smartdevices.bracelet.gps.ui.sport.detail.PrefFrag;
 
 public class MainActivity extends AppCompatActivity {
+    FragmentActivity activity;
+    PrefFrag prefFrag;
+    int mainActWindow;
+
+    private FrameLayout root;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        root = new FrameLayout(this);
+        root.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+        setContentView(root);
+        prefFrag = new PrefFrag();
+
+//        super.onCreate(savedInstanceState);
+        activity = this;
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -41,10 +44,18 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+
+//                FragmentManager fragmentManager = activity.getFragmentManager();
+//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                fragmentTransaction.replace(R.id.mainFragment , prefFrag);
+//                fragmentTransaction.commit();
+
+                Intent intent = new Intent(MainActivity.this, CodeActivity.class);
+                startActivity(intent);
             }
         });
-        Intent intent = new Intent(this, ExportActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, ExportActivity.class);
+//        startActivity(intent);
     }
 
     @Override
