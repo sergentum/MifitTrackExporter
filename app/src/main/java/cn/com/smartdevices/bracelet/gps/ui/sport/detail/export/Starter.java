@@ -247,11 +247,11 @@ public class Starter {
 
         for (String file : list) {
             boolean dbFound = pattern.matcher(file).find();
-            Log.d(TAG, "file:" + file + " matches:" + dbFound);
+            log("file:" + file + " matches:" + dbFound);
             if (dbFound) {
                 File dbFile = new File(pathToDb, file);
                 pathToOriginDb = dbFile.getPath();
-                Log.d(TAG, "origin db found: " + pathToOriginDb);
+                log("origin db found: " + pathToOriginDb);
                 return pathToOriginDb;
             }
         }
@@ -286,9 +286,7 @@ public class Starter {
         for (String arg : args) {
             stringBuilder.append(arg).append("\r\n");
         }
-        try (
-                FileWriter fileWriter = new FileWriter(logFilePath, true)
-        ) {
+        try (FileWriter fileWriter = new FileWriter(logFilePath, true)) {
             Log.d(TAG, stringBuilder.toString());
             fileWriter.write(stringBuilder.toString());
             fileWriter.flush();
@@ -300,9 +298,7 @@ public class Starter {
     }
 
     public static void writeStringToFile(String output, String fileName) {
-        try (
-                FileWriter fileWriter = new FileWriter(fileName)
-        ) {
+        try (FileWriter fileWriter = new FileWriter(fileName)) {
             fileWriter.write(output);
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -327,7 +323,6 @@ public class Starter {
     }
 
     public void showToast(String string, int length) {
-        Toast.makeText(activity,
-                string, length).show();
+        Toast.makeText(activity, string, length).show();
     }
 }
