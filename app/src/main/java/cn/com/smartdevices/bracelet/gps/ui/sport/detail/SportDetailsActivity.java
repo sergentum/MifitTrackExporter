@@ -7,6 +7,7 @@ import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.Starter;
 public class SportDetailsActivity extends Activity {
 
     // this is entry point to export project
+    // method should be copied in SportDetailsActivity.smali
     public void onShareClicked(View view) {
         Starter starter = new Starter(this);
         starter.showTracks();

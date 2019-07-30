@@ -21,6 +21,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.regex.Pattern;
 
 
 public class Starter {
@@ -237,23 +238,24 @@ public class Starter {
     }
 
     private String findOriginDb() {
-        String dbName = "origin_db";
-        String dbJournal = "journal";
+        Pattern pattern = Pattern.compile("^origin_db_[A-Za-z0-9]*$");
+
         String pathToDb = dbPathFinder();
-        String result;
+        String pathToOriginDb;
         File directory = new File(pathToDb);
         String[] list = directory.list();
-        if (list != null) {
-            for (String file : list) {
-                directory = new File(pathToDb, file);
-                File curFile = directory;
-                if (!curFile.isDirectory() && curFile.getName().startsWith(dbName) && !curFile.getName().contains(dbJournal)) {
-                    result = curFile.getPath();
-                    log("origin db found:" + result);
-                    return result;
-                }
+
+        for (String file : list) {
+            boolean dbFound = pattern.matcher(file).find();
+            Log.d(TAG, "file:" + file + " matches:" + dbFound);
+            if (dbFound) {
+                File dbFile = new File(pathToDb, file);
+                pathToOriginDb = dbFile.getPath();
+                Log.d(TAG, "origin db found: " + pathToOriginDb);
+                return pathToOriginDb;
             }
         }
+
         log("origin db not found");
         return null;
     }
