@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
 
 
 public class Starter {
-    private static final String TAG = "mifit";
+    public static final String TAG = "mifit";
     private Activity activity;
     private String dbPath;
     private String logFilePath;

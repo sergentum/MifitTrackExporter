@@ -254,7 +254,7 @@ public class EndomondoSynchronizer extends DefaultSynchronizer {
             Log.e(getName(), "workoutId: " + workoutId);
 
             StringBuilder url = new StringBuilder();
-            url.append(UPLOAD_URL).append("?authToken=").append("BHv4Ic3mQs-m0VBSEcBbDg");
+            url.append(UPLOAD_URL).append("?authToken=").append("apikeyasdf");
             url.append("&workoutId=").append(workoutId);
             url.append("&sport=").append(summary.sport);
             url.append("&duration=").append(summary.duration);
