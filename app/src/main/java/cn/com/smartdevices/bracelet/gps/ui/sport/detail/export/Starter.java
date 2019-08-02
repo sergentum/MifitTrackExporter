@@ -9,9 +9,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
-import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.RawData.*;
-import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.TrackExporter;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.Model.TrackHeader;
+import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.RawData.QueryData;
+import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.TrackExporter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -216,7 +216,7 @@ public class Starter {
         String mifit_dir_path = TrackExporter.getFullPath();
         checkIfPathExistAndCreate(mifit_dir_path);
         File mifit_dir = new File(mifit_dir_path);
-        log("search for local db in:" + mifit_dir_path);
+        log("search for ext db in:" + mifit_dir_path);
         if (mifit_dir.exists()) {
             try {
                 String[] list = mifit_dir.list();
@@ -297,12 +297,17 @@ public class Starter {
         return true;
     }
 
-    public static void writeStringToFile(String output, String fileName) {
+    public static boolean writeStringToFile(String output, String fileName) {
+        boolean result;
         try (FileWriter fileWriter = new FileWriter(fileName)) {
             fileWriter.write(output);
+            result = true;
         } catch (IOException ex) {
+            Log.e(TAG,"Exception message: " + ex.getMessage() + ", cause: " + ex.getCause());
             ex.printStackTrace();
+            result = false;
         }
+        return result;
     }
 
     private boolean checkIfPathExistAndCreate(String filePath) {
@@ -316,7 +321,9 @@ public class Starter {
                 Log.d(TAG, "filepath created:" + filePath);
                 return true;
             } else {
-                Log.e(TAG, "filepath can't be created:" + filePath);
+                String msg = "filepath can't be created:" + filePath;
+                Log.e(TAG, msg);
+                showToast(msg, 0);
             }
         }
         return false;

@@ -51,19 +51,19 @@
     .end annotation
 
     .prologue
-    .line 145
+    .line 147
     .local p3, "trackIds":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/Long;>;"
     iput-object p1, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/Starter$ChooseTrackClickListener;->this$0:Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/Starter;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 146
+    .line 148
     iput-object p2, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/Starter$ChooseTrackClickListener;->starter:Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/Starter;
 
-    .line 147
+    .line 149
     iput-object p3, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/Starter$ChooseTrackClickListener;->trackIds:Ljava/util/ArrayList;
 
-    .line 148
+    .line 150
     return-void
 .end method
 
@@ -75,7 +75,7 @@
     .param p2, "i"    # I
 
     .prologue
-    .line 151
+    .line 153
     iget-object v1, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/Starter$ChooseTrackClickListener;->starter:Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/Starter;
 
     iget-object v0, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/Starter$ChooseTrackClickListener;->trackIds:Ljava/util/ArrayList;
@@ -92,6 +92,6 @@
 
     invoke-static {v1, v2, v3}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/Starter;->access$000(Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/Starter;J)V
 
-    .line 152
+    .line 154
     return-void
 .end method

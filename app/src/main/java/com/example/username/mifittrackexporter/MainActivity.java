@@ -1,7 +1,5 @@
 package com.example.username.mifittrackexporter;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -18,7 +16,6 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.CodeActivity;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.ExportActivity;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.PrefFrag;
@@ -97,6 +94,18 @@ public class MainActivity extends AppCompatActivity {
         });
         linLayout.addView(btn, lpView);
         linLayout.addView(textView, lpView);
+
+        Button btn2 = new Button(this);
+        btn2.setText("ExportActivity");
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ExportActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        linLayout.addView(btn2, lpView);
 //        Intent intent = new Intent(this, ExportActivity.class);
 //        startActivity(intent);
     }

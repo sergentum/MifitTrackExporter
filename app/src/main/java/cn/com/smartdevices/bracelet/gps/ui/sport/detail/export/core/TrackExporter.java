@@ -54,16 +54,21 @@ public class TrackExporter {
             RawData rawData = new RawData(starter, queryData);
             long start = System.currentTimeMillis();
             RawTrackData rawTrackData = rawData.parseRawData();
-            writeStringToFile(rawTrackData.toString(), getDebugPath() + rawTrackData.startTime + RAW_CSV);
+            if (debug) {
+                writeStringToFile(rawTrackData.toString(), getDebugPath() + rawTrackData.startTime + RAW_CSV);
+            }
 
             Track track = compileDataToTrack(rawTrackData);
             String tcx = Printer.printTcx(track);
             String fileName = getFullPath() + getFileName(track) + TCX_EXT;
-            writeStringToFile(tcx, fileName);
+            boolean successfull = writeStringToFile(tcx, fileName);
 
             String filePath = getShortPath() + getFileName(track) + TCX_EXT;
             long stop = System.currentTimeMillis();
             String successMessage = filePath + " saved in " + (stop - start) + " ms ";
+            if (!successfull) {
+                successMessage += " UNSUCCESSFULLY ";
+            }
             starter.log(successMessage);
             starter.showToast(successMessage, 1);
         }
