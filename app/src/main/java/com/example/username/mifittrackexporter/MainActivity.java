@@ -1,9 +1,9 @@
 package com.example.username.mifittrackexporter;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
@@ -12,10 +12,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.CodeActivity;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.ExportActivity;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.PrefFrag;
+import cn.com.smartdevices.bracelet.gps.ui.sport.detail.SettingsActivity;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     FragmentActivity activity;
@@ -54,6 +59,53 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // creating LinearLayout
+        LinearLayout linLayout = new LinearLayout(this);
+        // specifying vertical orientation
+        linLayout.setOrientation(LinearLayout.VERTICAL);
+        // creating LayoutParams
+        LinearLayout.LayoutParams linLayoutParam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        // set LinearLayout as a root element of the screen
+        setContentView(linLayout, linLayoutParam);
+
+        LinearLayout.LayoutParams lpView = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        Button btn = new Button(this);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        Map<String, ?> all = sp.getAll();
+        String spString = "";
+        for (Map.Entry<String, ?> stringEntry : all.entrySet()) {
+            spString = spString + stringEntry.getKey() + " - " + stringEntry.getValue() + "\r\n";
+        }
+
+        btn.setText("Settings");
+
+        TextView textView = new TextView(this);
+
+        textView.setText(spString);
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(intent);
+            }
+        });
+        linLayout.addView(btn, lpView);
+        linLayout.addView(textView, lpView);
+
+        Button btn2 = new Button(this);
+        btn2.setText("ExportActivity");
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ExportActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        linLayout.addView(btn2, lpView);
 //        Intent intent = new Intent(this, ExportActivity.class);
 //        startActivity(intent);
     }

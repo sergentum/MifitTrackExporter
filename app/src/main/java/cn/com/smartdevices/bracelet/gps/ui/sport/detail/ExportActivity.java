@@ -111,44 +111,45 @@ public class ExportActivity extends AppCompatActivity implements View.OnClickLis
         switch (v.getId()) {
             case R.id.export_btn:
                 if (checkStoragePermission()) {
-//                    Starter starter = new Starter(this);
-//                    starter.showTracks();
-                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                    StrictMode.setThreadPolicy(policy);
-                    EndomondoSynchronizer endomondoSynchronizer = new EndomondoSynchronizer();
-//                    Synchronizer.Status connect = endomondoSynchronizer.connect();
-                    String path = Environment.getExternalStorageDirectory().getPath();
-                    SQLiteDatabase sqLiteDatabase = SQLiteDatabase.openOrCreateDatabase(path + "/Android/end/runnerup.db", null);
-//                    endomondoSynchronizer.upload(sqLiteDatabase, 3);
-                    sqLiteDatabase.close();
+                    Starter starter = new Starter(this);
+                    starter.showTracks();
 
-                    fragment.changeColor();
-//                    ExportView exportView = new ExportView(this);
-//                    setContentView(exportView, exportView.getLayoutParams());
-
-
-//                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-//                            LinearLayout.LayoutParams.FILL_PARENT,
-//                            LinearLayout.LayoutParams.FILL_PARENT);
-//                    LinearLayout linearLayout = new LinearLayout (this);
+//                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+//                    StrictMode.setThreadPolicy(policy);
+//                    EndomondoSynchronizer endomondoSynchronizer = new EndomondoSynchronizer();
+////                    Synchronizer.Status connect = endomondoSynchronizer.connect();
+//                    String path = Environment.getExternalStorageDirectory().getPath();
+//                    SQLiteDatabase sqLiteDatabase = SQLiteDatabase.openOrCreateDatabase(path + "/Android/end/runnerup.db", null);
+////                    endomondoSynchronizer.upload(sqLiteDatabase, 3);
+//                    sqLiteDatabase.close();
 //
-//                    Button btn1 = new Button(this);
-//                    btn1.setText("Button_text");
-//                    linearLayout.addView(btn1);
-//                    btn1.setOnClickListener(new View.OnClickListener()
-//                    {
-//                        @Override
-//                        public void onClick(View v) {
-//                            // put code on click operation
-//                            Toast onClick = Toast.makeText(ExportActivity.this, "onClick", Toast.LENGTH_SHORT);
-//                            onClick.show();
-//                        }
-//                    });
+//                    fragment.changeColor();
+////                    ExportView exportView = new ExportView(this);
+////                    setContentView(exportView, exportView.getLayoutParams());
 //
-//                    setContentView(linearLayout, layoutParams);
-
-//                    FragmentManager fragmentManager = getFragmentManager();
-//                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//
+////                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+////                            LinearLayout.LayoutParams.FILL_PARENT,
+////                            LinearLayout.LayoutParams.FILL_PARENT);
+////                    LinearLayout linearLayout = new LinearLayout (this);
+////
+////                    Button btn1 = new Button(this);
+////                    btn1.setText("Button_text");
+////                    linearLayout.addView(btn1);
+////                    btn1.setOnClickListener(new View.OnClickListener()
+////                    {
+////                        @Override
+////                        public void onClick(View v) {
+////                            // put code on click operation
+////                            Toast onClick = Toast.makeText(ExportActivity.this, "onClick", Toast.LENGTH_SHORT);
+////                            onClick.show();
+////                        }
+////                    });
+////
+////                    setContentView(linearLayout, layoutParams);
+//
+////                    FragmentManager fragmentManager = getFragmentManager();
+////                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
 
                 } else {
