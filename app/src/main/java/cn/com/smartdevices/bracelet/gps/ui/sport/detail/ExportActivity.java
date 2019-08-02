@@ -3,30 +3,19 @@ package cn.com.smartdevices.bracelet.gps.ui.sport.detail;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.StrictMode;
 import android.support.v4.app.ActivityCompat;
 
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.*;
-import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.Starter;
-import com.example.username.mifittrackexporter.EndomondoSynchronizer;
+import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.MifitStarter;
 import com.example.username.mifittrackexporter.R;
-import com.example.username.mifittrackexporter.Synchronizer;
-import java.io.File;
-import java.util.Locale;
 
 // The activity allow to test export feature with empty android project
 // It shouldn't be copied in mifit project
@@ -111,7 +100,7 @@ public class ExportActivity extends AppCompatActivity implements View.OnClickLis
         switch (v.getId()) {
             case R.id.export_btn:
                 if (checkStoragePermission()) {
-                    Starter starter = new Starter(this);
+                    MifitStarter starter = new MifitStarter(this);
                     starter.showTracks();
 
 //                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();

@@ -2,6 +2,7 @@ package cn.com.smartdevices.bracelet.gps.ui.sport.detail.export;
 
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.RawData.*;
 
+import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.TrackExporter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -11,19 +12,15 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConsoleStarter {
-    public static void main(String[] args) {
+import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.MifitStarter.EXT_DB_NAME;
+import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.MifitStarter.mapRawDataToQueryData;
 
-    }
-
-    private static List<RawTrackData> readRawDataFromDb() {
+public class ConsoleStarter extends Starter{
+    public List<RawTrackData> readRawDataFromDb() {
         ArrayList<RawTrackData> rawTrackDataList = new ArrayList<>();
         Connection conn = null;
         try {
-            // db parameters
-//            String url = "jdbc:sqlite:origin_db_pause.db";
-            String url = "jdbc:sqlite:origin.db";
-            // create a connection to the database
+            String url = "jdbc:sqlite:" + EXT_DB_NAME;
             conn = DriverManager.getConnection(url);
 
             System.out.println("Connection to SQLite has been established.");
@@ -48,26 +45,60 @@ public class ConsoleStarter {
                     "TRACKRECORD.DISTANCE " +
                     "FROM TRACKDATA, TRACKRECORD " +
                     "WHERE TRACKDATA.TRACKID = TRACKRECORD.TRACKID "
-//                            "AND TRACKDATA.TRACKID = 1554686813"
+//                            + "AND TRACKDATA.TRACKID = *"
                     ;
 
             ResultSet rs = statement.executeQuery(args);
             ResultSetMetaData rsmd = rs.getMetaData();
+            int columnCount = rsmd.getColumnCount();
+            boolean header = true;
+            ArrayList<QueryData> queryDataList = new ArrayList<>();
             while (rs.next()) {
-//                RawTrackData rawData = TrackDataParser.parseRawData(rs, rsmd);
-//                rawTrackDataList.add(rawData);
+                QueryData queryData = new QueryData();
+                for (int i = 1; i <= columnCount; i++) {
+                    if (header) {
+                        for (int j = 1; j <= columnCount; j++) {
+                            String columnName = rsmd.getColumnName(j);
+                            System.out.print(columnName + " ");
+                        }
+                        System.out.println();
+                        header = false;
+                    }
+                    String columnName = rsmd.getColumnName(i);
+                    String columnValue = rs.getString(i);
+                    mapRawDataToQueryData(queryData, columnName, columnValue);
+                }
+                queryDataList.add(queryData);
             }
+
+            // show coarse data
+            for (QueryData queryData : queryDataList) {
+                System.out.println(queryData);
+            }
+
+            TrackExporter trackExporter = new TrackExporter(this);
+            trackExporter.launchExport(queryDataList);
+
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         } finally {
             try {
                 if (conn != null) {
                     conn.close();
                 }
             } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
+                ex.printStackTrace();
             }
         }
         return rawTrackDataList;
     }
+
+   public boolean log(String string) {
+       System.out.println(string);
+       return true;
+   }
+
+   public void showToast(String string, int length) {
+       System.out.println("toast:" + string);
+   }
 }

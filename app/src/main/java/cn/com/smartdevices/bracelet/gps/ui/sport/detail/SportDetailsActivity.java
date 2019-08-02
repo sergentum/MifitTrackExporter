@@ -2,14 +2,14 @@ package cn.com.smartdevices.bracelet.gps.ui.sport.detail;
 
 import android.app.Activity;
 import android.view.View;
-import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.Starter;
+import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.MifitStarter;
 
 public class SportDetailsActivity extends Activity {
 
     // this is entry point to export project
     // method should be copied in SportDetailsActivity.smali
     public void onShareClicked(View view) {
-        Starter starter = new Starter(this);
+        MifitStarter starter = new MifitStarter(this);
         starter.showTracks();
     }
 }

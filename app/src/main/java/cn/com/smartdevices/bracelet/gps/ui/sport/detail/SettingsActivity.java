@@ -11,20 +11,16 @@ import com.example.username.mifittrackexporter.Synchronizer;
 import com.example.username.mifittrackexporter.util.FormValues;
 import com.example.username.mifittrackexporter.util.SyncHelper;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.Starter.TAG;
+import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.MifitStarter.TAG;
 
 public class SettingsActivity extends PreferenceActivity {
     private SharedPreferences sp;

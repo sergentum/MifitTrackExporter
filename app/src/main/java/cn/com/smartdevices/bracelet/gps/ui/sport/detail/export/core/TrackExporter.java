@@ -1,16 +1,16 @@
 package cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core;
 
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.Starter;
+import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.Model.Track;
+import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.Model.TrackPoint;
+import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.RawData.QueryData;
+import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.RawData.RawTrackData;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
-import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.Starter.writeStringToFile;
 import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.Model.formatTimestampHumanReadable;
-
-import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.Model.*;
-import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.RawData.*;
 
 
 public class TrackExporter {
@@ -55,13 +55,13 @@ public class TrackExporter {
             long start = System.currentTimeMillis();
             RawTrackData rawTrackData = rawData.parseRawData();
             if (debug) {
-                writeStringToFile(rawTrackData.toString(), getDebugPath() + rawTrackData.startTime + RAW_CSV);
+                starter.writeStringToFile(rawTrackData.toString(), getDebugPath() + rawTrackData.startTime + RAW_CSV);
             }
 
             Track track = compileDataToTrack(rawTrackData);
-            String tcx = Printer.printTcx(track);
+            String tcxContent = Printer.printTcx(track);
             String fileName = getFullPath() + getFileName(track) + TCX_EXT;
-            boolean successfull = writeStringToFile(tcx, fileName);
+            boolean successfull = starter.writeStringToFile(tcxContent, fileName);
 
             String filePath = getShortPath() + getFileName(track) + TCX_EXT;
             long stop = System.currentTimeMillis();
@@ -136,7 +136,7 @@ public class TrackExporter {
 
         if (debug) {
             String debugPoints = Printer.printRawPoints(hrTrackPoints, coordTrackPointMap, stepTrackPointsMap);
-            writeStringToFile(debugPoints, getDebugPath() + rawTrackData.startTime + "-points.csv");
+            starter.writeStringToFile(debugPoints, getDebugPath() + rawTrackData.startTime + "-points.csv");
         }
 
         track.trackPoints = joinPointArrays(hrTrackPoints, coordTrackPointMap, stepTrackPointsMap);

@@ -37,7 +37,7 @@ public class RawData {
 
             rawTrackData.steps = parseSteps(queryData.BULKGAIT);
         } catch (Exception e) {
-            starter.log("ex while parsing: " + e.getMessage());
+            starter.log("ex while parsing: ", e);
         }
         return rawTrackData;
     }
@@ -182,6 +182,18 @@ public class RawData {
         public String BULKHR ;
         public String BULKPACE ;
         public String BULKFLAG ;
+
+        @Override
+        public String toString() {
+            return "QueryData{" +
+                    "startTime='" + startTime + '\'' +
+                    ", endTime='" + endTime + '\'' +
+                    ", costTime='" + costTime + '\'' +
+                    ", size='" + size + '\'' +
+                    ", distance='" + distance + '\'' +
+                    ", activityType='" + activityType + '\'' +
+                    '}';
+        }
     }
 
     public static class RawTrackData {
