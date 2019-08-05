@@ -16,7 +16,7 @@ import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.Model
 public class TrackExporter {
 
     // todo add settings
-    private static boolean debug = false;
+    public static boolean debug = false;
 
     static final String COMMA = ",";
     static final String SEMICOLON = ";";
@@ -24,12 +24,12 @@ public class TrackExporter {
     static final String CSV_COLUMN_DELIMITER = ";";
 
     public static String DEVICE_PATH = "";
+    public static String FILE_FORMAT;
     // I HATE YOU DEVELOPER WHEN YOU PUT YOUR F*CKING FILES INTO THE ROOT OF MY STORAGE
     private static String EXPORT_PATH = "Android/Mifit/";
     private static final String DEBUG_OUT_PATH = "debug/";
     public static final String DEBUG_LOG_FILE = "log.txt";
     private static final String RAW_CSV = "-raw.csv";
-    private static final String TCX_EXT = ".tcx";
 
     private Starter starter;
 
@@ -53,24 +53,46 @@ public class TrackExporter {
         for (QueryData queryData : rawTrackDataList) {
             RawData rawData = new RawData(starter, queryData);
             long start = System.currentTimeMillis();
+            boolean successfull;
+            String filePath;
+            String message;
+
             RawTrackData rawTrackData = rawData.parseRawData();
+
             if (debug) {
-                starter.writeStringToFile(rawTrackData.toString(), getDebugPath() + rawTrackData.startTime + RAW_CSV);
+                filePath = getDebugPath() + rawTrackData.startTime + RAW_CSV;
+                starter.writeStringToFile(rawTrackData.toString(), filePath);
+                filePath = getShortPath() + rawTrackData.startTime + RAW_CSV;
+                message = filePath + " saved ";
+                starter.log(message);
             }
 
-            Track track = compileDataToTrack(rawTrackData);
-            String tcxContent = Printer.printTcx(track);
-            String fileName = getFullPath() + getFileName(track) + TCX_EXT;
-            boolean successfull = starter.writeStringToFile(tcxContent, fileName);
+            switch (FILE_FORMAT) {
+                case ".tcx": {
+                    Track track = compileDataToTrack(rawTrackData);
+                    String tcxContent = Printer.printTcx(track);
+                    String fileName = getFullPath() + getFileName(track) + FILE_FORMAT;
+                    successfull = starter.writeStringToFile(tcxContent, fileName);
+                    filePath = getShortPath() + getFileName(track) + FILE_FORMAT;
 
-            String filePath = getShortPath() + getFileName(track) + TCX_EXT;
-            long stop = System.currentTimeMillis();
-            String successMessage = filePath + " saved in " + (stop - start) + " ms ";
-            if (!successfull) {
-                successMessage += " UNSUCCESSFULLY ";
+                    long stop = System.currentTimeMillis();
+                    message = filePath + " saved in " + (stop - start) + " ms ";
+                    if (!successfull) {
+                        message += " UNSUCCESSFULLY ";
+                    }
+                    break;
+                }
+                case ".gpx": {
+                    message = "sorry, gpx format isn't implemented yet";
+                    break;
+                }
+                default: {
+                    message = "please check export format in export settings";
+                }
             }
-            starter.log(successMessage);
-            starter.showToast(successMessage, 1);
+
+            starter.log(message);
+            starter.showToast(message, 1);
         }
     }
 

@@ -4,17 +4,20 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
+import cn.com.smartdevices.bracelet.gps.ui.sport.detail.SettingsActivity;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.Model.TrackHeader;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.RawData.QueryData;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.TrackExporter;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
@@ -67,6 +70,9 @@ public class MifitStarter extends Starter {
     public MifitStarter(Activity activity) {
         this.activity = activity;
         TrackExporter.DEVICE_PATH = Environment.getExternalStorageDirectory().getPath() + "/";
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
+        TrackExporter.FILE_FORMAT = sp.getString("export_format", null);
+        TrackExporter.debug = sp.getBoolean("debug", false);
 
         // TODO: 2019-04-23 add ru lang
         String language = Locale.getDefault().getLanguage();
@@ -117,10 +123,14 @@ public class MifitStarter extends Starter {
                 log(stringBuilder.toString());
 
                 ArrayList<Long> trackIds = new ArrayList<>();
-                String[] trackDesc = new String[trackHeaderMap.size()];
+                // that means we should call settings
+                trackIds.add(0L);
+                String[] trackDesc = new String[trackHeaderMap.size() + 1];
+                trackDesc[0] = "-- export settings --";
+
                 Set<Map.Entry<Long, TrackHeader>> entries =
                         ((TreeMap<Long, TrackHeader>) trackHeaderMap).descendingMap().entrySet();
-                int i = 0;
+                int i = 1;
                 for (Map.Entry<Long, TrackHeader> entry : entries) {
                     trackIds.add(entry.getKey());
                     trackDesc[i] = entry.getValue().toString();
@@ -149,7 +159,13 @@ public class MifitStarter extends Starter {
         }
 
         public void onClick(DialogInterface dialogInterface, int i) {
-            starter.readRawDataWithId(trackIds.get(i));
+            Long trackId = trackIds.get(i);
+            if (trackId == 0) {
+                Intent intent = new Intent(MifitStarter.this.activity, SettingsActivity.class);
+                MifitStarter.this.activity.startActivity(intent);
+            } else {
+                starter.readRawDataWithId(trackId);
+            }
         }
     }
 
@@ -254,15 +270,12 @@ public class MifitStarter extends Starter {
         }
     }
 
+    @Override
     public boolean log(String... args) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(new Date()).append("\r\n");
-        for (String arg : args) {
-            stringBuilder.append(arg).append("\r\n");
-        }
+        String s = super.stringArrayToString(args);
         try (FileWriter fileWriter = new FileWriter(logFilePath, true)) {
-            Log.d(TAG, stringBuilder.toString());
-            fileWriter.write(stringBuilder.toString());
+            Log.d(TAG, s);
+            fileWriter.write(s);
             fileWriter.flush();
         } catch (Exception e) {
             Log.e(TAG, "ex while logging:" + e.getMessage());
@@ -271,8 +284,7 @@ public class MifitStarter extends Starter {
         return true;
     }
 
-
-
+    @Override
     public void showToast(String string, int length) {
         Toast.makeText(activity, string, length).show();
     }

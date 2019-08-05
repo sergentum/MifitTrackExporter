@@ -3,15 +3,27 @@ package cn.com.smartdevices.bracelet.gps.ui.sport.detail.export;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Date;
 
 public abstract class Starter {
 
-    public boolean log(String string) {
-        System.out.println(string);
+    public boolean log(String... args) {
+        String s = stringArrayToString(args);
+        System.out.println(s);
         return true;
     }
 
+    String stringArrayToString(String... args) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(new Date()).append("\r\n");
+        for (String arg : args) {
+            stringBuilder.append(arg).append("\r\n");
+        }
+        return stringBuilder.toString();
+    }
+
     public boolean log(String string, Exception e) {
+        System.out.println(string);
         e.printStackTrace();
         return true;
     }

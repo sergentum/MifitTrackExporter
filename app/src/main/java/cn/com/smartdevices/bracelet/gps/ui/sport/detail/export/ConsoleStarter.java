@@ -92,13 +92,4 @@ public class ConsoleStarter extends Starter{
         }
         return rawTrackDataList;
     }
-
-   public boolean log(String string) {
-       System.out.println(string);
-       return true;
-   }
-
-   public void showToast(String string, int length) {
-       System.out.println("toast:" + string);
-   }
 }

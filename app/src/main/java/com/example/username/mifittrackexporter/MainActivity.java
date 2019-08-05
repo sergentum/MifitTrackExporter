@@ -1,12 +1,18 @@
 package com.example.username.mifittrackexporter;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -16,15 +22,14 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.CodeActivity;
-import cn.com.smartdevices.bracelet.gps.ui.sport.detail.ExportActivity;
-import cn.com.smartdevices.bracelet.gps.ui.sport.detail.PrefFrag;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.SettingsActivity;
+import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.MifitStarter;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     FragmentActivity activity;
-    PrefFrag prefFrag;
     int mainActWindow;
 
     private FrameLayout root;
@@ -35,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
         root = new FrameLayout(this);
         root.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
         setContentView(root);
-        prefFrag = new PrefFrag();
 
 //        super.onCreate(savedInstanceState);
         activity = this;
@@ -72,19 +76,7 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout.LayoutParams lpView = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
         Button btn = new Button(this);
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        Map<String, ?> all = sp.getAll();
-        String spString = "";
-        for (Map.Entry<String, ?> stringEntry : all.entrySet()) {
-            spString = spString + stringEntry.getKey() + " - " + stringEntry.getValue() + "\r\n";
-        }
-
-        btn.setText("Settings");
-
-        TextView textView = new TextView(this);
-
-        textView.setText(spString);
-
+        btn.setText("export settings");
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,19 +85,37 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         linLayout.addView(btn, lpView);
-        linLayout.addView(textView, lpView);
+
 
         Button btn2 = new Button(this);
         btn2.setText("ExportActivity");
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ExportActivity.class);
-                startActivity(intent);
+                if (checkStoragePermission()) {
+                    MifitStarter starter = new MifitStarter(MainActivity.this);
+                    starter.showTracks();
+
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            "don't have write storage permission", Toast.LENGTH_SHORT).show();
+                }
             }
         });
-
         linLayout.addView(btn2, lpView);
+
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        Map<String, ?> all = sp.getAll();
+        String spString = "";
+        for (Map.Entry<String, ?> stringEntry : all.entrySet()) {
+            spString = spString + stringEntry.getKey() + " - " + stringEntry.getValue() + "\r\n";
+        }
+        TextView spView = new TextView(this);
+        spView.setText(spString);
+        linLayout.addView(spView, lpView);
+
+
 //        Intent intent = new Intent(this, ExportActivity.class);
 //        startActivity(intent);
     }
@@ -126,11 +136,31 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, ExportActivity.class);
-            startActivity(intent);
+//            Intent intent = new Intent(this, ExportActivity.class);
+//            startActivity(intent);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    public boolean checkStoragePermission() {
+        // TODO: 2019-04-22 check if it works actually
+        int permissionCheckRead = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (permissionCheckRead != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 220);
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        220);
+            }
+            return false;
+        } else
+            return true;
     }
 }

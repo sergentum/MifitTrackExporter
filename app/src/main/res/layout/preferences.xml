@@ -3,15 +3,27 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
+    <!--<CheckBoxPreference-->
+    <!--android:key="notif"-->
+    <!--android:summary="Enable notifications"-->
+    <!--android:title="Notifications"/>-->
+
     <CheckBoxPreference
-        android:key="notif"
-        android:summary="Enable notifications"
-        android:title="Notifications"/>
+        android:key="debug"
+        android:summary="Debug"
+        android:text="Will take additional place on the storage" />
+
+    <ListPreference
+        android:key="export_format"
+        android:title="Export format"
+        android:summary="Do you prefer gpx or tcx?"
+        android:entries="@array/export_format_entries"
+        android:entryValues="@array/export_format_values" />
 
     <EditTextPreference
         android:key="endomondo_login"
         android:title="Endomondo login"
-        android:summary="Account to sync your activity"/>
+        android:summary="Account to sync your activity" />
 
     <EditTextPreference
         android:key="endomondo_password"
