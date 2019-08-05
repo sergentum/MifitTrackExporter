@@ -28,8 +28,6 @@ import java.util.regex.Pattern;
 
 
 public class MifitStarter extends Starter {
-    public static final String TAG = "mifit";
-    public static final String EXT_DB_NAME = "origin.db";
     private Activity activity;
     private String dbPath;
     private String logFilePath;
@@ -39,7 +37,8 @@ public class MifitStarter extends Starter {
             "(\"_id\"  INTEGER primary key autoincrement, \n" +
             "  \"CALENDAR\" INTEGER )";
 
-    private static final String TRACK_ID_QUERY = "   SELECT TRACKRECORD.TRACKID," +
+    public static final String TRACK_ID_QUERY = "   SELECT " +
+            "       TRACKRECORD.TRACKID," +
             "       TRACKDATA.TYPE," +
             "       TRACKRECORD.DISTANCE," +
             "       TRACKRECORD.COSTTIME" +
@@ -47,7 +46,7 @@ public class MifitStarter extends Starter {
             "       WHERE TRACKDATA.TRACKID = TRACKRECORD.TRACKID ;";
 
     private static final String TRACK_DATA_QUERY =
-            "SELECT " +
+                    "SELECT " +
                     "TRACKDATA.TRACKID," +
                     "TRACKDATA.SIZE," +
                     "TRACKDATA.BULKLL," +
@@ -85,16 +84,18 @@ public class MifitStarter extends Starter {
         }
     }
 
-    public void showTracks() {
+    @Override
+    Map<Long, TrackHeader> loadTrackHeadersFromDb() {
         if (dbPath == null) {
             Toast.makeText(activity, "database not found", Toast.LENGTH_SHORT).show();
+            return null;
         } else {
+            Map<Long, TrackHeader> trackHeaderMap = new TreeMap<>();
             try (
                     SQLiteDatabase sqLiteDatabase = activity.openOrCreateDatabase(dbPath, Context.MODE_PRIVATE, null);
                     Cursor cursor = sqLiteDatabase.rawQuery(TRACK_ID_QUERY, null)
             ) {
                 cursor.moveToFirst();
-                Map<Long, TrackHeader> trackHeaderMap = new TreeMap<>();
                 StringBuilder stringBuilder = new StringBuilder();
                 while (!cursor.isAfterLast()) {
                     for (int i = 0; i < cursor.getColumnCount(); i++) {
@@ -119,34 +120,38 @@ public class MifitStarter extends Starter {
                 }
                 cursor.close();
                 sqLiteDatabase.close();
-
                 log(stringBuilder.toString());
-
-                ArrayList<Long> trackIds = new ArrayList<>();
-                // that means we should call settings
-                trackIds.add(0L);
-                String[] trackDesc = new String[trackHeaderMap.size() + 1];
-                trackDesc[0] = "-- export settings --";
-
-                Set<Map.Entry<Long, TrackHeader>> entries =
-                        ((TreeMap<Long, TrackHeader>) trackHeaderMap).descendingMap().entrySet();
-                int i = 1;
-                for (Map.Entry<Long, TrackHeader> entry : entries) {
-                    trackIds.add(entry.getKey());
-                    trackDesc[i] = entry.getValue().toString();
-                    i++;
-                }
-
-                ChooseTrackClickListener trackChooseListener = new ChooseTrackClickListener(this, trackIds);
-
-                AlertDialog.Builder alert = new AlertDialog.Builder(activity);
-                alert.setTitle("Choose track to export:");
-                alert.setItems(trackDesc, trackChooseListener);
-                alert.create().show();
             } catch (Exception e) {
                 log("showTracks():" + e.getMessage());
             }
+            return trackHeaderMap;
         }
+    }
+
+    public void showTracks() {
+        Map<Long, TrackHeader> trackHeaderMap = loadTrackHeadersFromDb();
+
+        ArrayList<Long> trackIds = new ArrayList<>();
+        // this item means call settings
+        trackIds.add(0L);
+        String[] trackDesc = new String[trackHeaderMap.size() + 1];
+        trackDesc[0] = "-- export settings --";
+
+        Set<Map.Entry<Long, TrackHeader>> entries =
+                ((TreeMap<Long, TrackHeader>) trackHeaderMap).descendingMap().entrySet();
+        int i = 1;
+        for (Map.Entry<Long, TrackHeader> entry : entries) {
+            trackIds.add(entry.getKey());
+            trackDesc[i] = entry.getValue().toString();
+            i++;
+        }
+
+        ChooseTrackClickListener trackChooseListener = new ChooseTrackClickListener(this, trackIds);
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(activity);
+        alert.setTitle("Choose track to export:");
+        alert.setItems(trackDesc, trackChooseListener);
+        alert.create().show();
     }
 
     public class ChooseTrackClickListener implements DialogInterface.OnClickListener {
@@ -287,37 +292,5 @@ public class MifitStarter extends Starter {
     @Override
     public void showToast(String string, int length) {
         Toast.makeText(activity, string, length).show();
-    }
-
-    public static void mapRawDataToQueryData(QueryData queryData, String columnName, String columnValue) {
-        if (columnValue != null) {
-            if (columnName.equalsIgnoreCase("TRACKID")) {
-                queryData.startTime = columnValue;
-            } else if (columnName.equalsIgnoreCase("ENDTIME")) {
-                queryData.endTime = columnValue;
-            } else if (columnName.equalsIgnoreCase("COSTTIME")) {
-                queryData.costTime = columnValue;
-            } else if (columnName.equalsIgnoreCase("SIZE")) {
-                queryData.size = columnValue;
-            } else if (columnName.equalsIgnoreCase("TYPE")) {
-                queryData.activityType = columnValue;
-            } else if (columnName.equalsIgnoreCase("DISTANCE")) {
-                queryData.distance = columnValue;
-            } else if (columnName.equalsIgnoreCase("BULKLL")) {
-                queryData.BULKLL = columnValue;
-            } else if (columnName.equalsIgnoreCase("BULKGAIT")) {
-                queryData.BULKGAIT = columnValue;
-            } else if (columnName.equalsIgnoreCase("BULKAL")) {
-                queryData.BULKAL = columnValue;
-            } else if (columnName.equalsIgnoreCase("BULKTIME")) {
-                queryData.BULKTIME = columnValue;
-            } else if (columnName.equalsIgnoreCase("BULKHR")) {
-                queryData.BULKHR = columnValue.replace(";,", ";1,");
-            } else if (columnName.equalsIgnoreCase("BULKPACE")) {
-                queryData.BULKPACE = columnValue;
-            } else if (columnName.equalsIgnoreCase("BULKFLAG")) {
-                queryData.BULKFLAG = columnValue;
-            }
-        }
     }
 }

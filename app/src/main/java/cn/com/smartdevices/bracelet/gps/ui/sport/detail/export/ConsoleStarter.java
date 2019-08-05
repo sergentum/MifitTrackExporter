@@ -1,7 +1,8 @@
 package cn.com.smartdevices.bracelet.gps.ui.sport.detail.export;
 
-import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.RawData.*;
-
+import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.Model;
+import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.RawData.QueryData;
+import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.RawData.RawTrackData;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.TrackExporter;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,17 +12,37 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.MifitStarter.EXT_DB_NAME;
-import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.MifitStarter.mapRawDataToQueryData;
+import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.MifitStarter.TRACK_ID_QUERY;
 
 public class ConsoleStarter extends Starter{
+    private static final String LOCAL_DB_URL = "jdbc:sqlite:" + EXT_DB_NAME;
+
+    @Override
+    Map<Long, Model.TrackHeader> loadTrackHeadersFromDb() {
+        try (Connection conn = DriverManager.getConnection(LOCAL_DB_URL)) {
+            System.out.println("Connection to SQLite has been established.");
+            Statement statement = conn.createStatement();
+
+            ResultSet rs = statement.executeQuery(TRACK_ID_QUERY);
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int columnCount = rsmd.getColumnCount();
+
+
+        } catch (Exception ex) {
+
+        }
+
+        return null;
+    }
+
     public List<RawTrackData> readRawDataFromDb() {
         ArrayList<RawTrackData> rawTrackDataList = new ArrayList<>();
         Connection conn = null;
         try {
-            String url = "jdbc:sqlite:" + EXT_DB_NAME;
-            conn = DriverManager.getConnection(url);
+
+            conn = DriverManager.getConnection(LOCAL_DB_URL);
 
             System.out.println("Connection to SQLite has been established.");
 
