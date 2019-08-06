@@ -156,4 +156,96 @@ class Printer {
         }
         return stringBuilder.toString();
     }
+
+    static String printGpx(Track track) {
+        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<gpx version=\"1.1\" creator=\"Endomondo.com\"\n" +
+                "    xsi:schemaLocation=\"http://www.topografix.com/GPX/1/1\n" +
+                "    http://www.topografix.com/GPX/1/1/gpx.xsd\n" +
+                "    http://www.garmin.com/xmlschemas/GpxExtensions/v3\n" +
+                "    http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd\n" +
+                "    http://www.garmin.com/xmlschemas/TrackPointExtension/v1\n" +
+                "    http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd\"\n" +
+                "    xmlns=\"http://www.topografix.com/GPX/1/1\"\n" +
+                "    xmlns:gpxtpx=\"http://www.garmin.com/xmlschemas/TrackPointExtension/v1\"\n" +
+                "    xmlns:gpxx=\"http://www.garmin.com/xmlschemas/GpxExtensions/v3\"\n" +
+                "    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">" +
+                "    <metadata>\n" +
+                "        <time>" + formatTimestamp(track.startTime) + " </time>\n" +
+                "    </metadata>" +
+                "<trk>" + "\n" +
+                "<type>" + track.getActivityTypeDescription() + "</type>" +
+                "<trkseg>" + "\n" +
+                printGpxPoints(track) +
+                "</trkseg>" + "\n" +
+                "</trk>" + "\n" +
+                "</gpx>";
+    }
+
+    private static String printGpxPoints(Track track) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (TrackPoint trackPoint : track.trackPoints) {
+            stringBuilder.append(printGpxTrackPoint(trackPoint));
+        }
+        return stringBuilder.toString();
+    }
+
+    private static String printGpxTrackPoint(TrackPoint trackPoint) {
+        // some programs doesn't expect to find trackpoint without coordinates
+        if (trackPoint.latitude != null && trackPoint.longitude != null) {
+            return "<trkpt" + printGpxLatitude(trackPoint) + printGpxLongitude(trackPoint) + ">" +
+                    printGpxElevation(trackPoint) +
+                    printGpxTime(trackPoint.timestamp) +
+                    printGpxExtension(trackPoint) +
+                    "</trkpt>" +
+                    "\r\n";
+        } else return "";
+    }
+
+    private static String printGpxLatitude(TrackPoint trackPoint) {
+        if (trackPoint.latitude != null) {
+            return " lat=\"" + trackPoint.getLatitudeString() + "\"";
+        } else return "";
+    }
+
+    private static String printGpxLongitude(TrackPoint trackPoint) {
+        if (trackPoint.longitude != null) {
+            return " lon=\"" + trackPoint.getLongitudeString() + "\"";
+        } else return "";
+    }
+
+    private static String printGpxElevation(TrackPoint trackPoint) {
+        if (trackPoint.altitude != null) {
+            return "<ele>" + trackPoint.getAltitudeString() + "</ele>";
+        } else return "";
+    }
+
+    private static String printGpxTime(Long timestamp) {
+        return "<time>" + formatTimestamp(timestamp) + "</time>";
+    }
+
+    private static String printGpxExtension(TrackPoint trackPoint) {
+        String result = "";
+        if (trackPoint.heartRate != null || trackPoint.cadence != null) {
+            result = "<extensions>" +
+                    "                   <gpxtpx:TrackPointExtension>" +
+                    printGpxHeartRate(trackPoint) +
+                    printGpxCadence(trackPoint) +
+                    "                    </gpxtpx:TrackPointExtension>" +
+                    "</extensions>";
+        }
+        return result;
+    }
+
+    private static String printGpxHeartRate(TrackPoint trackPoint) {
+        if (trackPoint.heartRate != null) {
+            return "<gpxtpx:hr>" + trackPoint.heartRate + "</gpxtpx:hr>";
+        } else return "";
+    }
+
+    private static String printGpxCadence(TrackPoint trackPoint) {
+        if (trackPoint.cadence != null) {
+            return "<gpxtpx:cad>" + trackPoint.cadence +"</gpxtpx:cad>";
+        } else return "";
+    }
 }
