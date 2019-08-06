@@ -30,6 +30,7 @@ public class TrackExporter {
     public static final String DEBUG_LOG_FILE = "log.txt";
     private static final String RAW_CSV = "-raw.csv";
     private static final String TCX_EXT = ".tcx";
+    private static final String GPX_EXT = ".gpx";
 
     private Starter starter;
 
@@ -60,15 +61,19 @@ public class TrackExporter {
 
             Track track = compileDataToTrack(rawTrackData);
             String tcx = Printer.printTcx(track);
-            String fileName = getFullPath() + getFileName(track) + TCX_EXT;
-            boolean successfull = writeStringToFile(tcx, fileName);
+            String tcxFileName = getFullPath() + getFileName(track) + TCX_EXT;
+            writeStringToFile(tcx, tcxFileName);
 
-            String filePath = getShortPath() + getFileName(track) + TCX_EXT;
+            String gpx = Printer.printGpx(track);
+            String fileName = getFullPath() + getFileName(track) + GPX_EXT;
+            writeStringToFile(gpx, fileName);
+
+            String message = getFileName(track) + TCX_EXT;
+            message += "\n" + getFileName(track) + GPX_EXT;
+
             long stop = System.currentTimeMillis();
-            String successMessage = filePath + " saved in " + (stop - start) + " ms ";
-            if (!successfull) {
-                successMessage += " UNSUCCESSFULLY ";
-            }
+            String successMessage = message + "\n saved to \"" + getShortPath() + "\" in " + (stop - start) + " ms ";
+
             starter.log(successMessage);
             starter.showToast(successMessage, 1);
         }
