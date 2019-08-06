@@ -698,11 +698,9 @@
 
 # virtual methods
 .method parseRawData()Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$RawTrackData;
-    .registers 10
+    .registers 8
 
     .prologue
-    const/4 v4, 0x0
-
     .line 19
     new-instance v2, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$RawTrackData;
 
@@ -710,127 +708,127 @@
 
     .line 21
     .local v2, "rawTrackData":Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$RawTrackData;
-    :try_start_6
-    iget-object v5, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData;->queryData:Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;
+    :try_start_5
+    iget-object v4, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData;->queryData:Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;
 
-    iget-object v5, v5, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;->startTime:Ljava/lang/String;
+    iget-object v4, v4, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;->startTime:Ljava/lang/String;
 
-    invoke-static {v5}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
+    invoke-static {v4}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
 
-    move-result-wide v6
+    move-result-wide v4
 
-    iput-wide v6, v2, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$RawTrackData;->startTime:J
+    iput-wide v4, v2, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$RawTrackData;->startTime:J
 
     .line 22
-    iget-object v5, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData;->queryData:Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;
+    iget-object v4, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData;->queryData:Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;
 
-    iget-object v5, v5, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;->endTime:Ljava/lang/String;
+    iget-object v4, v4, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;->endTime:Ljava/lang/String;
 
-    invoke-static {v5}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
+    invoke-static {v4}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
 
-    move-result-wide v6
+    move-result-wide v4
 
-    iput-wide v6, v2, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$RawTrackData;->endTime:J
+    iput-wide v4, v2, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$RawTrackData;->endTime:J
 
     .line 23
-    iget-object v5, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData;->queryData:Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;
+    iget-object v4, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData;->queryData:Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;
 
-    iget-object v5, v5, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;->costTime:Ljava/lang/String;
+    iget-object v4, v4, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;->costTime:Ljava/lang/String;
 
-    invoke-static {v5}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    invoke-static {v4}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result v5
+    move-result v4
 
-    iput v5, v2, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$RawTrackData;->costTime:I
+    iput v4, v2, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$RawTrackData;->costTime:I
 
     .line 24
-    iget-object v5, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData;->queryData:Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;
+    iget-object v4, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData;->queryData:Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;
 
-    iget-object v5, v5, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;->distance:Ljava/lang/String;
+    iget-object v4, v4, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;->distance:Ljava/lang/String;
 
-    invoke-static {v5}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    invoke-static {v4}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result v5
+    move-result v4
 
-    iput v5, v2, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$RawTrackData;->distance:I
+    iput v4, v2, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$RawTrackData;->distance:I
 
     .line 25
-    iget-object v5, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData;->queryData:Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;
+    iget-object v4, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData;->queryData:Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;
 
-    iget-object v5, v5, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;->activityType:Ljava/lang/String;
+    iget-object v4, v4, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;->activityType:Ljava/lang/String;
 
-    invoke-static {v5}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    invoke-static {v4}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
-    move-result v5
+    move-result v4
 
-    iput v5, v2, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$RawTrackData;->activityType:I
+    iput v4, v2, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$RawTrackData;->activityType:I
 
     .line 27
-    iget-object v5, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData;->queryData:Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;
+    iget-object v4, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData;->queryData:Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;
 
-    iget-object v5, v5, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;->BULKTIME:Ljava/lang/String;
+    iget-object v4, v4, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;->BULKTIME:Ljava/lang/String;
 
-    invoke-direct {p0, v5}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData;->parseTime(Ljava/lang/String;)Ljava/util/ArrayList;
+    invoke-direct {p0, v4}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData;->parseTime(Ljava/lang/String;)Ljava/util/ArrayList;
 
-    move-result-object v5
+    move-result-object v4
 
-    iput-object v5, v2, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$RawTrackData;->times:Ljava/util/ArrayList;
+    iput-object v4, v2, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$RawTrackData;->times:Ljava/util/ArrayList;
 
     .line 28
+    iget-object v4, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData;->queryData:Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;
+
+    iget-object v4, v4, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;->BULKLL:Ljava/lang/String;
+
     iget-object v5, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData;->queryData:Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;
 
-    iget-object v5, v5, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;->BULKLL:Ljava/lang/String;
+    iget-object v5, v5, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;->BULKAL:Ljava/lang/String;
 
-    iget-object v6, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData;->queryData:Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;
+    invoke-direct {p0, v4, v5}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData;->parseCoordinates(Ljava/lang/String;Ljava/lang/String;)Ljava/util/ArrayList;
 
-    iget-object v6, v6, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;->BULKAL:Ljava/lang/String;
+    move-result-object v4
 
-    invoke-direct {p0, v5, v6}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData;->parseCoordinates(Ljava/lang/String;Ljava/lang/String;)Ljava/util/ArrayList;
-
-    move-result-object v5
-
-    iput-object v5, v2, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$RawTrackData;->coordinates:Ljava/util/ArrayList;
+    iput-object v4, v2, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$RawTrackData;->coordinates:Ljava/util/ArrayList;
 
     .line 31
-    iget-object v5, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData;->queryData:Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;
+    iget-object v4, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData;->queryData:Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;
 
-    iget-object v5, v5, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;->size:Ljava/lang/String;
+    iget-object v4, v4, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;->size:Ljava/lang/String;
 
-    if-eqz v5, :cond_9d
+    if-eqz v4, :cond_9c
 
-    iget-object v5, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData;->queryData:Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;
+    iget-object v4, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData;->queryData:Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;
 
-    iget-object v5, v5, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;->size:Ljava/lang/String;
+    iget-object v4, v4, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;->size:Ljava/lang/String;
 
-    invoke-virtual {v5}, Ljava/lang/String;->length()I
+    invoke-virtual {v4}, Ljava/lang/String;->length()I
 
-    move-result v5
+    move-result v4
 
-    if-lez v5, :cond_9d
+    if-lez v4, :cond_9c
 
-    iget-object v5, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData;->queryData:Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;
+    iget-object v4, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData;->queryData:Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;
 
-    iget-object v5, v5, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;->size:Ljava/lang/String;
+    iget-object v4, v4, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;->size:Ljava/lang/String;
 
-    invoke-static {v5}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    invoke-static {v4}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
     move-result v3
 
     .line 32
     .local v3, "size":I
-    :goto_68
-    if-eqz v3, :cond_9f
+    :goto_67
+    if-eqz v3, :cond_9e
 
     .end local v3    # "size":I
-    :goto_6a
+    :goto_69
     iput v3, v2, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$RawTrackData;->size:I
 
     .line 34
-    iget-object v5, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData;->queryData:Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;
+    iget-object v4, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData;->queryData:Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;
 
-    iget-object v5, v5, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;->BULKHR:Ljava/lang/String;
+    iget-object v4, v4, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;->BULKHR:Ljava/lang/String;
 
-    invoke-direct {p0, v5}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData;->parseHR(Ljava/lang/String;)Ljava/util/ArrayList;
+    invoke-direct {p0, v4}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData;->parseHR(Ljava/lang/String;)Ljava/util/ArrayList;
 
     move-result-object v0
 
@@ -839,105 +837,79 @@
     iput-object v0, v2, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$RawTrackData;->hrPoints:Ljava/util/ArrayList;
 
     .line 36
-    sget-object v5, Ljava/lang/System;->out:Ljava/io/PrintStream;
+    sget-object v4, Ljava/lang/System;->out:Ljava/io/PrintStream;
 
-    new-instance v6, Ljava/lang/StringBuilder;
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v7, "hrPointsSize:"
+    const-string v6, "hrPointsSize:"
 
-    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    move-result-object v6
-
-    invoke-virtual {v0}, Ljava/util/ArrayList;->size()I
-
-    move-result v7
-
-    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    move-result-object v6
-
-    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v6
-
-    invoke-virtual {v5, v6}, Ljava/io/PrintStream;->println(Ljava/lang/String;)V
-
-    .line 38
-    iget-object v5, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData;->queryData:Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;
-
-    iget-object v5, v5, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;->BULKGAIT:Ljava/lang/String;
-
-    invoke-direct {p0, v5}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData;->parseSteps(Ljava/lang/String;)Ljava/util/ArrayList;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     move-result-object v5
 
-    iput-object v5, v2, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$RawTrackData;->steps:Ljava/util/ArrayList;
+    invoke-virtual {v0}, Ljava/util/ArrayList;->size()I
+
+    move-result v6
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    move-result-object v5
+
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v5
+
+    invoke-virtual {v4, v5}, Ljava/io/PrintStream;->println(Ljava/lang/String;)V
+
+    .line 38
+    iget-object v4, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData;->queryData:Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;
+
+    iget-object v4, v4, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;->BULKGAIT:Ljava/lang/String;
+
+    invoke-direct {p0, v4}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData;->parseSteps(Ljava/lang/String;)Ljava/util/ArrayList;
+
+    move-result-object v4
+
+    iput-object v4, v2, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$RawTrackData;->steps:Ljava/util/ArrayList;
 
     .line 42
     .end local v0    # "HRs":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/Integer;>;"
-    :goto_9c
+    :goto_9b
     return-object v2
 
-    :cond_9d
-    move v3, v4
-
     .line 31
-    goto :goto_68
+    :cond_9c
+    const/4 v3, 0x0
+
+    goto :goto_67
 
     .line 32
     .restart local v3    # "size":I
-    :cond_9f
-    iget-object v5, v2, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$RawTrackData;->times:Ljava/util/ArrayList;
+    :cond_9e
+    iget-object v4, v2, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$RawTrackData;->times:Ljava/util/ArrayList;
 
-    invoke-virtual {v5}, Ljava/util/ArrayList;->size()I
-    :try_end_a4
-    .catch Ljava/lang/Exception; {:try_start_6 .. :try_end_a4} :catch_a6
+    invoke-virtual {v4}, Ljava/util/ArrayList;->size()I
+    :try_end_a3
+    .catch Ljava/lang/Exception; {:try_start_5 .. :try_end_a3} :catch_a5
 
     move-result v3
 
-    goto :goto_6a
+    goto :goto_69
 
     .line 39
     .end local v3    # "size":I
-    :catch_a6
+    :catch_a5
     move-exception v1
 
     .line 40
     .local v1, "e":Ljava/lang/Exception;
-    iget-object v5, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData;->starter:Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/Starter;
+    iget-object v4, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData;->starter:Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/Starter;
 
-    const/4 v6, 0x1
+    const-string v5, "ex while parsing: "
 
-    new-array v6, v6, [Ljava/lang/String;
+    invoke-virtual {v4, v5, v1}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/Starter;->log(Ljava/lang/String;Ljava/lang/Exception;)Z
 
-    new-instance v7, Ljava/lang/StringBuilder;
-
-    invoke-direct {v7}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v8, "ex while parsing: "
-
-    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    move-result-object v7
-
-    invoke-virtual {v1}, Ljava/lang/Exception;->getMessage()Ljava/lang/String;
-
-    move-result-object v8
-
-    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    move-result-object v7
-
-    invoke-virtual {v7}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v7
-
-    aput-object v7, v6, v4
-
-    invoke-virtual {v5, v6}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/Starter;->log([Ljava/lang/String;)Z
-
-    goto :goto_9c
+    goto :goto_9b
 .end method

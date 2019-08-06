@@ -16,7 +16,7 @@ import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.Model
 public class TrackExporter {
 
     // todo add settings
-    private static boolean debug = false;
+    public static boolean debug = false;
 
     static final String COMMA = ",";
     static final String SEMICOLON = ";";

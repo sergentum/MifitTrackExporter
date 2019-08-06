@@ -228,10 +228,10 @@ class Printer {
         String result = "";
         if (trackPoint.heartRate != null || trackPoint.cadence != null) {
             result = "<extensions>" +
-                    "                   <gpxtpx:TrackPointExtension>" +
+                    "<gpxtpx:TrackPointExtension>" +
                     printGpxHeartRate(trackPoint) +
                     printGpxCadence(trackPoint) +
-                    "                    </gpxtpx:TrackPointExtension>" +
+                    "</gpxtpx:TrackPointExtension>" +
                     "</extensions>";
         }
         return result;

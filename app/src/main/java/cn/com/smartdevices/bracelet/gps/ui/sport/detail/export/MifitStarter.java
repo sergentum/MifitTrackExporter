@@ -37,35 +37,6 @@ public class MifitStarter extends Starter {
             "(\"_id\"  INTEGER primary key autoincrement, \n" +
             "  \"CALENDAR\" INTEGER )";
 
-    public static final String TRACK_ID_QUERY = "   SELECT " +
-            "       TRACKRECORD.TRACKID," +
-            "       TRACKDATA.TYPE," +
-            "       TRACKRECORD.DISTANCE," +
-            "       TRACKRECORD.COSTTIME" +
-            "       FROM TRACKDATA, TRACKRECORD" +
-            "       WHERE TRACKDATA.TRACKID = TRACKRECORD.TRACKID ;";
-
-    private static final String TRACK_DATA_QUERY =
-                    "SELECT " +
-                    "TRACKDATA.TRACKID," +
-                    "TRACKDATA.SIZE," +
-                    "TRACKDATA.BULKLL," +
-                    "TRACKDATA.BULKGAIT," +
-                    "TRACKDATA.BULKAL," +
-                    "TRACKDATA.BULKTIME," +
-                    "TRACKDATA.BULKHR," +
-                    "TRACKDATA.BULKPACE," +
-                    "TRACKDATA.BULKPAUSE," +
-                    "TRACKDATA.BULKSPEED," +
-                    "TRACKDATA.TYPE," +
-                    "TRACKDATA.BULKFLAG," +
-                    "TRACKRECORD.COSTTIME," +
-                    "TRACKRECORD.ENDTIME, " +
-                    "TRACKRECORD.DISTANCE " +
-                    "FROM TRACKDATA, TRACKRECORD " +
-                    "WHERE TRACKDATA.TRACKID = TRACKRECORD.TRACKID " +
-                    "AND TRACKDATA.TRACKID = ";
-
     public MifitStarter(Activity activity) {
         this.activity = activity;
         TrackExporter.DEVICE_PATH = Environment.getExternalStorageDirectory().getPath() + "/";
@@ -85,7 +56,7 @@ public class MifitStarter extends Starter {
     }
 
     @Override
-    Map<Long, TrackHeader> loadTrackHeadersFromDb() {
+    public Map<Long, TrackHeader> loadTrackHeadersFromDb() {
         if (dbPath == null) {
             Toast.makeText(activity, "database not found", Toast.LENGTH_SHORT).show();
             return null;
@@ -128,6 +99,7 @@ public class MifitStarter extends Starter {
         }
     }
 
+    @Override
     public void showTracks() {
         Map<Long, TrackHeader> trackHeaderMap = loadTrackHeadersFromDb();
 
@@ -174,7 +146,7 @@ public class MifitStarter extends Starter {
         }
     }
 
-    private void readRawDataWithId(long id) {
+    public void readRawDataWithId(long id) {
         try (
                 SQLiteDatabase sqLiteDatabase = activity.openOrCreateDatabase(dbPath, Context.MODE_PRIVATE, null);
                 Cursor cursor = sqLiteDatabase.rawQuery(TRACK_DATA_QUERY + id, null)

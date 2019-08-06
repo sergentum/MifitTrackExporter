@@ -16,19 +16,30 @@
 
 
 # virtual methods
+.method public initExport()V
+    .registers 2
+
+    .prologue
+    .line 16
+    new-instance v0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;
+
+    invoke-direct {v0, p0}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;-><init>(Landroid/app/Activity;)V
+
+    .line 17
+    .local v0, "starter":Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;
+    invoke-virtual {v0}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;->showTracks()V
+
+    .line 18
+    return-void
+.end method
+
 .method public onShareClicked(Landroid/view/View;)V
-    .registers 3
+    .registers 2
     .param p1, "view"    # Landroid/view/View;
 
     .prologue
-    .line 11
-    new-instance v0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/Starter;
-
-    invoke-direct {v0, p0}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/Starter;-><init>(Landroid/app/Activity;)V
-
     .line 12
-    .local v0, "starter":Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/Starter;
-    invoke-virtual {v0}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/Starter;->showTracks()V
+    invoke-virtual {p0}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/SportDetailsActivity;->initExport()V
 
     .line 13
     return-void

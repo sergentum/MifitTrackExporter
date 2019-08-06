@@ -5,6 +5,7 @@ import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.RawData;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
@@ -12,7 +13,40 @@ public abstract class Starter {
     public static final String TAG = "mifit";
     static final String EXT_DB_NAME = "origin.db";
 
-    abstract Map<Long, Model.TrackHeader> loadTrackHeadersFromDb();
+    static final String TRACK_ID_QUERY = "   SELECT " +
+            "       TRACKRECORD.TRACKID," +
+            "       TRACKDATA.TYPE," +
+            "       TRACKRECORD.DISTANCE," +
+            "       TRACKRECORD.COSTTIME" +
+            "       FROM TRACKDATA, TRACKRECORD" +
+            "       WHERE TRACKDATA.TRACKID = TRACKRECORD.TRACKID ;";
+
+    static final String TRACK_DATA_QUERY =
+            "SELECT " +
+                    "TRACKDATA.TRACKID," +
+                    "TRACKDATA.SIZE," +
+                    "TRACKDATA.BULKLL," +
+                    "TRACKDATA.BULKGAIT," +
+                    "TRACKDATA.BULKAL," +
+                    "TRACKDATA.BULKTIME," +
+                    "TRACKDATA.BULKHR," +
+                    "TRACKDATA.BULKPACE," +
+                    "TRACKDATA.BULKPAUSE," +
+                    "TRACKDATA.BULKSPEED," +
+                    "TRACKDATA.TYPE," +
+                    "TRACKDATA.BULKFLAG," +
+                    "TRACKRECORD.COSTTIME," +
+                    "TRACKRECORD.ENDTIME, " +
+                    "TRACKRECORD.DISTANCE " +
+                    "FROM TRACKDATA, TRACKRECORD " +
+                    "WHERE TRACKDATA.TRACKID = TRACKRECORD.TRACKID " +
+                    "AND TRACKDATA.TRACKID = ";
+
+    public abstract Map<Long, Model.TrackHeader> loadTrackHeadersFromDb();
+
+    public abstract void showTracks();
+
+    public abstract void readRawDataWithId(long id);
 
     public boolean log(String... args) {
         String s = stringArrayToString(args);
@@ -22,9 +56,14 @@ public abstract class Starter {
 
     String stringArrayToString(String... args) {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(new Date()).append("\r\n");
+        String pattern = "yyyy-MM-dd_HH:mm:ss.SSSZ";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        String date = simpleDateFormat.format(new Date());
+
+        stringBuilder.append(date).append(" : ");
         for (String arg : args) {
-            stringBuilder.append(arg).append("\r\n");
+            String replace = arg.replace("\n", " @ ");
+            stringBuilder.append(replace);
         }
         return stringBuilder.toString();
     }
@@ -37,7 +76,7 @@ public abstract class Starter {
 
     // that's just mock to keep the code compatible with android and console
     public void showToast(String string, int length) {
-        System.out.println("toast:" + string);
+//        System.out.println("toast:" + string);
     }
 
     public boolean writeStringToFile(String output, String fileName) {
