@@ -21,6 +21,7 @@ import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.util.SparseArray;
+import cn.com.smartdevices.bracelet.gps.ui.sport.detail.Response;
 import com.example.username.mifittrackexporter.util.FormValues;
 import com.example.username.mifittrackexporter.util.SyncHelper;
 import java.io.BufferedInputStream;
@@ -40,6 +41,7 @@ import java.util.HashMap;
 
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.Callable;
 import java.util.zip.GZIPOutputStream;
 
 import org.json.JSONException;
@@ -58,12 +60,18 @@ public class EndomondoSynchronizer extends DefaultSynchronizer {
     private static final String AUTH_URL = "https://api.mobile.endomondo.com/mobile/auth";
     private static final String UPLOAD_URL = "https://api.mobile.endomondo.com/mobile/track";
     private static final String FEED_URL = "https://api.mobile.endomondo.com/mobile/api/feed";
+    private static final String HISTORY = "https://api.mobile.endomondo.com/mobile/api/workouts";
+
+    static String asdf = "https://api.mobile.endomondo.com/mobile/api/workouts?" +
+            "authToken=2wkAn8JZTF-rJozIl8hGEA&" +
+            "maxResults=50&" +
+            "fields=device,simple,basic,lcp_count,pb2";
 
     private long id = 0;
     private String username = null;
     private String password = null;
     private String deviceId = null;
-    private String authToken = null;
+    public String authToken = null;
 
     private static final SparseArray<Sport> endomondo2sportMap = new SparseArray<>();
     public static final Map<Sport, Integer> sport2endomondoMap = new HashMap<>();
@@ -321,45 +329,58 @@ public class EndomondoSynchronizer extends DefaultSynchronizer {
         return false;
     }
 
-//    @Override
-//    public Status getFeed(FeedUpdater feedUpdater) {
-//        Status s;
+    public Status getFeed() {
+
+        Status s;
 //        if ((s = connect()) != Status.OK) {
 //            return s;
 //        }
-//
-//        StringBuilder url = new StringBuilder();
-//        url.append(FEED_URL).append("?authToken=").append(authToken);
-//        url.append("&maxResults=25");
-//
-//        HttpURLConnection conn;
-//        Exception ex;
-//        try {
-//            conn = (HttpURLConnection) new URL(url.toString()).openConnection();
-//            conn.setRequestMethod(RequestMethod.GET.name());
-//            final InputStream in = new BufferedInputStream(conn.getInputStream());
-//            final JSONObject reply = SyncHelper.parse(in);
-//            int responseCode = conn.getResponseCode();
-//            String amsg = conn.getResponseMessage();
-//
-//            conn.disconnect();
-//
-//            if (responseCode == HttpURLConnection.HTTP_OK) {
-//                parseFeed(feedUpdater, reply);
-//                return Status.OK;
-//            }
-//            ex = new Exception(amsg);
-//        } catch (IOException e) {
-//            ex = e;
-//        } catch (JSONException e) {
-//            ex = e;
-//        }
-//
-//        s = Status.ERROR;
-//        s.ex = ex;
-//        ex.printStackTrace();
-//        return s;
-//    }
+
+        StringBuilder url = new StringBuilder();
+        url.append(FEED_URL).append("?authToken=").append(authToken);
+        url.append("&maxResults=25");
+
+        HttpURLConnection conn;
+        Exception ex;
+        try {
+            conn = (HttpURLConnection) new URL(url.toString()).openConnection();
+            conn.setRequestMethod(RequestMethod.GET.name());
+            final InputStream in = new BufferedInputStream(conn.getInputStream());
+            final JSONObject reply = SyncHelper.parse(in);
+            int responseCode = conn.getResponseCode();
+            String amsg = conn.getResponseMessage();
+
+            conn.disconnect();
+
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                System.out.println(reply);
+                return Status.OK;
+            }
+            ex = new Exception(amsg);
+        } catch (IOException e) {
+            ex = e;
+        } catch (JSONException e) {
+            ex = e;
+        }
+
+        s = Status.ERROR;
+        s.ex = ex;
+        ex.printStackTrace();
+        return s;
+    }
+
+    static class GetFeedTask implements Callable<Status> {
+        EndomondoSynchronizer synchronizer;
+
+        public GetFeedTask(EndomondoSynchronizer synchronizer) {
+            this.synchronizer = synchronizer;
+        }
+
+        @Override
+        public Status call() {
+            return synchronizer.getFeed();
+        }
+    }
 
     /*
      * {"message":{"short":"was out <0>running<\/0>.", "text":"was out

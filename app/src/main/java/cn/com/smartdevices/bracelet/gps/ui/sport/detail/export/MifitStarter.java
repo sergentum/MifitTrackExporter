@@ -18,12 +18,7 @@ import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.RawData.Quer
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.TrackExporter;
 import java.io.File;
 import java.io.FileWriter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.regex.Pattern;
 
 
@@ -57,11 +52,11 @@ public class MifitStarter extends Starter {
 
     @Override
     public Map<Long, TrackHeader> loadTrackHeadersFromDb() {
+        Map<Long, TrackHeader> trackHeaderMap = new TreeMap<>();
         if (dbPath == null) {
             Toast.makeText(activity, "database not found", Toast.LENGTH_SHORT).show();
-            return null;
+            return trackHeaderMap;
         } else {
-            Map<Long, TrackHeader> trackHeaderMap = new TreeMap<>();
             try (
                     SQLiteDatabase sqLiteDatabase = activity.openOrCreateDatabase(dbPath, Context.MODE_PRIVATE, null);
                     Cursor cursor = sqLiteDatabase.rawQuery(TRACK_ID_QUERY, null)

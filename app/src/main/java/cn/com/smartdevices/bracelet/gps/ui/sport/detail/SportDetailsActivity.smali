@@ -21,15 +21,13 @@
 
     .prologue
     .line 16
-    new-instance v0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;
+    new-instance v0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/Starter;
 
-    invoke-direct {v0, p0}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;-><init>(Landroid/app/Activity;)V
+    invoke-direct {v0, p0}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/Starter;-><init>(Landroid/app/Activity;)V
+
+    invoke-virtual {v0}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/Starter;->showTracks()V
 
     .line 17
-    .local v0, "starter":Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;
-    invoke-virtual {v0}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;->showTracks()V
-
-    .line 18
     return-void
 .end method
 
