@@ -15,6 +15,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +28,10 @@ import cn.com.smartdevices.bracelet.gps.ui.sport.detail.CodeActivity;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.SettingsActivity;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.MifitStarter;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+
+import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.SettingsActivity.ENDOMONDO_APIKEY;
 
 public class MainActivity extends AppCompatActivity {
     FragmentActivity activity;
@@ -34,8 +39,11 @@ public class MainActivity extends AppCompatActivity {
 
     private FrameLayout root;
 
+    private SharedPreferences sp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        sp = PreferenceManager.getDefaultSharedPreferences(this);
         super.onCreate(savedInstanceState);
         root = new FrameLayout(this);
         root.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
@@ -105,6 +113,37 @@ public class MainActivity extends AppCompatActivity {
         linLayout.addView(btn2, lpView);
 
 
+
+        Button btn3 = new Button(this);
+        btn3.setText("get workouts");
+        btn3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+//                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+//                startActivity(intent);
+                String string = sp.getString(ENDOMONDO_APIKEY, "");
+                EndomondoSynchronizer synchronizer = new EndomondoSynchronizer();
+                synchronizer.authToken = string;
+                EndomondoSynchronizer.GetFeedTask getFeedTask = new EndomondoSynchronizer.GetFeedTask(synchronizer);
+
+                FutureTask<DefSynchronizer.Status> futureTask = new FutureTask<>(getFeedTask);
+                new Thread(futureTask).start();
+
+                try {
+                    DefSynchronizer.Status status = futureTask.get();
+                    System.out.println(status);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+        linLayout.addView(btn3, lpView);
+
+
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         Map<String, ?> all = sp.getAll();
         String spString = "";
@@ -113,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
         }
         TextView spView = new TextView(this);
         spView.setText(spString);
+        Log.i("mifit", spString);
         linLayout.addView(spView, lpView);
 
 

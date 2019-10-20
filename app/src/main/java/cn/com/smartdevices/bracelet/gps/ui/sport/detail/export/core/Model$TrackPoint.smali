@@ -37,7 +37,7 @@
     .registers 1
 
     .prologue
-    .line 114
+    .line 122
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
@@ -49,26 +49,26 @@
     .registers 6
 
     .prologue
-    .line 160
+    .line 168
     iget-object v2, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/Model$TrackPoint;->altitude:Ljava/lang/Long;
 
     invoke-virtual {v2}, Ljava/lang/Long;->toString()Ljava/lang/String;
 
     move-result-object v1
 
-    .line 161
+    .line 169
     .local v1, "altString":Ljava/lang/String;
     invoke-virtual {v1}, Ljava/lang/String;->length()I
 
     move-result v0
 
-    .line 162
+    .line 170
     .local v0, "altL":I
     const/4 v2, 0x2
 
     if-le v0, v2, :cond_32
 
-    .line 163
+    .line 171
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
@@ -105,7 +105,7 @@
 
     move-result-object v2
 
-    .line 165
+    .line 173
     :goto_31
     return-object v2
 
@@ -119,24 +119,24 @@
     .registers 6
 
     .prologue
-    .line 140
+    .line 148
     iget-object v2, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/Model$TrackPoint;->latitude:Ljava/lang/Long;
 
     invoke-virtual {v2}, Ljava/lang/Long;->toString()Ljava/lang/String;
 
     move-result-object v1
 
-    .line 141
+    .line 149
     .local v1, "latString":Ljava/lang/String;
     invoke-virtual {v1}, Ljava/lang/String;->length()I
 
     move-result v0
 
-    .line 142
+    .line 150
     .local v0, "latL":I
     if-lez v0, :cond_31
 
-    .line 143
+    .line 151
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
@@ -173,7 +173,7 @@
 
     move-result-object v2
 
-    .line 145
+    .line 153
     :goto_30
     return-object v2
 
@@ -187,24 +187,24 @@
     .registers 6
 
     .prologue
-    .line 150
+    .line 158
     iget-object v2, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/Model$TrackPoint;->longitude:Ljava/lang/Long;
 
     invoke-virtual {v2}, Ljava/lang/Long;->toString()Ljava/lang/String;
 
     move-result-object v1
 
-    .line 151
+    .line 159
     .local v1, "lonString":Ljava/lang/String;
     invoke-virtual {v1}, Ljava/lang/String;->length()I
 
     move-result v0
 
-    .line 152
+    .line 160
     .local v0, "lonL":I
     if-lez v0, :cond_31
 
-    .line 153
+    .line 161
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
@@ -241,7 +241,7 @@
 
     move-result-object v2
 
-    .line 155
+    .line 163
     :goto_30
     return-object v2
 
@@ -255,7 +255,7 @@
     .registers 5
 
     .prologue
-    .line 126
+    .line 134
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -280,7 +280,7 @@
 
     iget-object v1, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/Model$TrackPoint;->timestamp:Ljava/lang/Long;
 
-    .line 128
+    .line 136
     invoke-virtual {v1}, Ljava/lang/Long;->longValue()J
 
     move-result-wide v2
@@ -375,6 +375,6 @@
 
     move-result-object v0
 
-    .line 126
+    .line 134
     return-object v0
 .end method

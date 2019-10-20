@@ -12,18 +12,13 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
-//import cn.com.smartdevices.bracelet.gps.ui.sport.detail.SettingsActivity;
+import cn.com.smartdevices.bracelet.gps.ui.sport.detail.SettingsActivity;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.Model.TrackHeader;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.RawData.QueryData;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.TrackExporter;
 import java.io.File;
 import java.io.FileWriter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.regex.Pattern;
 
 
@@ -36,35 +31,6 @@ public class MifitStarter extends Starter {
             "CREATE TABLE IF NOT EXISTS dummy " +
             "(\"_id\"  INTEGER primary key autoincrement, \n" +
             "  \"CALENDAR\" INTEGER )";
-
-    public static final String TRACK_ID_QUERY = "   SELECT " +
-            "       TRACKRECORD.TRACKID," +
-            "       TRACKDATA.TYPE," +
-            "       TRACKRECORD.DISTANCE," +
-            "       TRACKRECORD.COSTTIME" +
-            "       FROM TRACKDATA, TRACKRECORD" +
-            "       WHERE TRACKDATA.TRACKID = TRACKRECORD.TRACKID ;";
-
-    private static final String TRACK_DATA_QUERY =
-                    "SELECT " +
-                    "TRACKDATA.TRACKID," +
-                    "TRACKDATA.SIZE," +
-                    "TRACKDATA.BULKLL," +
-                    "TRACKDATA.BULKGAIT," +
-                    "TRACKDATA.BULKAL," +
-                    "TRACKDATA.BULKTIME," +
-                    "TRACKDATA.BULKHR," +
-                    "TRACKDATA.BULKPACE," +
-                    "TRACKDATA.BULKPAUSE," +
-                    "TRACKDATA.BULKSPEED," +
-                    "TRACKDATA.TYPE," +
-                    "TRACKDATA.BULKFLAG," +
-                    "TRACKRECORD.COSTTIME," +
-                    "TRACKRECORD.ENDTIME, " +
-                    "TRACKRECORD.DISTANCE " +
-                    "FROM TRACKDATA, TRACKRECORD " +
-                    "WHERE TRACKDATA.TRACKID = TRACKRECORD.TRACKID " +
-                    "AND TRACKDATA.TRACKID = ";
 
     public MifitStarter(Activity activity) {
         this.activity = activity;
@@ -85,11 +51,11 @@ public class MifitStarter extends Starter {
     }
 
     @Override
-    Map<Long, TrackHeader> loadTrackHeadersFromDb() {
+    public Map<Long, TrackHeader> loadTrackHeadersFromDb() {
         Map<Long, TrackHeader> trackHeaderMap = new TreeMap<>();
         if (dbPath == null) {
             Toast.makeText(activity, "database not found", Toast.LENGTH_SHORT).show();
-            return trackHeaderMap;
+            return null;
         } else {
             try (
                     SQLiteDatabase sqLiteDatabase = activity.openOrCreateDatabase(dbPath, Context.MODE_PRIVATE, null);
@@ -133,9 +99,9 @@ public class MifitStarter extends Starter {
 
         ArrayList<Long> trackIds = new ArrayList<>();
         // this item means call settings
-//        trackIds.add(0L);
+        trackIds.add(0L);
         String[] trackDesc = new String[trackHeaderMap.size() + 1];
-//        trackDesc[0] = "-- export settings --";
+        trackDesc[0] = "-- export settings --";
 
         Set<Map.Entry<Long, TrackHeader>> entries =
                 ((TreeMap<Long, TrackHeader>) trackHeaderMap).descendingMap().entrySet();
@@ -166,15 +132,15 @@ public class MifitStarter extends Starter {
         public void onClick(DialogInterface dialogInterface, int i) {
             Long trackId = trackIds.get(i);
             if (trackId == 0) {
-//                Intent intent = new Intent(MifitStarter.this.activity, SettingsActivity.class);
-//                MifitStarter.this.activity.startActivity(intent);
+                Intent intent = new Intent(MifitStarter.this.activity, SettingsActivity.class);
+                MifitStarter.this.activity.startActivity(intent);
             } else {
                 starter.readRawDataWithId(trackId);
             }
         }
     }
 
-    private void readRawDataWithId(long id) {
+    public void readRawDataWithId(long id) {
         try (
                 SQLiteDatabase sqLiteDatabase = activity.openOrCreateDatabase(dbPath, Context.MODE_PRIVATE, null);
                 Cursor cursor = sqLiteDatabase.rawQuery(TRACK_DATA_QUERY + id, null)

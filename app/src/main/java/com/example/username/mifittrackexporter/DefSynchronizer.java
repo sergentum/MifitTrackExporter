@@ -25,7 +25,7 @@ import android.util.Pair;
 import java.io.File;
 import java.util.List;
 
-public interface Synchronizer {
+public interface DefSynchronizer {
 
     enum RequestMethod { GET, POST, PATCH, PUT }
 

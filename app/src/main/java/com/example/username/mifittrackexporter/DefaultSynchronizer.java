@@ -21,7 +21,6 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 import android.util.Pair;
 import com.example.username.mifittrackexporter.util.FormValues;
 import com.example.username.mifittrackexporter.util.SyncHelper;
@@ -30,13 +29,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class DefaultSynchronizer implements Synchronizer {
+public abstract class DefaultSynchronizer implements DefSynchronizer {
 
     final Set<String> cookies = new HashSet<>();
     final FormValues formValues = new FormValues();
@@ -112,7 +110,7 @@ public abstract class DefaultSynchronizer implements Synchronizer {
         return Status.ERROR;
     }
 
-    public boolean checkSupport(Synchronizer.Feature f) {
+    public boolean checkSupport(DefSynchronizer.Feature f) {
         return false;
     }
 

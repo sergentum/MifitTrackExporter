@@ -16,19 +16,28 @@
 
 
 # virtual methods
-.method public onShareClicked(Landroid/view/View;)V
-    .registers 3
-    .param p1, "view"    # Landroid/view/View;
+.method public initExport()V
+    .registers 2
 
     .prologue
-    .line 11
+    .line 16
     new-instance v0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/Starter;
 
     invoke-direct {v0, p0}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/Starter;-><init>(Landroid/app/Activity;)V
 
-    .line 12
-    .local v0, "starter":Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/Starter;
     invoke-virtual {v0}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/Starter;->showTracks()V
+
+    .line 17
+    return-void
+.end method
+
+.method public onShareClicked(Landroid/view/View;)V
+    .registers 2
+    .param p1, "view"    # Landroid/view/View;
+
+    .prologue
+    .line 12
+    invoke-virtual {p0}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/SportDetailsActivity;->initExport()V
 
     .line 13
     return-void

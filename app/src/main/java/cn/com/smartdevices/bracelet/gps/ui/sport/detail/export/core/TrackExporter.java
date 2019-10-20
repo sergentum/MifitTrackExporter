@@ -30,6 +30,8 @@ public class TrackExporter {
     private static final String DEBUG_OUT_PATH = "debug/";
     public static final String DEBUG_LOG_FILE = "log.txt";
     private static final String RAW_CSV = "-raw.csv";
+    private static final String TCX_EXT = ".tcx";
+    private static final String GPX_EXT = ".gpx";
 
     private Starter starter;
 
@@ -58,7 +60,6 @@ public class TrackExporter {
             String message;
 
             RawTrackData rawTrackData = rawData.parseRawData();
-
             if (debug) {
                 filePath = getDebugPath() + rawTrackData.startTime + RAW_CSV;
                 starter.writeStringToFile(rawTrackData.toString(), filePath);
@@ -67,32 +68,23 @@ public class TrackExporter {
                 starter.log(message);
             }
 
-            switch (FILE_FORMAT) {
-                case ".tcx": {
-                    Track track = compileDataToTrack(rawTrackData);
-                    String tcxContent = Printer.printTcx(track);
-                    String fileName = getFullPath() + getFileName(track) + FILE_FORMAT;
-                    successfull = starter.writeStringToFile(tcxContent, fileName);
-                    filePath = getShortPath() + getFileName(track) + FILE_FORMAT;
+            Track track = compileDataToTrack(rawTrackData);
+            String tcx = Printer.printTcx(track);
+            String tcxFileName = getFullPath() + getFileName(track) + TCX_EXT;
+            starter.writeStringToFile(tcx, tcxFileName);
 
-                    long stop = System.currentTimeMillis();
-                    message = filePath + " saved in " + (stop - start) + " ms ";
-                    if (!successfull) {
-                        message += " UNSUCCESSFULLY ";
-                    }
-                    break;
-                }
-                case ".gpx": {
-                    message = "sorry, gpx format isn't implemented yet";
-                    break;
-                }
-                default: {
-                    message = "please check export format in export settings";
-                }
-            }
+            String gpx = Printer.printGpx(track);
+            String fileName = getFullPath() + getFileName(track) + GPX_EXT;
+            starter.writeStringToFile(gpx, fileName);
 
-            starter.log(message);
-            starter.showToast(message, 1);
+            message = getFileName(track) + TCX_EXT;
+            message += "\n" + getFileName(track) + GPX_EXT;
+
+            long stop = System.currentTimeMillis();
+            String successMessage = message + "\n saved to \"" + getShortPath() + "\" in " + (stop - start) + " ms ";
+
+            starter.log(successMessage);
+            starter.showToast(successMessage, 1);
         }
     }
 

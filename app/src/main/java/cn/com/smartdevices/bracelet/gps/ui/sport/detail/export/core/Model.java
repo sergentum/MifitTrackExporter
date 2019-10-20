@@ -109,6 +109,14 @@ public class Model {
                     + getDistance()
                     ;
         }
+
+        public String toStringConsole() {
+            return getTimestamp()
+                    + getActivityType()
+                    + getDuration()
+                    + getDistance()
+                    ;
+        }
     }
 
     static class TrackPoint {
