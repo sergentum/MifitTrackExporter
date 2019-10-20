@@ -12,7 +12,7 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
-import cn.com.smartdevices.bracelet.gps.ui.sport.detail.SettingsActivity;
+//import cn.com.smartdevices.bracelet.gps.ui.sport.detail.SettingsActivity;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.Model.TrackHeader;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.RawData.QueryData;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.TrackExporter;
@@ -86,11 +86,11 @@ public class MifitStarter extends Starter {
 
     @Override
     Map<Long, TrackHeader> loadTrackHeadersFromDb() {
+        Map<Long, TrackHeader> trackHeaderMap = new TreeMap<>();
         if (dbPath == null) {
             Toast.makeText(activity, "database not found", Toast.LENGTH_SHORT).show();
-            return null;
+            return trackHeaderMap;
         } else {
-            Map<Long, TrackHeader> trackHeaderMap = new TreeMap<>();
             try (
                     SQLiteDatabase sqLiteDatabase = activity.openOrCreateDatabase(dbPath, Context.MODE_PRIVATE, null);
                     Cursor cursor = sqLiteDatabase.rawQuery(TRACK_ID_QUERY, null)
@@ -133,9 +133,9 @@ public class MifitStarter extends Starter {
 
         ArrayList<Long> trackIds = new ArrayList<>();
         // this item means call settings
-        trackIds.add(0L);
+//        trackIds.add(0L);
         String[] trackDesc = new String[trackHeaderMap.size() + 1];
-        trackDesc[0] = "-- export settings --";
+//        trackDesc[0] = "-- export settings --";
 
         Set<Map.Entry<Long, TrackHeader>> entries =
                 ((TreeMap<Long, TrackHeader>) trackHeaderMap).descendingMap().entrySet();
@@ -166,8 +166,8 @@ public class MifitStarter extends Starter {
         public void onClick(DialogInterface dialogInterface, int i) {
             Long trackId = trackIds.get(i);
             if (trackId == 0) {
-                Intent intent = new Intent(MifitStarter.this.activity, SettingsActivity.class);
-                MifitStarter.this.activity.startActivity(intent);
+//                Intent intent = new Intent(MifitStarter.this.activity, SettingsActivity.class);
+//                MifitStarter.this.activity.startActivity(intent);
             } else {
                 starter.readRawDataWithId(trackId);
             }
