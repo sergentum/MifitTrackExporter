@@ -62,8 +62,12 @@ public abstract class Starter {
 
         stringBuilder.append(date).append(" : ");
         for (String arg : args) {
-            String replace = arg.replace("\n", " @ ");
-            stringBuilder.append(replace);
+            if (arg != null) {
+                String replace = arg.replace("\n", " @ ");
+                stringBuilder.append(replace);
+            } else {
+                stringBuilder.append(" null ");
+            }
         }
         return stringBuilder.toString();
     }

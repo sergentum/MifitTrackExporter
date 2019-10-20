@@ -69,13 +69,31 @@ public class TrackExporter {
             }
 
             Track track = compileDataToTrack(rawTrackData);
-            String tcx = Printer.printTcx(track);
-            String tcxFileName = getFullPath() + getFileName(track) + TCX_EXT;
-            starter.writeStringToFile(tcx, tcxFileName);
 
-            String gpx = Printer.printGpx(track);
-            String fileName = getFullPath() + getFileName(track) + GPX_EXT;
-            starter.writeStringToFile(gpx, fileName);
+
+            switch (FILE_FORMAT) {
+                case ".tcx": {
+                    String tcx = Printer.printTcx(track);
+                    String tcxFileName = getFullPath() + getFileName(track) + TCX_EXT;
+                    starter.writeStringToFile(tcx, tcxFileName);
+                    break;
+                }
+                case ".gpx": {
+                    String gpx = Printer.printGpx(track);
+                    String fileName = getFullPath() + getFileName(track) + GPX_EXT;
+                    starter.writeStringToFile(gpx, fileName);
+                    break;
+                }
+                default: {
+                    String tcx = Printer.printTcx(track);
+                    String tcxFileName = getFullPath() + getFileName(track) + TCX_EXT;
+                    starter.writeStringToFile(tcx, tcxFileName);
+
+                    String gpx = Printer.printGpx(track);
+                    String fileName = getFullPath() + getFileName(track) + GPX_EXT;
+                    starter.writeStringToFile(gpx, fileName);
+                }
+            }
 
             message = getFileName(track) + TCX_EXT;
             message += "\n" + getFileName(track) + GPX_EXT;
