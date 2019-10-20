@@ -22,7 +22,7 @@ public class ConsoleStarter extends Starter{
     private static final String LOCAL_DB_URL = "jdbc:sqlite:" + EXT_DB_NAME;
 
     @Override
-    public Map<Long, Model.TrackHeader> loadTrackHeadersFromDb() {
+    public TreeMap<Long, Model.TrackHeader> loadTrackHeadersFromDb() {
         try (Connection conn = DriverManager.getConnection(LOCAL_DB_URL)) {
             System.out.println("Connection to SQLite has been established.");
             Statement statement = conn.createStatement();
@@ -31,7 +31,7 @@ public class ConsoleStarter extends Starter{
             ResultSetMetaData rsmd = rs.getMetaData();
             int columnCount = rsmd.getColumnCount();
             StringBuilder stringBuilder = new StringBuilder();
-            Map<Long, Model.TrackHeader> trackHeaderMap = new TreeMap<>();
+            TreeMap<Long, Model.TrackHeader> trackHeaderMap = new TreeMap<>();
             while (rs.next()) {
                 for (int i = 1; i <= columnCount; i++) {
                     stringBuilder.append(rs.getString(i)).append(" ");
@@ -62,7 +62,7 @@ public class ConsoleStarter extends Starter{
 
     @Override
     public void showTracks() {
-        Map<Long, Model.TrackHeader> trackHeaderMap = loadTrackHeadersFromDb();
+        TreeMap<Long, Model.TrackHeader> trackHeaderMap = loadTrackHeadersFromDb();
         Set<Map.Entry<Long, Model.TrackHeader>> entries = trackHeaderMap.entrySet();
         int i = 1;
         Map<Integer, Long> noIdMap = new HashMap<>();

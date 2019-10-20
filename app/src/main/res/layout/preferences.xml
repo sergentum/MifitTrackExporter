@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent">
+                  android:id="@+id/export_preferences"
+                  android:key="export_preferences"
+                  android:layout_height="match_parent"
+                  android:layout_width="match_parent">
 
     <!--<CheckBoxPreference-->
     <!--android:key="notif"-->
@@ -9,33 +11,33 @@
     <!--android:title="Notifications"/>-->
 
     <CheckBoxPreference
-        android:key="debug"
-        android:summary="Debug"
-        android:text="Will take additional place on the storage" />
+            android:key="debug"
+            android:summary="Debug"
+            android:text="Will take additional place on the storage"/>
 
     <ListPreference
-        android:key="export_format"
-        android:title="Export format"
-        android:summary="Do you prefer gpx or tcx?"
-        android:entries="@array/export_format_entries"
-        android:entryValues="@array/export_format_values" />
+            android:key="export_format"
+            android:title="Export format"
+            android:summary="Do you prefer gpx or tcx?"
+            android:entries="@array/export_format_entries"
+            android:entryValues="@array/export_format_values"/>
 
     <EditTextPreference
-        android:key="endomondo_login"
-        android:title="Endomondo login"
-        android:summary="Account to sync your activity" />
+            android:key="endomondo_login"
+            android:title="Endomondo login"
+            android:summary="Account to sync your activity"/>
 
     <EditTextPreference
-        android:key="endomondo_password"
-        android:ems="10"
-        android:title="Endomondo password"
-        android:summary="Password to your endomondo account"
-        android:inputType="textPassword" />
+            android:key="endomondo_password"
+            android:ems="10"
+            android:title="Endomondo password"
+            android:summary="Password to your endomondo account"
+            android:inputType="textPassword"/>
 
     <SwitchPreference
-        android:key="endomondo_check"
-        android:title="Endomondo syncronization"
-        android:summary="Check input and toggle sync"
-        android:text="Check connection" />
+            android:key="endomondo_check"
+            android:title="Endomondo syncronization"
+            android:summary="Check input and toggle sync"
+            android:text="Check connection"/>
 
 </PreferenceScreen>

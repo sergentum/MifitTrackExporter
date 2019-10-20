@@ -8,10 +8,10 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.MifitStarter;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.Starter;
-import com.example.username.mifittrackexporter.R;
 import com.example.username.mifittrackexporter.DefSynchronizer;
 import com.example.username.mifittrackexporter.util.FormValues;
 import com.example.username.mifittrackexporter.util.SyncHelper;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -21,8 +21,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
-
-import org.json.JSONObject;
 
 import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.MifitStarter.TAG;
 
@@ -40,7 +38,17 @@ public class SettingsActivity extends PreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.layout.preferences);
+//        addPreferencesFromResource(R.layout.preferences);
+        int identifier;
+
+        identifier = getResources().getIdentifier("activity_main", "id", getPackageName());
+        Log.d(TAG, "activity_main" + identifier);
+
+
+        identifier = getResources().getIdentifier("preferences", "layout", getPackageName());
+        Log.d(TAG, "preferences: " + identifier);
+        addPreferencesFromResource(identifier);
+
         sp = PreferenceManager.getDefaultSharedPreferences(this);
         starter = new MifitStarter(this);
 

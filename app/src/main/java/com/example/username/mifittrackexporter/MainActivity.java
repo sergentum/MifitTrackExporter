@@ -24,7 +24,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import cn.com.smartdevices.bracelet.gps.ui.sport.detail.CodeActivity;
+//import cn.com.smartdevices.bracelet.gps.ui.sport.detail.CodeActivity;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.SettingsActivity;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.MifitStarter;
 import java.util.Map;
@@ -32,6 +32,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
 import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.SettingsActivity.ENDOMONDO_APIKEY;
+import static cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.Starter.TAG;
 
 public class MainActivity extends AppCompatActivity {
     FragmentActivity activity;
@@ -40,6 +41,13 @@ public class MainActivity extends AppCompatActivity {
     private FrameLayout root;
 
     private SharedPreferences sp;
+
+    private int getResource(String name, String defType) {
+        int identifier = getResources().getIdentifier(name, defType, getPackageName());
+        Log.d(TAG, "Requested: " + name + ", found: " + identifier);
+        return identifier;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,26 +59,26 @@ public class MainActivity extends AppCompatActivity {
 
 //        super.onCreate(savedInstanceState);
         activity = this;
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setContentView(getResource("activity_main", "id"));
+        Toolbar toolbar = (Toolbar) findViewById(getResource("toolbar", "toolbar"));
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-
-//                FragmentManager fragmentManager = activity.getFragmentManager();
-//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                fragmentTransaction.replace(R.id.mainFragment , prefFrag);
-//                fragmentTransaction.commit();
-
-                Intent intent = new Intent(MainActivity.this, CodeActivity.class);
-                startActivity(intent);
-            }
-        });
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//
+////                FragmentManager fragmentManager = activity.getFragmentManager();
+////                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+////                fragmentTransaction.replace(R.id.mainFragment , prefFrag);
+////                fragmentTransaction.commit();
+//
+////                Intent intent = new Intent(MainActivity.this, CodeActivity.class);
+////                startActivity(intent);
+//            }
+//        });
 
         // creating LinearLayout
         LinearLayout linLayout = new LinearLayout(this);
@@ -163,7 +171,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
+        int resource = getResource("menu_main", "menu");
+        getMenuInflater().inflate(resource, menu);
+
         return true;
     }
 
@@ -175,7 +186,8 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == getResource("action_settings", "id")) {
+            Log.d(TAG, "settings called");
 //            Intent intent = new Intent(this, ExportActivity.class);
 //            startActivity(intent);
             return true;

@@ -51,19 +51,19 @@
     .end annotation
 
     .prologue
-    .line 133
+    .line 136
     .local p3, "trackIds":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/Long;>;"
     iput-object p1, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter$ChooseTrackClickListener;->this$0:Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 134
+    .line 137
     iput-object p2, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter$ChooseTrackClickListener;->starter:Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;
 
-    .line 135
+    .line 138
     iput-object p3, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter$ChooseTrackClickListener;->trackIds:Ljava/util/ArrayList;
 
-    .line 136
+    .line 139
     return-void
 .end method
 
@@ -75,64 +75,49 @@
     .param p2, "i"    # I
 
     .prologue
-    .line 139
-    iget-object v2, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter$ChooseTrackClickListener;->trackIds:Ljava/util/ArrayList;
+    .line 142
+    iget-object v1, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter$ChooseTrackClickListener;->trackIds:Ljava/util/ArrayList;
 
-    invoke-virtual {v2, p2}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+    invoke-virtual {v1, p2}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
 
-    move-result-object v1
+    move-result-object v0
 
-    check-cast v1, Ljava/lang/Long;
+    check-cast v0, Ljava/lang/Long;
 
-    .line 140
-    .local v1, "trackId":Ljava/lang/Long;
-    invoke-virtual {v1}, Ljava/lang/Long;->longValue()J
+    .line 143
+    .local v0, "trackId":Ljava/lang/Long;
+    invoke-virtual {v0}, Ljava/lang/Long;->longValue()J
 
     move-result-wide v2
 
     const-wide/16 v4, 0x0
 
-    cmp-long v2, v2, v4
+    cmp-long v1, v2, v4
 
-    if-nez v2, :cond_29
-
-    .line 141
-    new-instance v0, Landroid/content/Intent;
-
-    iget-object v2, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter$ChooseTrackClickListener;->this$0:Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;
-
-    invoke-static {v2}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;->access$000(Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;)Landroid/app/Activity;
-
-    move-result-object v2
-
-    const-class v3, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/SettingsActivity;
-
-    invoke-direct {v0, v2, v3}, Landroid/content/Intent;-><init>(Landroid/content/Context;Ljava/lang/Class;)V
-
-    .line 142
-    .local v0, "intent":Landroid/content/Intent;
-    iget-object v2, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter$ChooseTrackClickListener;->this$0:Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;
-
-    invoke-static {v2}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;->access$000(Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;)Landroid/app/Activity;
-
-    move-result-object v2
-
-    invoke-virtual {v2, v0}, Landroid/app/Activity;->startActivity(Landroid/content/Intent;)V
+    if-nez v1, :cond_1b
 
     .line 146
-    .end local v0    # "intent":Landroid/content/Intent;
-    :goto_28
+    iget-object v1, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter$ChooseTrackClickListener;->this$0:Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;
+
+    const-string v2, "Sorry, settings screen doesn\'t implemented yet"
+
+    const/4 v3, 0x0
+
+    invoke-virtual {v1, v2, v3}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;->showToast(Ljava/lang/String;I)V
+
+    .line 150
+    :goto_1a
     return-void
 
-    .line 144
-    :cond_29
-    iget-object v2, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter$ChooseTrackClickListener;->starter:Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;
+    .line 148
+    :cond_1b
+    iget-object v1, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter$ChooseTrackClickListener;->starter:Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;
 
-    invoke-virtual {v1}, Ljava/lang/Long;->longValue()J
+    invoke-virtual {v0}, Ljava/lang/Long;->longValue()J
 
-    move-result-wide v4
+    move-result-wide v2
 
-    invoke-virtual {v2, v4, v5}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;->readRawDataWithId(J)V
+    invoke-virtual {v1, v2, v3}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;->readRawDataWithId(J)V
 
-    goto :goto_28
+    goto :goto_1a
 .end method

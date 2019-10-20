@@ -31,10 +31,10 @@
     .param p2, "columnValue"    # Ljava/lang/String;
 
     .prologue
-    .line 123
+    .line 127
     if-eqz p2, :cond_c
 
-    .line 124
+    .line 128
     const-string v0, "TRACKID"
 
     invoke-virtual {p1, v0}, Ljava/lang/String;->equalsIgnoreCase(Ljava/lang/String;)Z
@@ -43,15 +43,15 @@
 
     if-eqz v0, :cond_d
 
-    .line 125
+    .line 129
     iput-object p2, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;->startTime:Ljava/lang/String;
 
-    .line 152
+    .line 156
     :cond_c
     :goto_c
     return-void
 
-    .line 126
+    .line 130
     :cond_d
     const-string v0, "ENDTIME"
 
@@ -61,12 +61,12 @@
 
     if-eqz v0, :cond_18
 
-    .line 127
+    .line 131
     iput-object p2, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;->endTime:Ljava/lang/String;
 
     goto :goto_c
 
-    .line 128
+    .line 132
     :cond_18
     const-string v0, "COSTTIME"
 
@@ -76,12 +76,12 @@
 
     if-eqz v0, :cond_23
 
-    .line 129
+    .line 133
     iput-object p2, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;->costTime:Ljava/lang/String;
 
     goto :goto_c
 
-    .line 130
+    .line 134
     :cond_23
     const-string v0, "SIZE"
 
@@ -91,12 +91,12 @@
 
     if-eqz v0, :cond_2e
 
-    .line 131
+    .line 135
     iput-object p2, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;->size:Ljava/lang/String;
 
     goto :goto_c
 
-    .line 132
+    .line 136
     :cond_2e
     const-string v0, "TYPE"
 
@@ -106,12 +106,12 @@
 
     if-eqz v0, :cond_39
 
-    .line 133
+    .line 137
     iput-object p2, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;->activityType:Ljava/lang/String;
 
     goto :goto_c
 
-    .line 134
+    .line 138
     :cond_39
     const-string v0, "DISTANCE"
 
@@ -121,12 +121,12 @@
 
     if-eqz v0, :cond_44
 
-    .line 135
+    .line 139
     iput-object p2, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;->distance:Ljava/lang/String;
 
     goto :goto_c
 
-    .line 136
+    .line 140
     :cond_44
     const-string v0, "BULKLL"
 
@@ -136,12 +136,12 @@
 
     if-eqz v0, :cond_4f
 
-    .line 137
+    .line 141
     iput-object p2, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;->BULKLL:Ljava/lang/String;
 
     goto :goto_c
 
-    .line 138
+    .line 142
     :cond_4f
     const-string v0, "BULKGAIT"
 
@@ -151,12 +151,12 @@
 
     if-eqz v0, :cond_5a
 
-    .line 139
+    .line 143
     iput-object p2, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;->BULKGAIT:Ljava/lang/String;
 
     goto :goto_c
 
-    .line 140
+    .line 144
     :cond_5a
     const-string v0, "BULKAL"
 
@@ -166,12 +166,12 @@
 
     if-eqz v0, :cond_65
 
-    .line 141
+    .line 145
     iput-object p2, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;->BULKAL:Ljava/lang/String;
 
     goto :goto_c
 
-    .line 142
+    .line 146
     :cond_65
     const-string v0, "BULKTIME"
 
@@ -181,12 +181,12 @@
 
     if-eqz v0, :cond_70
 
-    .line 143
+    .line 147
     iput-object p2, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;->BULKTIME:Ljava/lang/String;
 
     goto :goto_c
 
-    .line 144
+    .line 148
     :cond_70
     const-string v0, "BULKHR"
 
@@ -196,7 +196,7 @@
 
     if-eqz v0, :cond_83
 
-    .line 145
+    .line 149
     const-string v0, ";,"
 
     const-string v1, ";1,"
@@ -209,7 +209,7 @@
 
     goto :goto_c
 
-    .line 146
+    .line 150
     :cond_83
     const-string v0, "BULKPACE"
 
@@ -219,12 +219,12 @@
 
     if-eqz v0, :cond_8f
 
-    .line 147
+    .line 151
     iput-object p2, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;->BULKPACE:Ljava/lang/String;
 
     goto/16 :goto_c
 
-    .line 148
+    .line 152
     :cond_8f
     const-string v0, "BULKFLAG"
 
@@ -234,7 +234,7 @@
 
     if-eqz v0, :cond_c
 
-    .line 149
+    .line 153
     iput-object p2, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;->BULKFLAG:Ljava/lang/String;
 
     goto/16 :goto_c
@@ -251,12 +251,12 @@
 
     const/4 v5, 0x0
 
-    .line 96
+    .line 100
     new-instance v3, Ljava/io/File;
 
     invoke-direct {v3, p1}, Ljava/io/File;-><init>(Ljava/lang/String;)V
 
-    .line 98
+    .line 102
     .local v3, "path":Ljava/io/File;
     const-string v6, "."
 
@@ -266,25 +266,25 @@
 
     if-eqz v6, :cond_1d
 
-    .line 100
+    .line 104
     new-instance v0, Ljava/io/File;
 
     invoke-direct {v0, p1}, Ljava/io/File;-><init>(Ljava/lang/String;)V
 
-    .line 101
+    .line 105
     .local v0, "file":Ljava/io/File;
     invoke-virtual {v0}, Ljava/io/File;->getParent()Ljava/lang/String;
 
     move-result-object v2
 
-    .line 102
+    .line 106
     .local v2, "parent":Ljava/lang/String;
     new-instance v3, Ljava/io/File;
 
     .end local v3    # "path":Ljava/io/File;
     invoke-direct {v3, v2}, Ljava/io/File;-><init>(Ljava/lang/String;)V
 
-    .line 105
+    .line 109
     .end local v0    # "file":Ljava/io/File;
     .end local v2    # "parent":Ljava/lang/String;
     .restart local v3    # "path":Ljava/io/File;
@@ -295,7 +295,7 @@
 
     if-eqz v6, :cond_3e
 
-    .line 106
+    .line 110
     new-array v6, v4, [Ljava/lang/String;
 
     new-instance v7, Ljava/lang/StringBuilder;
@@ -320,11 +320,11 @@
 
     invoke-virtual {p0, v6}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/Starter;->log([Ljava/lang/String;)Z
 
-    .line 119
+    .line 123
     :goto_3d
     return v4
 
-    .line 109
+    .line 113
     :cond_3e
     new-array v6, v4, [Ljava/lang/String;
 
@@ -350,14 +350,14 @@
 
     invoke-virtual {p0, v6}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/Starter;->log([Ljava/lang/String;)Z
 
-    .line 110
+    .line 114
     invoke-virtual {v3}, Ljava/io/File;->mkdirs()Z
 
     move-result v6
 
     if-eqz v6, :cond_79
 
-    .line 111
+    .line 115
     new-array v6, v4, [Ljava/lang/String;
 
     new-instance v7, Ljava/lang/StringBuilder;
@@ -384,7 +384,7 @@
 
     goto :goto_3d
 
-    .line 114
+    .line 118
     :cond_79
     new-instance v6, Ljava/lang/StringBuilder;
 
@@ -404,7 +404,7 @@
 
     move-result-object v1
 
-    .line 115
+    .line 119
     .local v1, "msg":Ljava/lang/String;
     new-array v4, v4, [Ljava/lang/String;
 
@@ -412,12 +412,12 @@
 
     invoke-virtual {p0, v4}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/Starter;->log([Ljava/lang/String;)Z
 
-    .line 116
+    .line 120
     invoke-virtual {p0, v1, v5}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/Starter;->showToast(Ljava/lang/String;I)V
 
     move v4, v5
 
-    .line 119
+    .line 123
     goto :goto_3d
 .end method
 
@@ -440,15 +440,15 @@
     .param p2, "e"    # Ljava/lang/Exception;
 
     .prologue
-    .line 72
+    .line 76
     sget-object v0, Ljava/lang/System;->out:Ljava/io/PrintStream;
 
     invoke-virtual {v0, p1}, Ljava/io/PrintStream;->println(Ljava/lang/String;)V
 
-    .line 73
+    .line 77
     invoke-virtual {p2}, Ljava/lang/Exception;->printStackTrace()V
 
-    .line 74
+    .line 78
     const/4 v0, 0x1
 
     return v0
@@ -485,7 +485,7 @@
     .param p2, "length"    # I
 
     .prologue
-    .line 80
+    .line 84
     return-void
 .end method
 
@@ -538,12 +538,15 @@
     const/4 v6, 0x0
 
     :goto_20
-    if-ge v6, v7, :cond_32
+    if-ge v6, v7, :cond_38
 
     aget-object v0, p1, v6
 
     .line 65
     .local v0, "arg":Ljava/lang/String;
+    if-eqz v0, :cond_34
+
+    .line 66
     const-string v8, "\n"
 
     const-string v9, " @ "
@@ -552,19 +555,26 @@
 
     move-result-object v3
 
-    .line 66
+    .line 67
     .local v3, "replace":Ljava/lang/String;
     invoke-virtual {v5, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 64
+    .end local v3    # "replace":Ljava/lang/String;
+    :goto_31
     add-int/lit8 v6, v6, 0x1
 
     goto :goto_20
 
-    .line 68
+    .line 69
+    :cond_34
+    invoke-virtual {v5, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    goto :goto_31
+
+    .line 72
     .end local v0    # "arg":Ljava/lang/String;
-    .end local v3    # "replace":Ljava/lang/String;
-    :cond_32
+    :cond_38
     invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v6
@@ -578,10 +588,10 @@
     .param p2, "fileName"    # Ljava/lang/String;
 
     .prologue
-    .line 83
+    .line 87
     invoke-virtual {p0, p2}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/Starter;->checkIfPathExistAndCreate(Ljava/lang/String;)Z
 
-    .line 85
+    .line 89
     :try_start_3
     new-instance v1, Ljava/io/FileWriter;
 
@@ -592,17 +602,17 @@
     .local v1, "fileWriter":Ljava/io/FileWriter;
     const/4 v4, 0x0
 
-    .line 86
+    .line 90
     :try_start_9
     invoke-virtual {v1, p1}, Ljava/io/FileWriter;->write(Ljava/lang/String;)V
     :try_end_c
     .catch Ljava/lang/Throwable; {:try_start_9 .. :try_end_c} :catch_24
     .catchall {:try_start_9 .. :try_end_c} :catchall_26
 
-    .line 87
+    .line 91
     const/4 v2, 0x1
 
-    .line 88
+    .line 92
     .local v2, "result":Z
     if-eqz v1, :cond_14
 
@@ -614,13 +624,13 @@
     .catch Ljava/lang/Throwable; {:try_start_11 .. :try_end_14} :catch_15
     .catch Ljava/io/IOException; {:try_start_11 .. :try_end_14} :catch_1a
 
-    .line 92
+    .line 96
     .end local v1    # "fileWriter":Ljava/io/FileWriter;
     :cond_14
     :goto_14
     return v2
 
-    .line 88
+    .line 92
     .restart local v1    # "fileWriter":Ljava/io/FileWriter;
     :catch_15
     move-exception v3
@@ -637,17 +647,17 @@
     :catch_1a
     move-exception v0
 
-    .line 89
+    .line 93
     .local v0, "ex":Ljava/io/IOException;
     invoke-virtual {v0}, Ljava/io/IOException;->printStackTrace()V
 
-    .line 90
+    .line 94
     const/4 v2, 0x0
 
     .restart local v2    # "result":Z
     goto :goto_14
 
-    .line 88
+    .line 92
     .end local v0    # "ex":Ljava/io/IOException;
     .restart local v1    # "fileWriter":Ljava/io/FileWriter;
     :cond_20
@@ -658,7 +668,7 @@
 
     goto :goto_14
 
-    .line 85
+    .line 89
     .end local v2    # "result":Z
     :catch_24
     move-exception v4
@@ -668,7 +678,7 @@
     :try_end_26
     .catchall {:try_start_25 .. :try_end_26} :catchall_26
 
-    .line 88
+    .line 92
     :catchall_26
     move-exception v3
 

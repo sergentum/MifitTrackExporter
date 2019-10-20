@@ -12,7 +12,7 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
-import cn.com.smartdevices.bracelet.gps.ui.sport.detail.SettingsActivity;
+//import cn.com.smartdevices.bracelet.gps.ui.sport.detail.SettingsActivity;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.Model.TrackHeader;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.RawData.QueryData;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.TrackExporter;
@@ -36,11 +36,12 @@ public class MifitStarter extends Starter {
         this.activity = activity;
         TrackExporter.DEVICE_PATH = Environment.getExternalStorageDirectory().getPath() + "/";
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
-        TrackExporter.FILE_FORMAT = sp.getString("export_format", null);
+        TrackExporter.FILE_FORMAT = sp.getString("export_format", "");
         TrackExporter.debug = sp.getBoolean("debug", false);
 
         // TODO: 2019-04-23 add ru lang
         String language = Locale.getDefault().getLanguage();
+        log("Locale.getDefault().getLanguage(): ", language);
 
         if (checkFilePath()) {
             dbPath = getDbPath();
@@ -51,11 +52,10 @@ public class MifitStarter extends Starter {
     }
 
     @Override
-    public Map<Long, TrackHeader> loadTrackHeadersFromDb() {
-        Map<Long, TrackHeader> trackHeaderMap = new TreeMap<>();
+    public TreeMap<Long, TrackHeader> loadTrackHeadersFromDb() {
+        TreeMap<Long, TrackHeader> trackHeaderMap = new TreeMap<>();
         if (dbPath == null) {
             Toast.makeText(activity, "database not found", Toast.LENGTH_SHORT).show();
-            return trackHeaderMap;
         } else {
             try (
                     SQLiteDatabase sqLiteDatabase = activity.openOrCreateDatabase(dbPath, Context.MODE_PRIVATE, null);
@@ -90,23 +90,31 @@ public class MifitStarter extends Starter {
             } catch (Exception e) {
                 log("showTracks():" + e.getMessage());
             }
-            return trackHeaderMap;
         }
+        log("trackHeaderMap.size(): " + trackHeaderMap.size());
+        return trackHeaderMap;
     }
 
-    @Override
     public void showTracks() {
-        Map<Long, TrackHeader> trackHeaderMap = loadTrackHeadersFromDb();
+        TreeMap<Long, TrackHeader> trackHeaderMap = loadTrackHeadersFromDb();
 
+        boolean settingsScreenExist = false;
         ArrayList<Long> trackIds = new ArrayList<>();
-        // this item means call settings
-        trackIds.add(0L);
-        String[] trackDesc = new String[trackHeaderMap.size() + 1];
-        trackDesc[0] = "-- export settings --";
+        String[] trackDesc;
+        Set<Map.Entry<Long, TrackHeader>> entries = trackHeaderMap.descendingMap().entrySet();
+        int i = 0;
 
-        Set<Map.Entry<Long, TrackHeader>> entries =
-                ((TreeMap<Long, TrackHeader>) trackHeaderMap).descendingMap().entrySet();
-        int i = 1;
+        if (settingsScreenExist) {
+            // this item means call settings
+            trackIds.add(0L);
+            trackDesc = new String[trackHeaderMap.size() + 1];
+            trackDesc[0] = "-- export settings --";
+
+            i ++;
+        } else {
+            trackDesc = new String[trackHeaderMap.size()];
+        }
+
         for (Map.Entry<Long, TrackHeader> entry : entries) {
             trackIds.add(entry.getKey());
             trackDesc[i] = entry.getValue().toString();
@@ -133,8 +141,9 @@ public class MifitStarter extends Starter {
         public void onClick(DialogInterface dialogInterface, int i) {
             Long trackId = trackIds.get(i);
             if (trackId == 0) {
-                Intent intent = new Intent(MifitStarter.this.activity, SettingsActivity.class);
-                MifitStarter.this.activity.startActivity(intent);
+//                Intent intent = new Intent(MifitStarter.this.activity, SettingsActivity.class);
+//                MifitStarter.this.activity.startActivity(intent);
+                showToast("Sorry, settings screen doesn't implemented yet", 0);
             } else {
                 starter.readRawDataWithId(trackId);
             }
