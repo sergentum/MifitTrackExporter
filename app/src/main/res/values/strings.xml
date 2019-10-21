@@ -1,12 +1,4 @@
 <resources>
     <string name="app_name">MifitTrackExporter</string>
     <string name="action_settings">Settings</string>
-    <string-array name="export_format_entries">
-        <item>gpx</item>
-        <item>tcx</item>
-    </string-array>
-    <string-array name="export_format_values">
-        <item>.gpx</item>
-        <item>.tcx</item>
-    </string-array>
 </resources>

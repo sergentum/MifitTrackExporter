@@ -12,7 +12,8 @@
 
     <CheckBoxPreference
             android:key="debug"
-            android:summary="Debug"
+            android:title="Debug"
+            android:summary="Save raw data (required more space)"
             android:text="Will take additional place on the storage"/>
 
     <ListPreference
@@ -22,22 +23,22 @@
             android:entries="@array/export_format_entries"
             android:entryValues="@array/export_format_values"/>
 
-    <EditTextPreference
-            android:key="endomondo_login"
-            android:title="Endomondo login"
-            android:summary="Account to sync your activity"/>
+<!--    <EditTextPreference-->
+<!--            android:key="endomondo_login"-->
+<!--            android:title="Endomondo login"-->
+<!--            android:summary="Account to sync your activity"/>-->
 
-    <EditTextPreference
-            android:key="endomondo_password"
-            android:ems="10"
-            android:title="Endomondo password"
-            android:summary="Password to your endomondo account"
-            android:inputType="textPassword"/>
+<!--    <EditTextPreference-->
+<!--            android:key="endomondo_password"-->
+<!--            android:ems="10"-->
+<!--            android:title="Endomondo password"-->
+<!--            android:summary="Password to your endomondo account"-->
+<!--            android:inputType="textPassword"/>-->
 
-    <SwitchPreference
-            android:key="endomondo_check"
-            android:title="Endomondo syncronization"
-            android:summary="Check input and toggle sync"
-            android:text="Check connection"/>
+<!--    <SwitchPreference-->
+<!--            android:key="endomondo_check"-->
+<!--            android:title="Endomondo syncronization"-->
+<!--            android:summary="Authorize and enable sync"-->
+<!--            android:text="Check connection"/>-->
 
 </PreferenceScreen>

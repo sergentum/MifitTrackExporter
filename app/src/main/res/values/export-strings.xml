@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="export_format_entries">
+        <item>gpx</item>
+        <item>tcx</item>
+    </string-array>
+    <string-array name="export_format_values">
+        <item>.gpx</item>
+        <item>.tcx</item>
+    </string-array>
+</resources>
