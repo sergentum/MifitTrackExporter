@@ -13,6 +13,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 //import cn.com.smartdevices.bracelet.gps.ui.sport.detail.SettingsActivity;
+import cn.com.smartdevices.bracelet.gps.ui.sport.detail.SettingsActivity;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.Model.TrackHeader;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.RawData.QueryData;
 import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.core.TrackExporter;
@@ -98,7 +99,7 @@ public class MifitStarter extends Starter {
     public void showTracks() {
         TreeMap<Long, TrackHeader> trackHeaderMap = loadTrackHeadersFromDb();
 
-        boolean settingsScreenExist = false;
+        boolean settingsScreenExist = true;
         ArrayList<Long> trackIds = new ArrayList<>();
         String[] trackDesc;
         Set<Map.Entry<Long, TrackHeader>> entries = trackHeaderMap.descendingMap().entrySet();
@@ -141,9 +142,9 @@ public class MifitStarter extends Starter {
         public void onClick(DialogInterface dialogInterface, int i) {
             Long trackId = trackIds.get(i);
             if (trackId == 0) {
-//                Intent intent = new Intent(MifitStarter.this.activity, SettingsActivity.class);
-//                MifitStarter.this.activity.startActivity(intent);
-                showToast("Sorry, settings screen doesn't implemented yet", 0);
+                Intent intent = new Intent(MifitStarter.this.activity, SettingsActivity.class);
+                MifitStarter.this.activity.startActivity(intent);
+//                showToast("Sorry, settings screen doesn't implemented yet", 0);
             } else {
                 starter.readRawDataWithId(trackId);
             }

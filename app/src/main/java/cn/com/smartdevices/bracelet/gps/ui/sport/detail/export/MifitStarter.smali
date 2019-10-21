@@ -25,134 +25,195 @@
 
 # direct methods
 .method public constructor <init>(Landroid/app/Activity;)V
-    .registers 7
+    .registers 10
     .param p1, "activity"    # Landroid/app/Activity;
 
     .prologue
-    const/4 v4, 0x0
-
-    .line 35
-    invoke-direct {p0}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/Starter;-><init>()V
+    const/4 v7, 0x0
 
     .line 36
-    iput-object p1, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;->activity:Landroid/app/Activity;
+    invoke-direct {p0}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/Starter;-><init>()V
 
     .line 37
-    new-instance v2, Ljava/lang/StringBuilder;
+    iput-object p1, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;->activity:Landroid/app/Activity;
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    .line 38
+    new-instance v4, Ljava/lang/StringBuilder;
+
+    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
     invoke-static {}, Landroid/os/Environment;->getExternalStorageDirectory()Ljava/io/File;
 
-    move-result-object v3
+    move-result-object v5
 
-    invoke-virtual {v3}, Ljava/io/File;->getPath()Ljava/lang/String;
+    invoke-virtual {v5}, Ljava/io/File;->getPath()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v5
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    move-result-object v2
+    move-result-object v4
 
-    const-string v3, "/"
+    const-string v5, "/"
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    move-result-object v2
+    move-result-object v4
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v4
 
-    sput-object v2, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/TrackExporter;->DEVICE_PATH:Ljava/lang/String;
+    sput-object v4, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/TrackExporter;->DEVICE_PATH:Ljava/lang/String;
 
-    .line 38
+    .line 39
     invoke-static {p1}, Landroid/preference/PreferenceManager;->getDefaultSharedPreferences(Landroid/content/Context;)Landroid/content/SharedPreferences;
+
+    move-result-object v3
+
+    .line 40
+    .local v3, "sp":Landroid/content/SharedPreferences;
+    const-string v4, "export_format"
+
+    const-string v5, ""
+
+    invoke-interface {v3, v4, v5}, Landroid/content/SharedPreferences;->getString(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 
     move-result-object v1
 
-    .line 39
-    .local v1, "sp":Landroid/content/SharedPreferences;
-    const-string v2, "export_format"
+    .line 41
+    .local v1, "export_format":Ljava/lang/String;
+    const-string v4, "mifit"
 
-    const-string v3, ""
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    invoke-interface {v1, v2, v3}, Landroid/content/SharedPreferences;->getString(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    move-result-object v2
+    const-string v6, "export_format: "
 
-    sput-object v2, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/TrackExporter;->FILE_FORMAT:Ljava/lang/String;
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 40
-    const-string v2, "debug"
+    move-result-object v5
 
-    invoke-interface {v1, v2, v4}, Landroid/content/SharedPreferences;->getBoolean(Ljava/lang/String;Z)Z
+    invoke-virtual {v5, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    move-result v2
+    move-result-object v5
 
-    sput-boolean v2, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/TrackExporter;->debug:Z
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    .line 43
-    invoke-static {}, Ljava/util/Locale;->getDefault()Ljava/util/Locale;
+    move-result-object v5
 
-    move-result-object v2
+    invoke-static {v4, v5}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    invoke-virtual {v2}, Ljava/util/Locale;->getLanguage()Ljava/lang/String;
-
-    move-result-object v0
+    .line 42
+    sput-object v1, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/TrackExporter;->FILE_FORMAT:Ljava/lang/String;
 
     .line 44
-    .local v0, "language":Ljava/lang/String;
-    const/4 v2, 0x2
+    const-string v4, "debug"
 
-    new-array v2, v2, [Ljava/lang/String;
+    invoke-interface {v3, v4, v7}, Landroid/content/SharedPreferences;->getBoolean(Ljava/lang/String;Z)Z
 
-    const-string v3, "Locale.getDefault().getLanguage(): "
+    move-result v0
 
-    aput-object v3, v2, v4
-
-    const/4 v3, 0x1
-
-    aput-object v0, v2, v3
-
-    invoke-virtual {p0, v2}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;->log([Ljava/lang/String;)Z
+    .line 45
+    .local v0, "debug":Z
+    sput-boolean v0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/TrackExporter;->debug:Z
 
     .line 46
-    invoke-direct {p0}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;->checkFilePath()Z
+    const-string v4, "mifit"
 
-    move-result v2
+    new-instance v5, Ljava/lang/StringBuilder;
 
-    if-eqz v2, :cond_5b
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    .line 47
-    invoke-direct {p0}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;->getDbPath()Ljava/lang/String;
+    const-string v6, "debug: "
 
-    move-result-object v2
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iput-object v2, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;->dbPath:Ljava/lang/String;
+    move-result-object v5
 
-    .line 52
-    :goto_5a
-    return-void
+    invoke-virtual {v5, v0}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+
+    move-result-object v5
+
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v5
+
+    invoke-static {v4, v5}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 49
-    :cond_5b
-    const-string v2, "can\'t get access to filesystem"
+    invoke-static {}, Ljava/util/Locale;->getDefault()Ljava/util/Locale;
 
-    invoke-static {p1, v2, v4}, Landroid/widget/Toast;->makeText(Landroid/content/Context;Ljava/lang/CharSequence;I)Landroid/widget/Toast;
+    move-result-object v4
+
+    invoke-virtual {v4}, Ljava/util/Locale;->getLanguage()Ljava/lang/String;
 
     move-result-object v2
 
-    invoke-virtual {v2}, Landroid/widget/Toast;->show()V
-
     .line 50
-    const-string v2, "mifit"
+    .local v2, "language":Ljava/lang/String;
+    const/4 v4, 0x2
 
-    const-string v3, "can\'t get access to filesystem"
+    new-array v4, v4, [Ljava/lang/String;
 
-    invoke-static {v2, v3}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    const-string v5, "Locale.getDefault().getLanguage(): "
 
-    goto :goto_5a
+    aput-object v5, v4, v7
+
+    const/4 v5, 0x1
+
+    aput-object v2, v4, v5
+
+    invoke-virtual {p0, v4}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;->log([Ljava/lang/String;)Z
+
+    .line 52
+    invoke-direct {p0}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;->checkFilePath()Z
+
+    move-result v4
+
+    if-eqz v4, :cond_8b
+
+    .line 53
+    invoke-direct {p0}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;->getDbPath()Ljava/lang/String;
+
+    move-result-object v4
+
+    iput-object v4, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;->dbPath:Ljava/lang/String;
+
+    .line 58
+    :goto_8a
+    return-void
+
+    .line 55
+    :cond_8b
+    const-string v4, "can\'t get access to filesystem"
+
+    invoke-static {p1, v4, v7}, Landroid/widget/Toast;->makeText(Landroid/content/Context;Ljava/lang/CharSequence;I)Landroid/widget/Toast;
+
+    move-result-object v4
+
+    invoke-virtual {v4}, Landroid/widget/Toast;->show()V
+
+    .line 56
+    const-string v4, "mifit"
+
+    const-string v5, "can\'t get access to filesystem"
+
+    invoke-static {v4, v5}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+
+    goto :goto_8a
+.end method
+
+.method static synthetic access$000(Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;)Landroid/app/Activity;
+    .registers 2
+    .param p0, "x0"    # Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;
+
+    .prologue
+    .line 26
+    iget-object v0, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;->activity:Landroid/app/Activity;
+
+    return-object v0
 .end method
 
 .method private checkExtDb()Ljava/lang/String;
@@ -163,21 +224,21 @@
 
     const/4 v8, 0x0
 
-    .line 187
+    .line 193
     invoke-static {}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/TrackExporter;->getFullPath()Ljava/lang/String;
 
     move-result-object v5
 
-    .line 188
+    .line 194
     .local v5, "mifit_dir_path":Ljava/lang/String;
     invoke-virtual {p0, v5}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;->checkIfPathExistAndCreate(Ljava/lang/String;)Z
 
-    .line 189
+    .line 195
     new-instance v4, Ljava/io/File;
 
     invoke-direct {v4, v5}, Ljava/io/File;-><init>(Ljava/lang/String;)V
 
-    .line 190
+    .line 196
     .local v4, "mifit_dir":Ljava/io/File;
     new-array v7, v12, [Ljava/lang/String;
 
@@ -203,20 +264,20 @@
 
     invoke-virtual {p0, v7}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;->log([Ljava/lang/String;)Z
 
-    .line 191
+    .line 197
     invoke-virtual {v4}, Ljava/io/File;->exists()Z
 
     move-result v7
 
     if-eqz v7, :cond_a9
 
-    .line 193
+    .line 199
     :try_start_2e
     invoke-virtual {v4}, Ljava/io/File;->list()[Ljava/lang/String;
 
     move-result-object v3
 
-    .line 194
+    .line 200
     .local v3, "list":[Ljava/lang/String;
     array-length v9, v3
 
@@ -227,13 +288,13 @@
 
     aget-object v2, v3, v7
 
-    .line 195
+    .line 201
     .local v2, "fileName":Ljava/lang/String;
     new-instance v0, Ljava/io/File;
 
     invoke-direct {v0, v5, v2}, Ljava/io/File;-><init>(Ljava/lang/String;Ljava/lang/String;)V
 
-    .line 196
+    .line 202
     .local v0, "curFile":Ljava/io/File;
     invoke-virtual {v0}, Ljava/io/File;->isDirectory()Z
 
@@ -253,12 +314,12 @@
 
     if-eqz v10, :cond_87
 
-    .line 197
+    .line 203
     invoke-virtual {v0}, Ljava/io/File;->getPath()Ljava/lang/String;
 
     move-result-object v6
 
-    .line 198
+    .line 204
     .local v6, "result":Ljava/lang/String;
     const/4 v7, 0x1
 
@@ -288,7 +349,7 @@
 
     invoke-virtual {p0, v7}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;->log([Ljava/lang/String;)Z
 
-    .line 199
+    .line 205
     new-instance v7, Ljava/lang/StringBuilder;
 
     invoke-direct {v7}, Ljava/lang/StringBuilder;-><init>()V
@@ -313,7 +374,7 @@
     :try_end_86
     .catch Ljava/lang/Exception; {:try_start_2e .. :try_end_86} :catch_8a
 
-    .line 208
+    .line 214
     .end local v0    # "curFile":Ljava/io/File;
     .end local v2    # "fileName":Ljava/lang/String;
     .end local v3    # "list":[Ljava/lang/String;
@@ -321,7 +382,7 @@
     :goto_86
     return-object v6
 
-    .line 194
+    .line 200
     .restart local v0    # "curFile":Ljava/io/File;
     .restart local v2    # "fileName":Ljava/lang/String;
     .restart local v3    # "list":[Ljava/lang/String;
@@ -330,14 +391,14 @@
 
     goto :goto_34
 
-    .line 203
+    .line 209
     .end local v0    # "curFile":Ljava/io/File;
     .end local v2    # "fileName":Ljava/lang/String;
     .end local v3    # "list":[Ljava/lang/String;
     :catch_8a
     move-exception v1
 
-    .line 204
+    .line 210
     .local v1, "ex":Ljava/lang/Exception;
     new-array v7, v12, [Ljava/lang/String;
 
@@ -367,7 +428,7 @@
 
     invoke-virtual {p0, v7}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;->log([Ljava/lang/String;)Z
 
-    .line 207
+    .line 213
     .end local v1    # "ex":Ljava/lang/Exception;
     :cond_a9
     new-array v7, v12, [Ljava/lang/String;
@@ -378,7 +439,7 @@
 
     invoke-virtual {p0, v7}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;->log([Ljava/lang/String;)Z
 
-    .line 208
+    .line 214
     const/4 v6, 0x0
 
     goto :goto_86
@@ -390,12 +451,12 @@
     .prologue
     const/4 v1, 0x0
 
-    .line 245
+    .line 251
     invoke-static {}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/TrackExporter;->getDebugPath()Ljava/lang/String;
 
     move-result-object v0
 
-    .line 246
+    .line 252
     .local v0, "filePath":Ljava/lang/String;
     invoke-virtual {p0, v0}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;->checkIfPathExistAndCreate(Ljava/lang/String;)Z
 
@@ -403,7 +464,7 @@
 
     if-eqz v2, :cond_2b
 
-    .line 247
+    .line 253
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
@@ -424,7 +485,7 @@
 
     iput-object v2, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;->logFilePath:Ljava/lang/String;
 
-    .line 248
+    .line 254
     const/4 v2, 0x1
 
     new-array v2, v2, [Ljava/lang/String;
@@ -437,7 +498,7 @@
 
     move-result v1
 
-    .line 250
+    .line 256
     :cond_2b
     return v1
 .end method
@@ -448,7 +509,7 @@
     .prologue
     const/4 v6, 0x0
 
-    .line 235
+    .line 241
     iget-object v3, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;->activity:Landroid/app/Activity;
 
     const-string v4, "tmp.db"
@@ -459,27 +520,27 @@
 
     move-result-object v0
 
-    .line 236
+    .line 242
     .local v0, "sqLiteDatabase":Landroid/database/sqlite/SQLiteDatabase;
     const-string v3, "CREATE TABLE IF NOT EXISTS dummy (\"_id\"  INTEGER primary key autoincrement, \n  \"CALENDAR\" INTEGER )"
 
     invoke-virtual {v0, v3}, Landroid/database/sqlite/SQLiteDatabase;->execSQL(Ljava/lang/String;)V
 
-    .line 237
+    .line 243
     invoke-virtual {v0}, Landroid/database/sqlite/SQLiteDatabase;->getPath()Ljava/lang/String;
 
     move-result-object v2
 
-    .line 238
+    .line 244
     .local v2, "tmpDbPath":Ljava/lang/String;
     invoke-virtual {v0}, Landroid/database/sqlite/SQLiteDatabase;->close()V
 
-    .line 239
+    .line 245
     new-instance v1, Ljava/io/File;
 
     invoke-direct {v1, v2}, Ljava/io/File;-><init>(Ljava/lang/String;)V
 
-    .line 240
+    .line 246
     .local v1, "tmpDb":Ljava/io/File;
     const/4 v3, 0x1
 
@@ -511,7 +572,7 @@
 
     invoke-virtual {p0, v3}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;->log([Ljava/lang/String;)Z
 
-    .line 241
+    .line 247
     invoke-virtual {v1}, Ljava/io/File;->getParent()Ljava/lang/String;
 
     move-result-object v3
@@ -527,32 +588,32 @@
 
     const/4 v9, 0x0
 
-    .line 212
+    .line 218
     const-string v8, "^origin_db_[A-Za-z0-9]*$"
 
     invoke-static {v8}, Ljava/util/regex/Pattern;->compile(Ljava/lang/String;)Ljava/util/regex/Pattern;
 
     move-result-object v7
 
-    .line 214
+    .line 220
     .local v7, "pattern":Ljava/util/regex/Pattern;
     invoke-direct {p0}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;->dbPathFinder()Ljava/lang/String;
 
     move-result-object v5
 
-    .line 216
+    .line 222
     .local v5, "pathToDb":Ljava/lang/String;
     new-instance v2, Ljava/io/File;
 
     invoke-direct {v2, v5}, Ljava/io/File;-><init>(Ljava/lang/String;)V
 
-    .line 217
+    .line 223
     .local v2, "directory":Ljava/io/File;
     invoke-virtual {v2}, Ljava/io/File;->list()[Ljava/lang/String;
 
     move-result-object v4
 
-    .line 219
+    .line 225
     .local v4, "list":[Ljava/lang/String;
     array-length v10, v4
 
@@ -563,7 +624,7 @@
 
     aget-object v3, v4, v8
 
-    .line 220
+    .line 226
     .local v3, "file":Ljava/lang/String;
     invoke-virtual {v7, v3}, Ljava/util/regex/Pattern;->matcher(Ljava/lang/CharSequence;)Ljava/util/regex/Matcher;
 
@@ -573,7 +634,7 @@
 
     move-result v1
 
-    .line 221
+    .line 227
     .local v1, "dbFound":Z
     new-array v11, v14, [Ljava/lang/String;
 
@@ -609,21 +670,21 @@
 
     invoke-virtual {p0, v11}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;->log([Ljava/lang/String;)Z
 
-    .line 222
+    .line 228
     if-eqz v1, :cond_6d
 
-    .line 223
+    .line 229
     new-instance v0, Ljava/io/File;
 
     invoke-direct {v0, v5, v3}, Ljava/io/File;-><init>(Ljava/lang/String;Ljava/lang/String;)V
 
-    .line 224
+    .line 230
     .local v0, "dbFile":Ljava/io/File;
     invoke-virtual {v0}, Ljava/io/File;->getPath()Ljava/lang/String;
 
     move-result-object v6
 
-    .line 225
+    .line 231
     .local v6, "pathToOriginDb":Ljava/lang/String;
     new-array v8, v14, [Ljava/lang/String;
 
@@ -649,7 +710,7 @@
 
     invoke-virtual {p0, v8}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;->log([Ljava/lang/String;)Z
 
-    .line 231
+    .line 237
     .end local v0    # "dbFile":Ljava/io/File;
     .end local v1    # "dbFound":Z
     .end local v3    # "file":Ljava/lang/String;
@@ -657,7 +718,7 @@
     :goto_6c
     return-object v6
 
-    .line 219
+    .line 225
     .restart local v1    # "dbFound":Z
     .restart local v3    # "file":Ljava/lang/String;
     :cond_6d
@@ -665,7 +726,7 @@
 
     goto :goto_17
 
-    .line 230
+    .line 236
     .end local v1    # "dbFound":Z
     .end local v3    # "file":Ljava/lang/String;
     :cond_70
@@ -677,7 +738,7 @@
 
     invoke-virtual {p0, v8}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;->log([Ljava/lang/String;)Z
 
-    .line 231
+    .line 237
     const/4 v6, 0x0
 
     goto :goto_6c
@@ -687,21 +748,21 @@
     .registers 2
 
     .prologue
-    .line 178
+    .line 184
     invoke-direct {p0}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;->checkExtDb()Ljava/lang/String;
 
     move-result-object v0
 
-    .line 179
+    .line 185
     .local v0, "result":Ljava/lang/String;
     if-nez v0, :cond_a
 
-    .line 180
+    .line 186
     invoke-direct {p0}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;->findOriginDb()Ljava/lang/String;
 
     move-result-object v0
 
-    .line 182
+    .line 188
     :cond_a
     return-object v0
 .end method
@@ -712,7 +773,7 @@
     .registers 2
 
     .prologue
-    .line 25
+    .line 26
     invoke-virtual {p0}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;->loadTrackHeadersFromDb()Ljava/util/TreeMap;
 
     move-result-object v0
@@ -734,12 +795,12 @@
     .end annotation
 
     .prologue
-    .line 56
+    .line 62
     new-instance v14, Ljava/util/TreeMap;
 
     invoke-direct {v14}, Ljava/util/TreeMap;-><init>()V
 
-    .line 57
+    .line 63
     .local v14, "trackHeaderMap":Ljava/util/TreeMap;, "Ljava/util/TreeMap<Ljava/lang/Long;Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/Model$TrackHeader;>;"
     move-object/from16 v0, p0
 
@@ -747,7 +808,7 @@
 
     if-nez v15, :cond_42
 
-    .line 58
+    .line 64
     move-object/from16 v0, p0
 
     iget-object v15, v0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;->activity:Landroid/app/Activity;
@@ -766,7 +827,7 @@
 
     invoke-virtual {v15}, Landroid/widget/Toast;->show()V
 
-    .line 94
+    .line 100
     :cond_1e
     :goto_1e
     const/4 v15, 0x1
@@ -803,10 +864,10 @@
 
     invoke-virtual {v0, v15}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;->log([Ljava/lang/String;)Z
 
-    .line 95
+    .line 101
     return-object v14
 
-    .line 61
+    .line 67
     :cond_42
     :try_start_42
     move-object/from16 v0, p0
@@ -835,11 +896,11 @@
 
     move-result-object v10
 
-    .line 60
+    .line 66
     .local v10, "sqLiteDatabase":Landroid/database/sqlite/SQLiteDatabase;
     const/16 v19, 0x0
 
-    .line 62
+    .line 68
     :try_start_5c
     const-string v15, "   SELECT        TRACKRECORD.TRACKID,       TRACKDATA.TYPE,       TRACKRECORD.DISTANCE,       TRACKRECORD.COSTTIME       FROM TRACKDATA, TRACKRECORD       WHERE TRACKDATA.TRACKID = TRACKRECORD.TRACKID ;"
 
@@ -854,20 +915,20 @@
 
     move-result-object v4
 
-    .line 60
+    .line 66
     .local v4, "cursor":Landroid/database/Cursor;
     const/16 v18, 0x0
 
-    .line 64
+    .line 70
     :try_start_68
     invoke-interface {v4}, Landroid/database/Cursor;->moveToFirst()Z
 
-    .line 65
+    .line 71
     new-instance v12, Ljava/lang/StringBuilder;
 
     invoke-direct {v12}, Ljava/lang/StringBuilder;-><init>()V
 
-    .line 66
+    .line 72
     .local v12, "stringBuilder":Ljava/lang/StringBuilder;
     :goto_70
     invoke-interface {v4}, Landroid/database/Cursor;->isAfterLast()Z
@@ -876,7 +937,7 @@
 
     if-nez v15, :cond_12a
 
-    .line 67
+    .line 73
     const/4 v7, 0x0
 
     .local v7, "i":I
@@ -887,7 +948,7 @@
 
     if-ge v7, v15, :cond_af
 
-    .line 68
+    .line 74
     invoke-interface {v4, v7}, Landroid/database/Cursor;->getString(I)Ljava/lang/String;
 
     move-result-object v15
@@ -902,21 +963,21 @@
 
     invoke-virtual {v15, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 69
+    .line 75
     if-nez v7, :cond_ac
 
-    .line 70
+    .line 76
     invoke-interface {v4, v7}, Landroid/database/Cursor;->getString(I)Ljava/lang/String;
 
     move-result-object v11
 
-    .line 71
+    .line 77
     .local v11, "string":Ljava/lang/String;
     invoke-static {v11}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
 
     move-result-wide v8
 
-    .line 72
+    .line 78
     .local v8, "l":J
     new-instance v5, Ljava/util/Date;
 
@@ -928,7 +989,7 @@
 
     invoke-direct {v5, v0, v1}, Ljava/util/Date;-><init>(J)V
 
-    .line 73
+    .line 79
     .local v5, "date":Ljava/util/Date;
     invoke-virtual {v12, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
@@ -940,7 +1001,7 @@
 
     invoke-virtual {v15, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 67
+    .line 73
     .end local v5    # "date":Ljava/util/Date;
     .end local v8    # "l":J
     .end local v11    # "string":Ljava/lang/String;
@@ -949,18 +1010,18 @@
 
     goto :goto_77
 
-    .line 76
+    .line 82
     :cond_af
     const-string v15, "\n"
 
     invoke-virtual {v12, v15}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 78
+    .line 84
     new-instance v13, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/Model$TrackHeader;
 
     invoke-direct {v13}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/Model$TrackHeader;-><init>()V
 
-    .line 79
+    .line 85
     .local v13, "trackHeader":Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/Model$TrackHeader;
     const/4 v15, 0x0
 
@@ -968,13 +1029,13 @@
 
     move-result-wide v16
 
-    .line 80
+    .line 86
     .local v16, "trackId":J
     move-wide/from16 v0, v16
 
     iput-wide v0, v13, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/Model$TrackHeader;->id:J
 
-    .line 81
+    .line 87
     const/4 v15, 0x1
 
     invoke-interface {v4, v15}, Landroid/database/Cursor;->getInt(I)I
@@ -983,7 +1044,7 @@
 
     iput v15, v13, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/Model$TrackHeader;->type:I
 
-    .line 82
+    .line 88
     const/4 v15, 0x2
 
     invoke-interface {v4, v15}, Landroid/database/Cursor;->getInt(I)I
@@ -992,7 +1053,7 @@
 
     iput v15, v13, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/Model$TrackHeader;->distance:I
 
-    .line 83
+    .line 89
     const/4 v15, 0x3
 
     invoke-interface {v4, v15}, Landroid/database/Cursor;->getInt(I)I
@@ -1001,14 +1062,14 @@
 
     iput v15, v13, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/Model$TrackHeader;->duration:I
 
-    .line 84
+    .line 90
     invoke-static/range {v16 .. v17}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
 
     move-result-object v15
 
     invoke-virtual {v14, v15, v13}, Ljava/util/TreeMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 85
+    .line 91
     invoke-interface {v4}, Landroid/database/Cursor;->moveToNext()Z
     :try_end_e1
     .catch Ljava/lang/Throwable; {:try_start_68 .. :try_end_e1} :catch_e2
@@ -1016,7 +1077,7 @@
 
     goto :goto_70
 
-    .line 60
+    .line 66
     .end local v7    # "i":I
     .end local v12    # "stringBuilder":Ljava/lang/StringBuilder;
     .end local v13    # "trackHeader":Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/Model$TrackHeader;
@@ -1029,7 +1090,7 @@
     :try_end_e4
     .catchall {:try_start_e3 .. :try_end_e4} :catchall_e4
 
-    .line 90
+    .line 96
     :catchall_e4
     move-exception v18
 
@@ -1058,7 +1119,7 @@
     .catch Ljava/lang/Throwable; {:try_start_f2 .. :try_end_f3} :catch_f3
     .catchall {:try_start_f2 .. :try_end_f3} :catchall_15f
 
-    .line 60
+    .line 66
     .end local v4    # "cursor":Landroid/database/Cursor;
     :catch_f3
     move-exception v15
@@ -1068,7 +1129,7 @@
     :try_end_f5
     .catchall {:try_start_f4 .. :try_end_f5} :catchall_f5
 
-    .line 90
+    .line 96
     :catchall_f5
     move-exception v18
 
@@ -1100,7 +1161,7 @@
     :catch_104
     move-exception v6
 
-    .line 91
+    .line 97
     .local v6, "e":Ljava/lang/Exception;
     const/4 v15, 0x1
 
@@ -1138,7 +1199,7 @@
 
     goto/16 :goto_1e
 
-    .line 87
+    .line 93
     .end local v6    # "e":Ljava/lang/Exception;
     .restart local v4    # "cursor":Landroid/database/Cursor;
     .restart local v10    # "sqLiteDatabase":Landroid/database/sqlite/SQLiteDatabase;
@@ -1147,10 +1208,10 @@
     :try_start_12a
     invoke-interface {v4}, Landroid/database/Cursor;->close()V
 
-    .line 88
+    .line 94
     invoke-virtual {v10}, Landroid/database/sqlite/SQLiteDatabase;->close()V
 
-    .line 89
+    .line 95
     const/4 v15, 0x1
 
     new-array v15, v15, [Ljava/lang/String;
@@ -1170,7 +1231,7 @@
     .catch Ljava/lang/Throwable; {:try_start_12a .. :try_end_140} :catch_e2
     .catchall {:try_start_12a .. :try_end_140} :catchall_183
 
-    .line 90
+    .line 96
     if-eqz v4, :cond_147
 
     if-eqz v18, :cond_163
@@ -1290,12 +1351,12 @@
     .prologue
     const/4 v3, 0x1
 
-    .line 256
+    .line 262
     invoke-super {p0, p1}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/Starter;->stringArrayToString([Ljava/lang/String;)Ljava/lang/String;
 
     move-result-object v2
 
-    .line 257
+    .line 263
     .local v2, "s":Ljava/lang/String;
     :try_start_5
     new-instance v1, Ljava/io/FileWriter;
@@ -1311,22 +1372,22 @@
     .local v1, "fileWriter":Ljava/io/FileWriter;
     const/4 v4, 0x0
 
-    .line 258
+    .line 264
     :try_start_e
     const-string v5, "mifit"
 
     invoke-static {v5, v2}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 259
+    .line 265
     invoke-virtual {v1, v2}, Ljava/io/FileWriter;->write(Ljava/lang/String;)V
 
-    .line 260
+    .line 266
     invoke-virtual {v1}, Ljava/io/FileWriter;->flush()V
     :try_end_19
     .catch Ljava/lang/Throwable; {:try_start_e .. :try_end_19} :catch_49
     .catchall {:try_start_e .. :try_end_19} :catchall_60
 
-    .line 261
+    .line 267
     if-eqz v1, :cond_20
 
     if-eqz v4, :cond_45
@@ -1337,13 +1398,13 @@
     .catch Ljava/lang/Throwable; {:try_start_1d .. :try_end_20} :catch_21
     .catch Ljava/lang/Exception; {:try_start_1d .. :try_end_20} :catch_26
 
-    .line 265
+    .line 271
     .end local v1    # "fileWriter":Ljava/io/FileWriter;
     :cond_20
     :goto_20
     return v3
 
-    .line 261
+    .line 267
     .restart local v1    # "fileWriter":Ljava/io/FileWriter;
     :catch_21
     move-exception v5
@@ -1359,7 +1420,7 @@
     :catch_26
     move-exception v0
 
-    .line 262
+    .line 268
     .local v0, "e":Ljava/lang/Exception;
     const-string v3, "mifit"
 
@@ -1387,12 +1448,12 @@
 
     invoke-static {v3, v4}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 263
+    .line 269
     const/4 v3, 0x0
 
     goto :goto_20
 
-    .line 261
+    .line 267
     .end local v0    # "e":Ljava/lang/Exception;
     .restart local v1    # "fileWriter":Ljava/io/FileWriter;
     :cond_45
@@ -1403,7 +1464,7 @@
 
     goto :goto_20
 
-    .line 257
+    .line 263
     :catch_49
     move-exception v3
 
@@ -1412,7 +1473,7 @@
     :try_end_4b
     .catchall {:try_start_4a .. :try_end_4b} :catchall_4b
 
-    .line 261
+    .line 267
     :catchall_4b
     move-exception v4
 
@@ -1463,7 +1524,7 @@
     .param p1, "id"    # J
 
     .prologue
-    .line 155
+    .line 161
     :try_start_0
     move-object/from16 v0, p0
 
@@ -1483,11 +1544,11 @@
 
     move-result-object v9
 
-    .line 154
+    .line 160
     .local v9, "sqLiteDatabase":Landroid/database/sqlite/SQLiteDatabase;
     const/4 v13, 0x0
 
-    .line 156
+    .line 162
     :try_start_f
     new-instance v11, Ljava/lang/StringBuilder;
 
@@ -1518,20 +1579,20 @@
 
     move-result-object v4
 
-    .line 154
+    .line 160
     .local v4, "cursor":Landroid/database/Cursor;
     const/4 v12, 0x0
 
-    .line 158
+    .line 164
     :try_start_2a
     invoke-interface {v4}, Landroid/database/Cursor;->moveToFirst()Z
 
-    .line 159
+    .line 165
     new-instance v8, Ljava/util/ArrayList;
 
     invoke-direct {v8}, Ljava/util/ArrayList;-><init>()V
 
-    .line 160
+    .line 166
     .local v8, "queryDataArrayList":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;>;"
     invoke-interface {v4}, Landroid/database/Cursor;->isAfterLast()Z
 
@@ -1539,12 +1600,12 @@
 
     if-nez v11, :cond_55
 
-    .line 161
+    .line 167
     new-instance v7, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;
 
     invoke-direct {v7}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;-><init>()V
 
-    .line 162
+    .line 168
     .local v7, "queryData":Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;
     const/4 v6, 0x0
 
@@ -1556,33 +1617,33 @@
 
     if-ge v6, v11, :cond_52
 
-    .line 163
+    .line 169
     invoke-interface {v4, v6}, Landroid/database/Cursor;->getString(I)Ljava/lang/String;
 
     move-result-object v3
 
-    .line 164
+    .line 170
     .local v3, "columnValue":Ljava/lang/String;
     invoke-interface {v4, v6}, Landroid/database/Cursor;->getColumnName(I)Ljava/lang/String;
 
     move-result-object v2
 
-    .line 165
+    .line 171
     .local v2, "columnName":Ljava/lang/String;
     invoke-static {v7, v2, v3}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;->mapRawDataToQueryData(Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;Ljava/lang/String;Ljava/lang/String;)V
 
-    .line 162
+    .line 168
     add-int/lit8 v6, v6, 0x1
 
     goto :goto_3e
 
-    .line 167
+    .line 173
     .end local v2    # "columnName":Ljava/lang/String;
     .end local v3    # "columnValue":Ljava/lang/String;
     :cond_52
     invoke-virtual {v8, v7}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
-    .line 169
+    .line 175
     .end local v6    # "i":I
     .end local v7    # "queryData":Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;
     :cond_55
@@ -1592,14 +1653,14 @@
 
     invoke-direct {v10, v0}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/TrackExporter;-><init>(Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/Starter;)V
 
-    .line 170
+    .line 176
     .local v10, "trackExporter":Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/TrackExporter;
     invoke-virtual {v10, v8}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/TrackExporter;->launchExport(Ljava/util/ArrayList;)V
     :try_end_5f
     .catch Ljava/lang/Throwable; {:try_start_2a .. :try_end_5f} :catch_b8
     .catchall {:try_start_2a .. :try_end_5f} :catchall_e1
 
-    .line 172
+    .line 178
     if-eqz v4, :cond_66
 
     if-eqz v12, :cond_b1
@@ -1622,7 +1683,7 @@
     .catch Ljava/lang/Throwable; {:try_start_6a .. :try_end_6d} :catch_cf
     .catch Ljava/lang/Exception; {:try_start_6a .. :try_end_6d} :catch_81
 
-    .line 175
+    .line 181
     .end local v4    # "cursor":Landroid/database/Cursor;
     .end local v8    # "queryDataArrayList":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;>;"
     .end local v9    # "sqLiteDatabase":Landroid/database/sqlite/SQLiteDatabase;
@@ -1631,7 +1692,7 @@
     :goto_6d
     return-void
 
-    .line 172
+    .line 178
     .restart local v4    # "cursor":Landroid/database/Cursor;
     .restart local v8    # "queryDataArrayList":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;>;"
     .restart local v9    # "sqLiteDatabase":Landroid/database/sqlite/SQLiteDatabase;
@@ -1647,7 +1708,7 @@
 
     goto :goto_66
 
-    .line 154
+    .line 160
     .end local v4    # "cursor":Landroid/database/Cursor;
     .end local v8    # "queryDataArrayList":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;>;"
     .end local v10    # "trackExporter":Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/TrackExporter;
@@ -1659,7 +1720,7 @@
     :try_end_75
     .catchall {:try_start_74 .. :try_end_75} :catchall_75
 
-    .line 172
+    .line 178
     :catchall_75
     move-exception v12
 
@@ -1691,7 +1752,7 @@
     :catch_81
     move-exception v5
 
-    .line 173
+    .line 179
     .local v5, "e":Ljava/lang/Exception;
     const/4 v11, 0x1
 
@@ -1741,7 +1802,7 @@
 
     goto :goto_6d
 
-    .line 172
+    .line 178
     .end local v5    # "e":Ljava/lang/Exception;
     .restart local v4    # "cursor":Landroid/database/Cursor;
     .restart local v8    # "queryDataArrayList":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/RawData$QueryData;>;"
@@ -1766,7 +1827,7 @@
 
     goto :goto_79
 
-    .line 154
+    .line 160
     .restart local v4    # "cursor":Landroid/database/Cursor;
     :catch_b8
     move-exception v11
@@ -1776,7 +1837,7 @@
     :try_end_ba
     .catchall {:try_start_b9 .. :try_end_ba} :catchall_ba
 
-    .line 172
+    .line 178
     :catchall_ba
     move-exception v12
 
@@ -1862,7 +1923,7 @@
     .param p2, "length"    # I
 
     .prologue
-    .line 270
+    .line 276
     iget-object v0, p0, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;->activity:Landroid/app/Activity;
 
     invoke-static {v0, p1, p2}, Landroid/widget/Toast;->makeText(Landroid/content/Context;Ljava/lang/CharSequence;I)Landroid/widget/Toast;
@@ -1871,7 +1932,7 @@
 
     invoke-virtual {v0}, Landroid/widget/Toast;->show()V
 
-    .line 271
+    .line 277
     return-void
 .end method
 
@@ -1879,22 +1940,22 @@
     .registers 13
 
     .prologue
-    .line 99
+    .line 105
     invoke-virtual {p0}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;->loadTrackHeadersFromDb()Ljava/util/TreeMap;
 
     move-result-object v7
 
-    .line 101
+    .line 107
     .local v7, "trackHeaderMap":Ljava/util/TreeMap;, "Ljava/util/TreeMap<Ljava/lang/Long;Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/Model$TrackHeader;>;"
-    const/4 v4, 0x0
+    const/4 v4, 0x1
 
-    .line 102
+    .line 108
     .local v4, "settingsScreenExist":Z
     new-instance v8, Ljava/util/ArrayList;
 
     invoke-direct {v8}, Ljava/util/ArrayList;-><init>()V
 
-    .line 104
+    .line 110
     .local v8, "trackIds":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/Long;>;"
     invoke-virtual {v7}, Ljava/util/TreeMap;->descendingMap()Ljava/util/NavigableMap;
 
@@ -1904,15 +1965,15 @@
 
     move-result-object v1
 
-    .line 105
+    .line 111
     .local v1, "entries":Ljava/util/Set;, "Ljava/util/Set<Ljava/util/Map$Entry<Ljava/lang/Long;Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/Model$TrackHeader;>;>;"
     const/4 v3, 0x0
 
-    .line 107
+    .line 113
     .local v3, "i":I
     if-eqz v4, :cond_53
 
-    .line 109
+    .line 115
     const-wide/16 v10, 0x0
 
     invoke-static {v10, v11}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
@@ -1921,7 +1982,7 @@
 
     invoke-virtual {v8, v9}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
-    .line 110
+    .line 116
     invoke-virtual {v7}, Ljava/util/TreeMap;->size()I
 
     move-result v9
@@ -1930,7 +1991,7 @@
 
     new-array v6, v9, [Ljava/lang/String;
 
-    .line 111
+    .line 117
     .local v6, "trackDesc":[Ljava/lang/String;
     const/4 v9, 0x0
 
@@ -1938,10 +1999,10 @@
 
     aput-object v10, v6, v9
 
-    .line 113
+    .line 119
     add-int/lit8 v3, v3, 0x1
 
-    .line 118
+    .line 124
     :goto_2d
     invoke-interface {v1}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
 
@@ -1960,7 +2021,7 @@
 
     check-cast v2, Ljava/util/Map$Entry;
 
-    .line 119
+    .line 125
     .local v2, "entry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/Long;Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/Model$TrackHeader;>;"
     invoke-interface {v2}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
 
@@ -1968,7 +2029,7 @@
 
     invoke-virtual {v8, v9}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
-    .line 120
+    .line 126
     invoke-interface {v2}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
 
     move-result-object v9
@@ -1981,13 +2042,13 @@
 
     aput-object v9, v6, v3
 
-    .line 121
+    .line 127
     add-int/lit8 v3, v3, 0x1
 
-    .line 122
+    .line 128
     goto :goto_31
 
-    .line 115
+    .line 121
     .end local v2    # "entry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/Long;Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/core/Model$TrackHeader;>;"
     .end local v6    # "trackDesc":[Ljava/lang/String;
     :cond_53
@@ -2000,13 +2061,13 @@
     .restart local v6    # "trackDesc":[Ljava/lang/String;
     goto :goto_2d
 
-    .line 124
+    .line 130
     :cond_5a
     new-instance v5, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter$ChooseTrackClickListener;
 
     invoke-direct {v5, p0, p0, v8}, Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter$ChooseTrackClickListener;-><init>(Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter;Ljava/util/ArrayList;)V
 
-    .line 126
+    .line 132
     .local v5, "trackChooseListener":Lcn/com/smartdevices/bracelet/gps/ui/sport/detail/export/MifitStarter$ChooseTrackClickListener;
     new-instance v0, Landroid/app/AlertDialog$Builder;
 
@@ -2014,22 +2075,22 @@
 
     invoke-direct {v0, v9}, Landroid/app/AlertDialog$Builder;-><init>(Landroid/content/Context;)V
 
-    .line 127
+    .line 133
     .local v0, "alert":Landroid/app/AlertDialog$Builder;
     const-string v9, "Choose track to export:"
 
     invoke-virtual {v0, v9}, Landroid/app/AlertDialog$Builder;->setTitle(Ljava/lang/CharSequence;)Landroid/app/AlertDialog$Builder;
 
-    .line 128
+    .line 134
     invoke-virtual {v0, v6, v5}, Landroid/app/AlertDialog$Builder;->setItems([Ljava/lang/CharSequence;Landroid/content/DialogInterface$OnClickListener;)Landroid/app/AlertDialog$Builder;
 
-    .line 129
+    .line 135
     invoke-virtual {v0}, Landroid/app/AlertDialog$Builder;->create()Landroid/app/AlertDialog;
 
     move-result-object v9
 
     invoke-virtual {v9}, Landroid/app/AlertDialog;->show()V
 
-    .line 130
+    .line 136
     return-void
 .end method

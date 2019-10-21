@@ -70,33 +70,34 @@ public class TrackExporter {
 
             Track track = compileDataToTrack(rawTrackData);
 
-
             switch (FILE_FORMAT) {
                 case ".tcx": {
                     String tcx = Printer.printTcx(track);
                     String tcxFileName = getFullPath() + getFileName(track) + TCX_EXT;
                     starter.writeStringToFile(tcx, tcxFileName);
+                    message = getFileName(track) + TCX_EXT;
                     break;
                 }
                 case ".gpx": {
                     String gpx = Printer.printGpx(track);
                     String fileName = getFullPath() + getFileName(track) + GPX_EXT;
                     starter.writeStringToFile(gpx, fileName);
+                    message = getFileName(track) + GPX_EXT;
                     break;
                 }
                 default: {
                     String tcx = Printer.printTcx(track);
                     String tcxFileName = getFullPath() + getFileName(track) + TCX_EXT;
                     starter.writeStringToFile(tcx, tcxFileName);
+                    message = getFileName(track) + TCX_EXT;
 
                     String gpx = Printer.printGpx(track);
                     String fileName = getFullPath() + getFileName(track) + GPX_EXT;
                     starter.writeStringToFile(gpx, fileName);
+                    message += "\n" + getFileName(track) + GPX_EXT;
+                    break;
                 }
             }
-
-            message = getFileName(track) + TCX_EXT;
-            message += "\n" + getFileName(track) + GPX_EXT;
 
             long stop = System.currentTimeMillis();
             String successMessage = message + "\n saved to \"" + getShortPath() + "\" in " + (stop - start) + " ms ";
