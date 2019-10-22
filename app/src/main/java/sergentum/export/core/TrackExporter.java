@@ -5,6 +5,7 @@ import sergentum.export.core.Model.Track;
 import sergentum.export.core.Model.TrackPoint;
 import sergentum.export.core.RawData.QueryData;
 import sergentum.export.core.RawData.RawTrackData;
+
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
@@ -27,7 +28,7 @@ public class TrackExporter {
     public static String FILE_FORMAT;
     // I HATE YOU DEVELOPER WHEN YOU PUT YOUR F*CKING FILES INTO THE ROOT OF MY STORAGE
     private static String EXPORT_PATH = "Android/Mifit/";
-    private static final String DEBUG_OUT_PATH = "debug/";
+    public static final String DEBUG_OUT_PATH = "debug/";
     public static final String DEBUG_LOG_FILE = "log.txt";
     private static final String RAW_CSV = "-raw.csv";
     private static final String TCX_EXT = ".tcx";
@@ -41,10 +42,6 @@ public class TrackExporter {
 
     public static String getFullPath() {
         return DEVICE_PATH + EXPORT_PATH;
-    }
-
-    private static String getShortPath() {
-        return EXPORT_PATH;
     }
 
     public static String getDebugPath() {
@@ -61,13 +58,14 @@ public class TrackExporter {
 
             RawTrackData rawTrackData = rawData.parseRawData();
             if (debug) {
-                filePath = getDebugPath() + rawTrackData.startTime + RAW_CSV;
-                boolean b = starter.writeStringToFile(rawTrackData.toString(), filePath);
+                String filename = rawTrackData.startTime + RAW_CSV;
+                filePath = EXPORT_PATH + DEBUG_OUT_PATH + filename;
+                String fullPath = getFullPath() + filename;
+                boolean b = starter.writeStringToFile(rawTrackData.toString(), fullPath);
                 if (b) {
-                    message = filePath + " \n";
-                    starter.log(message);
+                    starter.log(filePath + " saved");
                 } else {
-                    // TODO: 2019-10-22 add "wasn't saved"
+                    starter.log(filePath + " can't save");
                 }
             }
 
@@ -75,42 +73,46 @@ public class TrackExporter {
             starter.log("FileFormat: " + FILE_FORMAT);
             switch (FILE_FORMAT) {
                 case ".tcx": {
-                    String tcx = Printer.printTcx(track);
-                    String tcxFileName = getFullPath() + getFileName(track) + TCX_EXT;
-                    starter.writeStringToFile(tcx, tcxFileName);
-                    message += getFileName(track) + TCX_EXT;
+                    message += exportTCX(track);
                     break;
                 }
                 case ".gpx": {
-                    String gpx = Printer.printGpx(track);
-                    String fileName = getFullPath() + getFileName(track) + GPX_EXT;
-                    starter.writeStringToFile(gpx, fileName);
-                    message = getFileName(track) + GPX_EXT;
+                    message += exportGPX(track);
                     break;
                 }
                 default: {
-                    String tcx = Printer.printTcx(track);
-                    String tcxFileName = getFullPath() + getFileName(track) + TCX_EXT;
-                    starter.writeStringToFile(tcx, tcxFileName);
-                    message = getFileName(track) + TCX_EXT;
-
-                    String gpx = Printer.printGpx(track);
-                    String fileName = getFullPath() + getFileName(track) + GPX_EXT;
-                    starter.writeStringToFile(gpx, fileName);
-                    message += "\n" + getFileName(track) + GPX_EXT;
+                    message += exportTCX(track);
+                    message += "\n" + exportGPX(track);
                     break;
                 }
             }
 
             long stop = System.currentTimeMillis();
-            String successMessage = message + "\n saved to \"" + getShortPath() + "\" in " + (stop - start) + " ms ";
+            String successMessage = message + "\n" +
+                    "saved to " +  EXPORT_PATH + " in " + (stop - start) + " ms ";
 
             starter.log(successMessage);
             starter.showToast(successMessage, 1);
         }
     }
 
-    private static String getFileName(Track track) {
+    private String exportGPX(Track track) {
+        String fileName = generateFileName(track);
+        String gpx = Printer.printGpx(track);
+        String gpxFullPath = getFullPath() + fileName + GPX_EXT;
+        starter.writeStringToFile(gpx, gpxFullPath);
+        return fileName + GPX_EXT;
+    }
+
+    private String exportTCX(Track track) {
+        String fileName = generateFileName(track);
+        String tcx = Printer.printTcx(track);
+        String tcxFullPath = getFullPath() + fileName + TCX_EXT;
+        starter.writeStringToFile(tcx, tcxFullPath);
+        return fileName + TCX_EXT;
+    }
+
+    private static String generateFileName(Track track) {
         return String.format(Locale.US, "%s_%d",
                 formatTimestampHumanReadable(track.startTime),
                 track.distance);
