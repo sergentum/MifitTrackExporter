@@ -3,9 +3,10 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/activity_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.example.username.mifittrackexporter.MainActivity">
+        tools:context="com.example.username.mifittrackexporter.sergentum.sync.MainActivity">
 
     <android.support.design.widget.AppBarLayout
             android:layout_height="wrap_content"
@@ -23,7 +24,7 @@
 
     <include layout="@layout/content_main"/>
     <fragment
-            android:name="cn.com.smartdevices.bracelet.gps.ui.sport.detail.TestFragment"
+            android:name="sergentum.TestFragment"
             android:id="@+id/mainFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
