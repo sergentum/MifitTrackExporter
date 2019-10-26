@@ -7,10 +7,11 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import org.json.JSONObject;
-import sergentum.runner.DefSynchronizer;
+
 import sergentum.sync.Response;
-import sergentum.runner.util.FormValues;
-import sergentum.runner.util.SyncHelper;
+import sergentum.sync.Synchronizer.RequestMethod;
+import sergentum.util.FormValues;
+import sergentum.util.SyncHelper;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -128,7 +129,7 @@ public class SettingsActivity extends PreferenceActivity {
                 HttpURLConnection conn = null;
                 conn = (HttpURLConnection) new URL(AUTH_URL).openConnection();
                 conn.setDoOutput(true);
-                conn.setRequestMethod(DefSynchronizer.RequestMethod.POST.name());
+                conn.setRequestMethod(RequestMethod.POST.name());
                 conn.addRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 SyncHelper.postData(conn, kv);
 

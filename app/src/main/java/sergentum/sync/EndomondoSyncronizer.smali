@@ -30,14 +30,14 @@
     .registers 3
 
     .prologue
-    .line 45
+    .line 42
     new-instance v0, Ljava/util/HashMap;
 
     invoke-direct {v0}, Ljava/util/HashMap;-><init>()V
 
     sput-object v0, Lsergentum/sync/EndomondoSyncronizer;->sport2endo:Ljava/util/Map;
 
-    .line 49
+    .line 46
     sget-object v0, Lsergentum/sync/EndomondoSyncronizer;->sport2endo:Ljava/util/Map;
 
     const/4 v1, 0x0
@@ -50,7 +50,7 @@
 
     invoke-interface {v0, v1, v2}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 50
+    .line 47
     sget-object v0, Lsergentum/sync/EndomondoSyncronizer;->sport2endo:Ljava/util/Map;
 
     sget-object v1, Lsergentum/export/core/Model$ActivityType;->RUNNING:Lsergentum/export/core/Model$ActivityType;
@@ -63,7 +63,7 @@
 
     invoke-interface {v0, v1, v2}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 51
+    .line 48
     sget-object v0, Lsergentum/sync/EndomondoSyncronizer;->sport2endo:Ljava/util/Map;
 
     sget-object v1, Lsergentum/export/core/Model$ActivityType;->CYCLING:Lsergentum/export/core/Model$ActivityType;
@@ -76,7 +76,7 @@
 
     invoke-interface {v0, v1, v2}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 52
+    .line 49
     sget-object v0, Lsergentum/sync/EndomondoSyncronizer;->sport2endo:Ljava/util/Map;
 
     sget-object v1, Lsergentum/export/core/Model$ActivityType;->WALKING:Lsergentum/export/core/Model$ActivityType;
@@ -89,7 +89,7 @@
 
     invoke-interface {v0, v1, v2}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 53
+    .line 50
     sget-object v0, Lsergentum/sync/EndomondoSyncronizer;->sport2endo:Ljava/util/Map;
 
     sget-object v1, Lsergentum/export/core/Model$ActivityType;->TREADMILL:Lsergentum/export/core/Model$ActivityType;
@@ -102,7 +102,7 @@
 
     invoke-interface {v0, v1, v2}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 54
+    .line 51
     return-void
 .end method
 
@@ -112,16 +112,16 @@
     .param p2, "starter"    # Lsergentum/export/Starter;
 
     .prologue
-    .line 39
+    .line 36
     invoke-direct {p0}, Lsergentum/sync/Synchronizer;-><init>()V
 
-    .line 40
+    .line 37
     iput-object p1, p0, Lsergentum/sync/EndomondoSyncronizer;->authToken:Ljava/lang/String;
 
-    .line 41
+    .line 38
     iput-object p2, p0, Lsergentum/sync/EndomondoSyncronizer;->starter:Lsergentum/export/Starter;
 
-    .line 42
+    .line 39
     return-void
 .end method
 
@@ -132,7 +132,7 @@
     .param p1, "track"    # Lsergentum/export/core/Model$Track;
 
     .prologue
-    .line 59
+    .line 56
     new-instance v19, Landroid/os/StrictMode$ThreadPolicy$Builder;
 
     invoke-direct/range {v19 .. v19}, Landroid/os/StrictMode$ThreadPolicy$Builder;-><init>()V
@@ -145,14 +145,14 @@
 
     move-result-object v10
 
-    .line 60
+    .line 57
     .local v10, "policy":Landroid/os/StrictMode$ThreadPolicy;
     invoke-static {v10}, Landroid/os/StrictMode;->setThreadPolicy(Landroid/os/StrictMode$ThreadPolicy;)V
 
-    .line 62
+    .line 59
     sget-object v13, Lsergentum/sync/Synchronizer$Status;->ERROR:Lsergentum/sync/Synchronizer$Status;
 
-    .line 63
+    .line 60
     .local v13, "status":Lsergentum/sync/Synchronizer$Status;
     move-object/from16 v0, p1
 
@@ -164,7 +164,7 @@
 
     move-result-object v16
 
-    .line 65
+    .line 62
     .local v16, "trackDesc":Ljava/lang/String;
     move-object/from16 v0, p0
 
@@ -186,11 +186,11 @@
 
     if-eqz v19, :cond_3a
 
-    .line 66
+    .line 63
     :cond_30
     sget-object v13, Lsergentum/sync/Synchronizer$Status;->NEED_AUTH:Lsergentum/sync/Synchronizer$Status;
 
-    .line 67
+    .line 64
     const-string v19, "Please check Endomondo authorization in the settings"
 
     move-object/from16 v0, v19
@@ -199,13 +199,13 @@
 
     move-object v14, v13
 
-    .line 154
+    .line 151
     .end local v13    # "status":Lsergentum/sync/Synchronizer$Status;
     .local v14, "status":Lsergentum/sync/Synchronizer$Status;
     :goto_39
     return-object v14
 
-    .line 74
+    .line 71
     .end local v14    # "status":Lsergentum/sync/Synchronizer$Status;
     .restart local v13    # "status":Lsergentum/sync/Synchronizer$Status;
     :cond_3a
@@ -214,7 +214,7 @@
 
     invoke-direct/range {v18 .. v18}, Ljava/io/StringWriter;-><init>()V
 
-    .line 75
+    .line 72
     .local v18, "writer":Ljava/io/StringWriter;
     invoke-static/range {p1 .. p1}, Lsergentum/export/core/Printer;->printEndomondoTrack(Lsergentum/export/core/Model$Track;)Ljava/lang/String;
 
@@ -222,12 +222,12 @@
 
     invoke-virtual/range {v18 .. v19}, Ljava/io/StringWriter;->write(Ljava/lang/String;)V
 
-    .line 76
+    .line 73
     new-instance v17, Ljava/lang/StringBuilder;
 
     invoke-direct/range {v17 .. v17}, Ljava/lang/StringBuilder;-><init>()V
 
-    .line 77
+    .line 74
     .local v17, "url":Ljava/lang/StringBuilder;
     const-string v19, "https://api.mobile.endomondo.com/mobile/track"
 
@@ -253,7 +253,7 @@
 
     invoke-virtual/range {v19 .. v20}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 78
+    .line 75
     const-string v19, "&workoutId="
 
     move-object/from16 v0, v17
@@ -278,7 +278,7 @@
 
     invoke-virtual/range {v19 .. v21}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
 
-    .line 79
+    .line 76
     const-string v19, "&sport="
 
     move-object/from16 v0, v17
@@ -309,7 +309,7 @@
 
     invoke-virtual/range {v19 .. v20}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    .line 80
+    .line 77
     const-string v19, "&duration="
 
     move-object/from16 v0, v17
@@ -334,7 +334,7 @@
 
     invoke-virtual/range {v19 .. v20}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    .line 82
+    .line 79
     const-string v19, "&distance="
 
     move-object/from16 v0, v17
@@ -369,7 +369,7 @@
 
     invoke-virtual/range {v19 .. v21}, Ljava/lang/StringBuilder;->append(D)Ljava/lang/StringBuilder;
 
-    .line 89
+    .line 86
     const-string v19, "&gzip=true"
 
     move-object/from16 v0, v17
@@ -378,7 +378,7 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 90
+    .line 87
     const-string v19, "&extendedResponse=true"
 
     move-object/from16 v0, v17
@@ -387,7 +387,7 @@
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 92
+    .line 89
     move-object/from16 v0, p0
 
     iget-object v0, v0, Lsergentum/sync/EndomondoSyncronizer;->starter:Lsergentum/export/Starter;
@@ -404,7 +404,7 @@
 
     if-eqz v19, :cond_16e
 
-    .line 93
+    .line 90
     new-instance v19, Ljava/lang/StringBuilder;
 
     invoke-direct/range {v19 .. v19}, Ljava/lang/StringBuilder;-><init>()V
@@ -457,7 +457,7 @@
 
     move-result-object v5
 
-    .line 94
+    .line 91
     .local v5, "fileName":Ljava/lang/String;
     new-instance v19, Ljava/lang/StringBuilder;
 
@@ -481,7 +481,7 @@
 
     move-result-object v6
 
-    .line 95
+    .line 92
     .local v6, "fullFilePath":Ljava/lang/String;
     move-object/from16 v0, p0
 
@@ -499,7 +499,7 @@
 
     invoke-virtual {v0, v1, v6}, Lsergentum/export/Starter;->writeStringToFile(Ljava/lang/String;Ljava/lang/String;)Z
 
-    .line 96
+    .line 93
     move-object/from16 v0, p0
 
     iget-object v0, v0, Lsergentum/sync/EndomondoSyncronizer;->starter:Lsergentum/export/Starter;
@@ -520,7 +520,7 @@
 
     invoke-virtual {v0, v1, v6}, Lsergentum/export/Starter;->writeStringToFile(Ljava/lang/String;Ljava/lang/String;)Z
 
-    .line 99
+    .line 96
     .end local v5    # "fileName":Ljava/lang/String;
     .end local v6    # "fullFilePath":Ljava/lang/String;
     :cond_16e
@@ -538,7 +538,7 @@
 
     check-cast v2, Ljava/net/HttpURLConnection;
 
-    .line 100
+    .line 97
     .local v2, "conn":Ljava/net/HttpURLConnection;
     const/16 v19, 0x1
 
@@ -546,10 +546,10 @@
 
     invoke-virtual {v2, v0}, Ljava/net/HttpURLConnection;->setDoOutput(Z)V
 
-    .line 101
-    sget-object v19, Lsergentum/runner/DefSynchronizer$RequestMethod;->POST:Lsergentum/runner/DefSynchronizer$RequestMethod;
+    .line 98
+    sget-object v19, Lsergentum/sync/Synchronizer$RequestMethod;->POST:Lsergentum/sync/Synchronizer$RequestMethod;
 
-    invoke-virtual/range {v19 .. v19}, Lsergentum/runner/DefSynchronizer$RequestMethod;->name()Ljava/lang/String;
+    invoke-virtual/range {v19 .. v19}, Lsergentum/sync/Synchronizer$RequestMethod;->name()Ljava/lang/String;
 
     move-result-object v19
 
@@ -557,7 +557,7 @@
 
     invoke-virtual {v2, v0}, Ljava/net/HttpURLConnection;->setRequestMethod(Ljava/lang/String;)V
 
-    .line 102
+    .line 99
     const-string v19, "Content-Type"
 
     const-string v20, "application/octet-stream"
@@ -568,7 +568,7 @@
 
     invoke-virtual {v2, v0, v1}, Ljava/net/HttpURLConnection;->addRequestProperty(Ljava/lang/String;Ljava/lang/String;)V
 
-    .line 103
+    .line 100
     new-instance v9, Ljava/util/zip/GZIPOutputStream;
 
     new-instance v19, Ljava/io/BufferedOutputStream;
@@ -583,7 +583,7 @@
 
     invoke-direct {v9, v0}, Ljava/util/zip/GZIPOutputStream;-><init>(Ljava/io/OutputStream;)V
 
-    .line 104
+    .line 101
     .local v9, "out":Ljava/io/OutputStream;
     invoke-virtual/range {v18 .. v18}, Ljava/io/StringWriter;->getBuffer()Ljava/lang/StringBuffer;
 
@@ -601,13 +601,13 @@
 
     invoke-virtual {v9, v0}, Ljava/io/OutputStream;->write([B)V
 
-    .line 105
+    .line 102
     invoke-virtual {v9}, Ljava/io/OutputStream;->flush()V
 
-    .line 106
+    .line 103
     invoke-virtual {v9}, Ljava/io/OutputStream;->close()V
 
-    .line 108
+    .line 105
     new-instance v7, Ljava/io/BufferedReader;
 
     new-instance v19, Ljava/io/InputStreamReader;
@@ -622,17 +622,17 @@
 
     invoke-direct {v7, v0}, Ljava/io/BufferedReader;-><init>(Ljava/io/Reader;)V
 
-    .line 109
+    .line 106
     .local v7, "in":Ljava/io/BufferedReader;
     invoke-static {v7}, Lsergentum/util/HttpUtil;->parseKVP(Ljava/io/BufferedReader;)Lorg/json/JSONObject;
 
     move-result-object v8
 
-    .line 110
+    .line 107
     .local v8, "jsonResponse":Lorg/json/JSONObject;
     invoke-virtual {v2}, Ljava/net/HttpURLConnection;->disconnect()V
 
-    .line 112
+    .line 109
     const-string v19, "mifit"
 
     new-instance v20, Ljava/lang/StringBuilder;
@@ -659,18 +659,18 @@
 
     invoke-static/range {v19 .. v20}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 114
+    .line 111
     invoke-virtual {v2}, Ljava/net/HttpURLConnection;->getResponseCode()I
 
     move-result v11
 
-    .line 115
+    .line 112
     .local v11, "responseCode":I
     invoke-virtual {v2}, Ljava/net/HttpURLConnection;->getResponseMessage()Ljava/lang/String;
 
     move-result-object v12
 
-    .line 116
+    .line 113
     .local v12, "responseMessage":Ljava/lang/String;
     const-string v19, "mifit"
 
@@ -696,7 +696,7 @@
 
     invoke-static/range {v19 .. v20}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 117
+    .line 114
     const-string v19, "mifit"
 
     new-instance v20, Ljava/lang/StringBuilder;
@@ -721,14 +721,14 @@
 
     invoke-static/range {v19 .. v20}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 119
+    .line 116
     const/16 v19, 0xc8
 
     move/from16 v0, v19
 
     if-ne v11, v0, :cond_33e
 
-    .line 121
+    .line 118
     const-string v19, "_0"
 
     move-object/from16 v0, v19
@@ -737,7 +737,7 @@
 
     move-result-object v4
 
-    .line 122
+    .line 119
     .local v4, "endomondoMessage":Ljava/lang/String;
     const-string v19, "OK"
 
@@ -749,7 +749,7 @@
 
     if-eqz v19, :cond_303
 
-    .line 124
+    .line 121
     const-string v19, "workout.id"
 
     move-object/from16 v0, v19
@@ -758,7 +758,7 @@
 
     move-result-object v15
 
-    .line 125
+    .line 122
     .local v15, "string":Ljava/lang/String;
     const-string v19, "null"
 
@@ -770,10 +770,10 @@
 
     if-nez v19, :cond_2c3
 
-    .line 126
+    .line 123
     sget-object v13, Lsergentum/sync/Synchronizer$Status;->OK:Lsergentum/sync/Synchronizer$Status;
 
-    .line 127
+    .line 124
     new-instance v19, Ljava/lang/StringBuilder;
 
     invoke-direct/range {v19 .. v19}, Ljava/lang/StringBuilder;-><init>()V
@@ -802,7 +802,7 @@
     :try_end_277
     .catch Ljava/lang/Exception; {:try_start_3a .. :try_end_277} :catch_2e1
 
-    .line 148
+    .line 145
     .end local v2    # "conn":Ljava/net/HttpURLConnection;
     .end local v4    # "endomondoMessage":Ljava/lang/String;
     .end local v7    # "in":Ljava/io/BufferedReader;
@@ -820,7 +820,7 @@
 
     if-eqz v19, :cond_2a4
 
-    .line 149
+    .line 146
     const-string v19, "mifit"
 
     new-instance v20, Ljava/lang/StringBuilder;
@@ -851,14 +851,14 @@
 
     invoke-static/range {v19 .. v20}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 150
+    .line 147
     iget-object v0, v13, Lsergentum/sync/Synchronizer$Status;->ex:Ljava/lang/Exception;
 
     move-object/from16 v19, v0
 
     invoke-virtual/range {v19 .. v19}, Ljava/lang/Exception;->printStackTrace()V
 
-    .line 152
+    .line 149
     :cond_2a4
     const-string v19, "mifit"
 
@@ -888,12 +888,12 @@
 
     move-object v14, v13
 
-    .line 154
+    .line 151
     .end local v13    # "status":Lsergentum/sync/Synchronizer$Status;
     .restart local v14    # "status":Lsergentum/sync/Synchronizer$Status;
     goto/16 :goto_39
 
-    .line 129
+    .line 126
     .end local v14    # "status":Lsergentum/sync/Synchronizer$Status;
     .restart local v2    # "conn":Ljava/net/HttpURLConnection;
     .restart local v4    # "endomondoMessage":Ljava/lang/String;
@@ -910,7 +910,7 @@
     :try_start_2c3
     sget-object v13, Lsergentum/sync/Synchronizer$Status;->SKIP:Lsergentum/sync/Synchronizer$Status;
 
-    .line 130
+    .line 127
     new-instance v19, Ljava/lang/StringBuilder;
 
     invoke-direct/range {v19 .. v19}, Ljava/lang/StringBuilder;-><init>()V
@@ -941,7 +941,7 @@
 
     goto :goto_277
 
-    .line 143
+    .line 140
     .end local v2    # "conn":Ljava/net/HttpURLConnection;
     .end local v4    # "endomondoMessage":Ljava/lang/String;
     .end local v7    # "in":Ljava/io/BufferedReader;
@@ -955,14 +955,14 @@
     :catch_2e1
     move-exception v3
 
-    .line 144
+    .line 141
     .local v3, "e":Ljava/lang/Exception;
     iput-object v3, v13, Lsergentum/sync/Synchronizer$Status;->ex:Ljava/lang/Exception;
 
-    .line 145
+    .line 142
     sget-object v13, Lsergentum/sync/Synchronizer$Status;->FAIL:Lsergentum/sync/Synchronizer$Status;
 
-    .line 146
+    .line 143
     new-instance v19, Ljava/lang/StringBuilder;
 
     invoke-direct/range {v19 .. v19}, Ljava/lang/StringBuilder;-><init>()V
@@ -991,7 +991,7 @@
 
     goto/16 :goto_277
 
-    .line 132
+    .line 129
     .end local v3    # "e":Ljava/lang/Exception;
     .restart local v2    # "conn":Ljava/net/HttpURLConnection;
     .restart local v4    # "endomondoMessage":Ljava/lang/String;
@@ -1014,10 +1014,10 @@
 
     if-eqz v19, :cond_317
 
-    .line 133
+    .line 130
     sget-object v13, Lsergentum/sync/Synchronizer$Status;->NEED_AUTH:Lsergentum/sync/Synchronizer$Status;
 
-    .line 134
+    .line 131
     const-string v19, "Authorization failed, check the settings"
 
     move-object/from16 v0, v19
@@ -1026,11 +1026,11 @@
 
     goto/16 :goto_277
 
-    .line 136
+    .line 133
     :cond_317
     sget-object v13, Lsergentum/sync/Synchronizer$Status;->ERROR:Lsergentum/sync/Synchronizer$Status;
 
-    .line 137
+    .line 134
     new-instance v19, Ljava/lang/StringBuilder;
 
     invoke-direct/range {v19 .. v19}, Ljava/lang/StringBuilder;-><init>()V
@@ -1067,12 +1067,12 @@
 
     goto/16 :goto_277
 
-    .line 140
+    .line 137
     .end local v4    # "endomondoMessage":Ljava/lang/String;
     :cond_33e
     sget-object v13, Lsergentum/sync/Synchronizer$Status;->FAIL:Lsergentum/sync/Synchronizer$Status;
 
-    .line 141
+    .line 138
     new-instance v19, Ljava/lang/StringBuilder;
 
     invoke-direct/range {v19 .. v19}, Ljava/lang/StringBuilder;-><init>()V

@@ -6,7 +6,8 @@
 # annotations
 .annotation system Ldalvik/annotation/MemberClasses;
     value = {
-        Lsergentum/sync/Synchronizer$Status;
+        Lsergentum/sync/Synchronizer$Status;,
+        Lsergentum/sync/Synchronizer$RequestMethod;
     }
 .end annotation
 

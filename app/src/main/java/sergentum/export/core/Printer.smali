@@ -19,7 +19,7 @@
     .param p0, "track"    # Lsergentum/export/core/Model$Track;
 
     .prologue
-    .line 262
+    .line 259
     new-instance v3, Ljava/text/SimpleDateFormat;
 
     const-string v8, "yyyy-MM-dd HH:mm:ss \'UTC\'"
@@ -28,7 +28,7 @@
 
     invoke-direct {v3, v8, v9}, Ljava/text/SimpleDateFormat;-><init>(Ljava/lang/String;Ljava/util/Locale;)V
 
-    .line 263
+    .line 260
     .local v3, "simpleDateFormat":Ljava/text/SimpleDateFormat;
     const-string v8, "UTC"
 
@@ -38,22 +38,22 @@
 
     invoke-virtual {v3, v8}, Ljava/text/SimpleDateFormat;->setTimeZone(Ljava/util/TimeZone;)V
 
-    .line 265
+    .line 262
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    .line 266
+    .line 263
     .local v2, "lines":Ljava/lang/StringBuilder;
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    .line 267
+    .line 264
     .local v1, "line":Ljava/lang/StringBuilder;
     iget-object v6, p0, Lsergentum/export/core/Model$Track;->trackPoints:Ljava/util/ArrayList;
 
-    .line 268
+    .line 265
     .local v6, "trackPoints":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lsergentum/export/core/Model$TrackPoint;>;"
     const/4 v0, 0x0
 
@@ -66,14 +66,14 @@
     :goto_23
     if-ge v0, v7, :cond_ab
 
-    .line 269
+    .line 266
     invoke-virtual {v6, v0}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
 
     move-result-object v4
 
     check-cast v4, Lsergentum/export/core/Model$TrackPoint;
 
-    .line 280
+    .line 277
     .local v4, "trackPoint":Lsergentum/export/core/Model$TrackPoint;
     new-instance v5, Ljava/util/Date;
 
@@ -89,7 +89,7 @@
 
     invoke-direct {v5, v8, v9}, Ljava/util/Date;-><init>(J)V
 
-    .line 281
+    .line 278
     .local v5, "trackPointDate":Ljava/util/Date;
     invoke-virtual {v3, v5}, Ljava/text/SimpleDateFormat;->format(Ljava/util/Date;)Ljava/lang/String;
 
@@ -103,15 +103,15 @@
 
     invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 282
+    .line 279
     if-nez v0, :cond_9b
 
-    .line 283
+    .line 280
     const-string v8, "2;"
 
     invoke-virtual {v1, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 289
+    .line 286
     :goto_4d
     invoke-virtual {v4}, Lsergentum/export/core/Model$TrackPoint;->getLatitudeString()Ljava/lang/String;
 
@@ -125,7 +125,7 @@
 
     invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 290
+    .line 287
     invoke-virtual {v4}, Lsergentum/export/core/Model$TrackPoint;->getLongitudeString()Ljava/lang/String;
 
     move-result-object v8
@@ -138,17 +138,17 @@
 
     invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 291
+    .line 288
     const-string v8, ";"
 
     invoke-virtual {v1, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 292
+    .line 289
     const-string v8, ";"
 
     invoke-virtual {v1, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 293
+    .line 290
     invoke-virtual {v4}, Lsergentum/export/core/Model$TrackPoint;->getAltitudeString()Ljava/lang/String;
 
     move-result-object v8
@@ -161,7 +161,7 @@
 
     invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 294
+    .line 291
     invoke-virtual {v4}, Lsergentum/export/core/Model$TrackPoint;->getHeartRateString()Ljava/lang/String;
 
     move-result-object v8
@@ -174,7 +174,7 @@
 
     invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 295
+    .line 292
     invoke-virtual {v4}, Lsergentum/export/core/Model$TrackPoint;->getCadenceString()Ljava/lang/String;
 
     move-result-object v8
@@ -187,25 +187,25 @@
 
     invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 268
+    .line 265
     add-int/lit8 v0, v0, 0x1
 
     goto :goto_23
 
-    .line 284
+    .line 281
     :cond_9b
     add-int/lit8 v8, v7, -0x1
 
     if-ne v0, v8, :cond_a5
 
-    .line 285
+    .line 282
     const-string v8, "3;"
 
     invoke-virtual {v1, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     goto :goto_4d
 
-    .line 287
+    .line 284
     :cond_a5
     const-string v8, ";"
 
@@ -213,7 +213,7 @@
 
     goto :goto_4d
 
-    .line 308
+    .line 305
     .end local v4    # "trackPoint":Lsergentum/export/core/Model$TrackPoint;
     .end local v5    # "trackPointDate":Ljava/util/Date;
     :cond_ab
@@ -225,7 +225,7 @@
 
     invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 309
+    .line 306
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v8
@@ -313,12 +313,12 @@
     .param p0, "trackPoint"    # Lsergentum/export/core/Model$TrackPoint;
 
     .prologue
-    .line 256
+    .line 253
     iget-object v0, p0, Lsergentum/export/core/Model$TrackPoint;->cadence:Ljava/lang/Integer;
 
     if-eqz v0, :cond_20
 
-    .line 257
+    .line 254
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -345,7 +345,7 @@
 
     move-result-object v0
 
-    .line 258
+    .line 255
     :goto_1f
     return-object v0
 
@@ -360,12 +360,12 @@
     .param p0, "trackPoint"    # Lsergentum/export/core/Model$TrackPoint;
 
     .prologue
-    .line 227
+    .line 224
     iget-object v0, p0, Lsergentum/export/core/Model$TrackPoint;->altitude:Ljava/lang/Long;
 
     if-eqz v0, :cond_22
 
-    .line 228
+    .line 225
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -394,7 +394,7 @@
 
     move-result-object v0
 
-    .line 229
+    .line 226
     :goto_21
     return-object v0
 
@@ -409,10 +409,10 @@
     .param p0, "trackPoint"    # Lsergentum/export/core/Model$TrackPoint;
 
     .prologue
-    .line 237
+    .line 234
     const-string v0, ""
 
-    .line 238
+    .line 235
     .local v0, "result":Ljava/lang/String;
     iget-object v1, p0, Lsergentum/export/core/Model$TrackPoint;->heartRate:Ljava/lang/Integer;
 
@@ -422,7 +422,7 @@
 
     if-eqz v1, :cond_2f
 
-    .line 239
+    .line 236
     :cond_a
     new-instance v1, Ljava/lang/StringBuilder;
 
@@ -434,7 +434,7 @@
 
     move-result-object v1
 
-    .line 241
+    .line 238
     invoke-static {p0}, Lsergentum/export/core/Printer;->printGpxHeartRate(Lsergentum/export/core/Model$TrackPoint;)Ljava/lang/String;
 
     move-result-object v2
@@ -443,7 +443,7 @@
 
     move-result-object v1
 
-    .line 242
+    .line 239
     invoke-static {p0}, Lsergentum/export/core/Printer;->printGpxCadence(Lsergentum/export/core/Model$TrackPoint;)Ljava/lang/String;
 
     move-result-object v2
@@ -462,7 +462,7 @@
 
     move-result-object v0
 
-    .line 246
+    .line 243
     :cond_2f
     return-object v0
 .end method
@@ -472,12 +472,12 @@
     .param p0, "trackPoint"    # Lsergentum/export/core/Model$TrackPoint;
 
     .prologue
-    .line 250
+    .line 247
     iget-object v0, p0, Lsergentum/export/core/Model$TrackPoint;->heartRate:Ljava/lang/Integer;
 
     if-eqz v0, :cond_20
 
-    .line 251
+    .line 248
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -504,7 +504,7 @@
 
     move-result-object v0
 
-    .line 252
+    .line 249
     :goto_1f
     return-object v0
 
@@ -519,12 +519,12 @@
     .param p0, "trackPoint"    # Lsergentum/export/core/Model$TrackPoint;
 
     .prologue
-    .line 215
+    .line 212
     iget-object v0, p0, Lsergentum/export/core/Model$TrackPoint;->latitude:Ljava/lang/Long;
 
     if-eqz v0, :cond_22
 
-    .line 216
+    .line 213
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -553,7 +553,7 @@
 
     move-result-object v0
 
-    .line 217
+    .line 214
     :goto_21
     return-object v0
 
@@ -568,12 +568,12 @@
     .param p0, "trackPoint"    # Lsergentum/export/core/Model$TrackPoint;
 
     .prologue
-    .line 221
+    .line 218
     iget-object v0, p0, Lsergentum/export/core/Model$TrackPoint;->longitude:Ljava/lang/Long;
 
     if-eqz v0, :cond_22
 
-    .line 222
+    .line 219
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -602,7 +602,7 @@
 
     move-result-object v0
 
-    .line 223
+    .line 220
     :goto_21
     return-object v0
 
@@ -668,7 +668,7 @@
     .param p0, "timestamp"    # Ljava/lang/Long;
 
     .prologue
-    .line 233
+    .line 230
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -709,16 +709,7 @@
     .param p0, "trackPoint"    # Lsergentum/export/core/Model$TrackPoint;
 
     .prologue
-    .line 203
-    iget-object v0, p0, Lsergentum/export/core/Model$TrackPoint;->latitude:Ljava/lang/Long;
-
-    if-eqz v0, :cond_4e
-
-    iget-object v0, p0, Lsergentum/export/core/Model$TrackPoint;->longitude:Ljava/lang/Long;
-
-    if-eqz v0, :cond_4e
-
-    .line 204
+    .line 202
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -751,7 +742,7 @@
 
     move-result-object v0
 
-    .line 205
+    .line 203
     invoke-static {p0}, Lsergentum/export/core/Printer;->printGpxElevation(Lsergentum/export/core/Model$TrackPoint;)Ljava/lang/String;
 
     move-result-object v1
@@ -762,7 +753,7 @@
 
     iget-object v1, p0, Lsergentum/export/core/Model$TrackPoint;->timestamp:Ljava/lang/Long;
 
-    .line 206
+    .line 204
     invoke-static {v1}, Lsergentum/export/core/Printer;->printGpxTime(Ljava/lang/Long;)Ljava/lang/String;
 
     move-result-object v1
@@ -771,7 +762,7 @@
 
     move-result-object v0
 
-    .line 207
+    .line 205
     invoke-static {p0}, Lsergentum/export/core/Printer;->printGpxExtension(Lsergentum/export/core/Model$TrackPoint;)Ljava/lang/String;
 
     move-result-object v1
@@ -790,14 +781,8 @@
 
     move-result-object v0
 
-    .line 210
-    :goto_4d
+    .line 202
     return-object v0
-
-    :cond_4e
-    const-string v0, ""
-
-    goto :goto_4d
 .end method
 
 .method static printRawPoints(Ljava/util/ArrayList;Ljava/util/Map;Ljava/util/Map;)Ljava/lang/String;

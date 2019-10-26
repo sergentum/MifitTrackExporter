@@ -58,7 +58,7 @@
 
     const/4 v2, 0x0
 
-    .line 5
+    .line 7
     new-instance v0, Lsergentum/sync/Synchronizer$Status;
 
     const-string v1, "OK"
@@ -99,7 +99,7 @@
 
     sput-object v0, Lsergentum/sync/Synchronizer$Status;->NEED_AUTH:Lsergentum/sync/Synchronizer$Status;
 
-    .line 4
+    .line 6
     const/4 v0, 0x5
 
     new-array v0, v0, [Lsergentum/sync/Synchronizer$Status;
@@ -140,13 +140,13 @@
     .prologue
     const/4 v0, 0x0
 
-    .line 4
+    .line 6
     invoke-direct {p0, p1, p2}, Ljava/lang/Enum;-><init>(Ljava/lang/String;I)V
 
-    .line 6
+    .line 8
     iput-object v0, p0, Lsergentum/sync/Synchronizer$Status;->ex:Ljava/lang/Exception;
 
-    .line 7
+    .line 9
     iput-object v0, p0, Lsergentum/sync/Synchronizer$Status;->message:Ljava/lang/String;
 
     return-void
@@ -157,7 +157,7 @@
     .param p0, "name"    # Ljava/lang/String;
 
     .prologue
-    .line 4
+    .line 6
     const-class v0, Lsergentum/sync/Synchronizer$Status;
 
     invoke-static {v0, p0}, Ljava/lang/Enum;->valueOf(Ljava/lang/Class;Ljava/lang/String;)Ljava/lang/Enum;
@@ -173,7 +173,7 @@
     .registers 1
 
     .prologue
-    .line 4
+    .line 6
     sget-object v0, Lsergentum/sync/Synchronizer$Status;->$VALUES:[Lsergentum/sync/Synchronizer$Status;
 
     invoke-virtual {v0}, [Lsergentum/sync/Synchronizer$Status;->clone()Ljava/lang/Object;
@@ -191,7 +191,7 @@
     .registers 3
 
     .prologue
-    .line 10
+    .line 12
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V

@@ -29,13 +29,11 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-//import cn.com.smartdevices.bracelet.gps.ui.sport.detail.CodeActivity;
-import sergentum.export.SettingsActivity;
 import sergentum.export.MifitStarter;
+import sergentum.export.SettingsActivity;
 import sergentum.export.core.Model.Track;
-import sergentum.runner.DefSynchronizer.Status;
-import sergentum.runner.EndomondoRunnerSynchronizer;
 import sergentum.sync.EndomondoSyncronizer;
+import sergentum.sync.Synchronizer.Status;
 
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -43,6 +41,8 @@ import java.util.concurrent.FutureTask;
 
 import static sergentum.export.SettingsActivity.ENDOMONDO_APIKEY;
 import static sergentum.export.Starter.TAG;
+
+//import cn.com.smartdevices.bracelet.gps.ui.sport.detail.CodeActivity;
 
 public class MainActivity extends AppCompatActivity {
     FragmentActivity activity;
@@ -148,25 +148,23 @@ public class MainActivity extends AppCompatActivity {
         btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-//                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-//                startActivity(intent);
-                String string = sp.getString(ENDOMONDO_APIKEY, "");
-                EndomondoRunnerSynchronizer synchronizer = new EndomondoRunnerSynchronizer();
-                synchronizer.authToken = string;
-                EndomondoRunnerSynchronizer.GetFeedTask getFeedTask = new EndomondoRunnerSynchronizer.GetFeedTask(synchronizer);
-
-                FutureTask<Status> futureTask = new FutureTask<>(getFeedTask);
-                new Thread(futureTask).start();
-
-                try {
-                    Status status = futureTask.get();
-                    System.out.println(status);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                }
+//
+//                String string = sp.getString(ENDOMONDO_APIKEY, "");
+//                EndomondoRunnerSynchronizer synchronizer = new EndomondoRunnerSynchronizer();
+//                synchronizer.authToken = string;
+//                EndomondoRunnerSynchronizer.GetFeedTask getFeedTask = new EndomondoRunnerSynchronizer.GetFeedTask(synchronizer);
+//
+//                FutureTask<Status> futureTask = new FutureTask<>(getFeedTask);
+//                new Thread(futureTask).start();
+//
+//                try {
+//                    Status status = futureTask.get();
+//                    System.out.println(status);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                } catch (ExecutionException e) {
+//                    e.printStackTrace();
+//                }
 
             }
         });
@@ -181,13 +179,6 @@ public class MainActivity extends AppCompatActivity {
                 if (checkStoragePermission()) {
                     StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                     StrictMode.setThreadPolicy(policy);
-                    EndomondoRunnerSynchronizer synchronizer = new EndomondoRunnerSynchronizer();
-                    synchronizer.authToken = sp.getString(ENDOMONDO_APIKEY, "");
-//                    Synchronizer.Status connect = endomondoSynchronizer.connect();
-                    String path = Environment.getExternalStorageDirectory().getPath();
-                    SQLiteDatabase sqLiteDatabase = SQLiteDatabase.openOrCreateDatabase(path + "/Android/end/runnerup.db", null);
-                    synchronizer.upload(sqLiteDatabase, 3);
-                    sqLiteDatabase.close();
 
                     MifitStarter start = new MifitStarter(MainActivity.this);
 

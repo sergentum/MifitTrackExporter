@@ -199,15 +199,12 @@ public class Printer {
     }
 
     private static String printGpxTrackPoint(TrackPoint trackPoint) {
-        // some programs doesn't expect to find trackpoint without coordinates
-        if (trackPoint.latitude != null && trackPoint.longitude != null) {
-            return "<trkpt" + printGpxLatitude(trackPoint) + printGpxLongitude(trackPoint) + ">" +
-                    printGpxElevation(trackPoint) +
-                    printGpxTime(trackPoint.timestamp) +
-                    printGpxExtension(trackPoint) +
-                    "</trkpt>" +
-                    "\r\n";
-        } else return "";
+        return "<trkpt" + printGpxLatitude(trackPoint) + printGpxLongitude(trackPoint) + ">" +
+                printGpxElevation(trackPoint) +
+                printGpxTime(trackPoint.timestamp) +
+                printGpxExtension(trackPoint) +
+                "</trkpt>" +
+                "\r\n";
     }
 
     private static String printGpxLatitude(TrackPoint trackPoint) {

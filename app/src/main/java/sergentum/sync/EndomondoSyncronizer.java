@@ -2,17 +2,14 @@ package sergentum.sync;
 
 import android.os.StrictMode;
 import android.util.Log;
-import org.json.JSONException;
 import org.json.JSONObject;
 import sergentum.export.Starter;
 import sergentum.export.core.Model;
 import sergentum.export.core.Model.ActivityType;
 import sergentum.export.core.Printer;
-import sergentum.runner.DefSynchronizer;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.StringWriter;
@@ -98,7 +95,7 @@ public class EndomondoSyncronizer extends Synchronizer {
 
             conn = (HttpURLConnection) new URL(url.toString()).openConnection();
             conn.setDoOutput(true);
-            conn.setRequestMethod(DefSynchronizer.RequestMethod.POST.name());
+            conn.setRequestMethod(RequestMethod.POST.name());
             conn.addRequestProperty("Content-Type", "application/octet-stream");
             OutputStream out = new GZIPOutputStream(new BufferedOutputStream(conn.getOutputStream()));
             out.write(writer.getBuffer().toString().getBytes());

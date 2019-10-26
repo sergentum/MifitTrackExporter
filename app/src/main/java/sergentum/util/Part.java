@@ -15,7 +15,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package sergentum.runner.util;
+package sergentum.util;
 
 
 public class Part<Value extends Writable> {

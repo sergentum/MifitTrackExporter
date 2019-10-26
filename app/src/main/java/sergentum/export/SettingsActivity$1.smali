@@ -27,7 +27,7 @@
     .param p1, "this$0"    # Lsergentum/export/SettingsActivity;
 
     .prologue
-    .line 54
+    .line 55
     iput-object p1, p0, Lsergentum/export/SettingsActivity$1;->this$0:Lsergentum/export/SettingsActivity;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -43,10 +43,10 @@
     .param p2, "newValue"    # Ljava/lang/Object;
 
     .prologue
-    .line 57
+    .line 58
     const/4 v1, 0x0
 
-    .line 58
+    .line 59
     .local v1, "allowToggle":Z
     check-cast p2, Ljava/lang/Boolean;
 
@@ -55,23 +55,23 @@
 
     move-result v7
 
-    .line 59
+    .line 60
     .local v7, "toggle":Z
     if-eqz v7, :cond_b1
 
-    .line 61
+    .line 62
     new-instance v6, Lsergentum/sync/Response;
 
     invoke-direct {v6}, Lsergentum/sync/Response;-><init>()V
 
-    .line 65
+    .line 66
     .local v6, "response":Lsergentum/sync/Response;
     :try_start_e
     new-instance v5, Ljava/util/HashMap;
 
     invoke-direct {v5}, Ljava/util/HashMap;-><init>()V
 
-    .line 66
+    .line 67
     .local v5, "params":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Ljava/lang/String;>;"
     const-string v8, "endomondo_login"
 
@@ -91,7 +91,7 @@
 
     invoke-interface {v5, v8, v9}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 67
+    .line 68
     const-string v8, "endomondo_password"
 
     iget-object v9, p0, Lsergentum/export/SettingsActivity$1;->this$0:Lsergentum/export/SettingsActivity;
@@ -110,7 +110,7 @@
 
     invoke-interface {v5, v8, v9}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 68
+    .line 69
     const-string v8, "deviceId"
 
     iget-object v9, p0, Lsergentum/export/SettingsActivity$1;->this$0:Lsergentum/export/SettingsActivity;
@@ -129,18 +129,18 @@
 
     invoke-interface {v5, v8, v9}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 
-    .line 69
+    .line 70
     new-instance v2, Lsergentum/export/SettingsActivity$AuthTask;
 
     invoke-direct {v2, v5}, Lsergentum/export/SettingsActivity$AuthTask;-><init>(Ljava/util/Map;)V
 
-    .line 71
+    .line 72
     .local v2, "authTask":Lsergentum/export/SettingsActivity$AuthTask;
     new-instance v4, Ljava/util/concurrent/FutureTask;
 
     invoke-direct {v4, v2}, Ljava/util/concurrent/FutureTask;-><init>(Ljava/util/concurrent/Callable;)V
 
-    .line 72
+    .line 73
     .local v4, "future":Ljava/util/concurrent/FutureTask;, "Ljava/util/concurrent/FutureTask<Lsergentum/sync/Response;>;"
     new-instance v8, Ljava/lang/Thread;
 
@@ -148,7 +148,7 @@
 
     invoke-virtual {v8}, Ljava/lang/Thread;->start()V
 
-    .line 74
+    .line 75
     invoke-virtual {v4}, Ljava/util/concurrent/FutureTask;->get()Ljava/lang/Object;
 
     move-result-object v8
@@ -161,7 +161,7 @@
     :try_end_64
     .catch Ljava/lang/Exception; {:try_start_e .. :try_end_64} :catch_a5
 
-    .line 80
+    .line 81
     .end local v2    # "authTask":Lsergentum/export/SettingsActivity$AuthTask;
     .end local v4    # "future":Ljava/util/concurrent/FutureTask;, "Ljava/util/concurrent/FutureTask<Lsergentum/sync/Response;>;"
     .end local v5    # "params":Ljava/util/Map;, "Ljava/util/Map<Ljava/lang/String;Ljava/lang/String;>;"
@@ -170,7 +170,7 @@
 
     if-eqz v8, :cond_7e
 
-    .line 81
+    .line 82
     iget-object v8, p0, Lsergentum/export/SettingsActivity$1;->this$0:Lsergentum/export/SettingsActivity;
 
     invoke-static {v8}, Lsergentum/export/SettingsActivity;->access$000(Lsergentum/export/SettingsActivity;)Landroid/content/SharedPreferences;
@@ -191,10 +191,10 @@
 
     invoke-interface {v8}, Landroid/content/SharedPreferences$Editor;->apply()V
 
-    .line 84
+    .line 85
     const/4 v1, 0x1
 
-    .line 86
+    .line 87
     :cond_7e
     const-string v8, "mifit"
 
@@ -220,7 +220,7 @@
 
     invoke-static {v8, v9}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 87
+    .line 88
     iget-object v8, p0, Lsergentum/export/SettingsActivity$1;->this$0:Lsergentum/export/SettingsActivity;
 
     invoke-static {v8}, Lsergentum/export/SettingsActivity;->access$100(Lsergentum/export/SettingsActivity;)Lsergentum/export/Starter;
@@ -233,17 +233,17 @@
 
     invoke-virtual {v8, v9, v10}, Lsergentum/export/Starter;->showToast(Ljava/lang/String;I)V
 
-    .line 95
+    .line 96
     .end local v6    # "response":Lsergentum/sync/Response;
     :goto_a4
     return v1
 
-    .line 75
+    .line 76
     .restart local v6    # "response":Lsergentum/sync/Response;
     :catch_a5
     move-exception v3
 
-    .line 76
+    .line 77
     .local v3, "e":Ljava/lang/Exception;
     const-string v8, "mifit"
 
@@ -251,12 +251,12 @@
 
     invoke-static {v8, v9}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 77
+    .line 78
     invoke-virtual {v3}, Ljava/lang/Exception;->printStackTrace()V
 
     goto :goto_64
 
-    .line 90
+    .line 91
     .end local v3    # "e":Ljava/lang/Exception;
     .end local v6    # "response":Lsergentum/sync/Response;
     :cond_b1
@@ -266,7 +266,7 @@
 
     invoke-static {v8, v9}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 91
+    .line 92
     iget-object v8, p0, Lsergentum/export/SettingsActivity$1;->this$0:Lsergentum/export/SettingsActivity;
 
     invoke-static {v8}, Lsergentum/export/SettingsActivity;->access$000(Lsergentum/export/SettingsActivity;)Landroid/content/SharedPreferences;
@@ -287,7 +287,7 @@
 
     invoke-interface {v8}, Landroid/content/SharedPreferences$Editor;->apply()V
 
-    .line 92
+    .line 93
     const/4 v1, 0x1
 
     goto :goto_a4
