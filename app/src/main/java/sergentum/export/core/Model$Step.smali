@@ -33,21 +33,21 @@
     .param p4, "cadence"    # I
 
     .prologue
-    .line 69
+    .line 70
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 70
+    .line 71
     iput p1, p0, Lsergentum/export/core/Model$Step;->first:I
 
-    .line 71
+    .line 72
     iput p2, p0, Lsergentum/export/core/Model$Step;->second:I
 
-    .line 72
+    .line 73
     iput p3, p0, Lsergentum/export/core/Model$Step;->stride:I
 
-    .line 73
+    .line 74
     iput p4, p0, Lsergentum/export/core/Model$Step;->cadence:I
 
-    .line 74
+    .line 75
     return-void
 .end method

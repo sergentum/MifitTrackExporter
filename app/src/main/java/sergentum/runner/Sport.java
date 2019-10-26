@@ -15,10 +15,10 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package sergentum.sync;
+package sergentum.runner;
 
 import android.content.res.Resources;
-import sergentum.sync.Constants.*;
+import sergentum.runner.Constants.*;
 
 public enum Sport {
     RUNNING(DB.ACTIVITY.SPORT_RUNNING), BIKING(DB.ACTIVITY.SPORT_BIKING), OTHER(DB.ACTIVITY.SPORT_OTHER), ORIENTEERING(DB.ACTIVITY.SPORT_ORIENTEERING), WALKING(DB.ACTIVITY.SPORT_WALKING);

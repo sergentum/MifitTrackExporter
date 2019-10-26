@@ -4,7 +4,10 @@ import sergentum.export.Starter;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import static sergentum.export.core.TrackExporter.SEMICOLON;
+import static sergentum.export.Starter.COMMA;
+import static sergentum.export.Starter.CSV_COLUMN_DELIMITER;
+import static sergentum.export.Starter.EMPTY_VALUE;
+import static sergentum.export.Starter.SEMICOLON;
 
 public class RawData {
     private Starter starter;
@@ -59,7 +62,7 @@ public class RawData {
 
     private Model.Step parseStep(String stepAsString) {
         if (stepAsString.length() > 3) {
-            String[] stepParts = stepAsString.split(TrackExporter.COMMA);
+            String[] stepParts = stepAsString.split(COMMA);
             int first = Integer.parseInt(stepParts[0]);
             int second = Integer.parseInt(stepParts[1]);
             int stride = Integer.parseInt(stepParts[2]);
@@ -77,7 +80,7 @@ public class RawData {
         }
         ArrayList<Integer> hrPoints = new ArrayList<>();
         String startHrAsString = BULKHR_split[0];
-        String[] startHr = startHrAsString.split(TrackExporter.COMMA);
+        String[] startHr = startHrAsString.split(COMMA);
         int count = (startHr[0].length() > 0) ? Integer.parseInt(startHr[0]) : 1;
         int hrValue = Integer.parseInt(startHr[1]);
         for (int i = 0; i < count; i++) {
@@ -86,7 +89,7 @@ public class RawData {
 
         for (int i = 1; i < BULKHR_split.length; i++) {
             String hrPointAsString = BULKHR_split[i];
-            String[] hrPointAsArr = hrPointAsString.split(TrackExporter.COMMA);
+            String[] hrPointAsArr = hrPointAsString.split(COMMA);
             int hrIncrement = Integer.parseInt(hrPointAsArr[1]);
 
             hrValue += hrIncrement;
@@ -148,7 +151,7 @@ public class RawData {
         if (llString.length() < 3) {
             return null;
         }
-        String[] stringCoords = llString.split(TrackExporter.COMMA);
+        String[] stringCoords = llString.split(COMMA);
         if (stringCoords.length > 1) {
             long currentLat = Long.parseLong(stringCoords[0]);
             long currentLon = Long.parseLong(stringCoords[1]);
@@ -204,7 +207,7 @@ public class RawData {
         int distance;
         int costTime;
         int activityType;
-        public int size;
+        int size;
 
         // theese data is synced between each other, so it's size should be equal
         ArrayList<Integer> times = new ArrayList<>();
@@ -220,58 +223,58 @@ public class RawData {
         @Override
         public String toString() {
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(String.format(Locale.US, "Start: %d", startTime)).append(TrackExporter.CSV_COLUMN_DELIMITER);
-            stringBuilder.append(String.format(Locale.US, "Duration: %d", costTime)).append(TrackExporter.CSV_COLUMN_DELIMITER);
-            stringBuilder.append(String.format(Locale.US, "End: %d", endTime)).append(TrackExporter.CSV_COLUMN_DELIMITER);
-            stringBuilder.append(String.format(Locale.US, "Type: %d", activityType)).append(TrackExporter.CSV_COLUMN_DELIMITER);
+            stringBuilder.append(String.format(Locale.US, "Start: %d", startTime)).append(CSV_COLUMN_DELIMITER);
+            stringBuilder.append(String.format(Locale.US, "Duration: %d", costTime)).append(CSV_COLUMN_DELIMITER);
+            stringBuilder.append(String.format(Locale.US, "End: %d", endTime)).append(CSV_COLUMN_DELIMITER);
+            stringBuilder.append(String.format(Locale.US, "Type: %d", activityType)).append(CSV_COLUMN_DELIMITER);
             stringBuilder.append("\r\n");
 
-            stringBuilder.append("Altitude").append(TrackExporter.CSV_COLUMN_DELIMITER);
-            stringBuilder.append("Latitude").append(TrackExporter.CSV_COLUMN_DELIMITER);
-            stringBuilder.append("Longitude").append(TrackExporter.CSV_COLUMN_DELIMITER);
-            stringBuilder.append("Time").append(TrackExporter.CSV_COLUMN_DELIMITER);
-            stringBuilder.append("HeartRate").append(TrackExporter.CSV_COLUMN_DELIMITER);
-            stringBuilder.append("First").append(TrackExporter.CSV_COLUMN_DELIMITER);
-            stringBuilder.append("Second").append(TrackExporter.CSV_COLUMN_DELIMITER);
-            stringBuilder.append("Cadence").append(TrackExporter.CSV_COLUMN_DELIMITER);
-            stringBuilder.append("Stride").append(TrackExporter.CSV_COLUMN_DELIMITER);
+            stringBuilder.append("Altitude").append(CSV_COLUMN_DELIMITER);
+            stringBuilder.append("Latitude").append(CSV_COLUMN_DELIMITER);
+            stringBuilder.append("Longitude").append(CSV_COLUMN_DELIMITER);
+            stringBuilder.append("Time").append(CSV_COLUMN_DELIMITER);
+            stringBuilder.append("HeartRate").append(CSV_COLUMN_DELIMITER);
+            stringBuilder.append("First").append(CSV_COLUMN_DELIMITER);
+            stringBuilder.append("Second").append(CSV_COLUMN_DELIMITER);
+            stringBuilder.append("Cadence").append(CSV_COLUMN_DELIMITER);
+            stringBuilder.append("Stride").append(CSV_COLUMN_DELIMITER);
             stringBuilder.append("\r\n");
 
             int rowCount;
-            rowCount = hrPoints.size() > steps.size() ? hrPoints.size() : steps.size();
-            rowCount = rowCount > coordinates.size() ? rowCount : coordinates.size();
+            rowCount = Math.max(hrPoints.size(), steps.size());
+            rowCount = Math.max(rowCount, coordinates.size());
             for (int i = 0; i < rowCount; i++) {
                 if (i < coordinates.size()) {
                     Model.Coordinate coordinate = coordinates.get(i);
-                    stringBuilder.append(coordinate.altitude).append(TrackExporter.CSV_COLUMN_DELIMITER);
-                    stringBuilder.append(coordinate.latitude).append(TrackExporter.CSV_COLUMN_DELIMITER);
-                    stringBuilder.append(coordinate.longitude).append(TrackExporter.CSV_COLUMN_DELIMITER);
-                    stringBuilder.append(times.get(i)).append(TrackExporter.CSV_COLUMN_DELIMITER);
+                    stringBuilder.append(coordinate.altitude).append(CSV_COLUMN_DELIMITER);
+                    stringBuilder.append(coordinate.latitude).append(CSV_COLUMN_DELIMITER);
+                    stringBuilder.append(coordinate.longitude).append(CSV_COLUMN_DELIMITER);
+                    stringBuilder.append(times.get(i)).append(CSV_COLUMN_DELIMITER);
                 } else {
-                    stringBuilder.append(TrackExporter.EMPTY_VALUE).append(TrackExporter.CSV_COLUMN_DELIMITER);
-                    stringBuilder.append(TrackExporter.EMPTY_VALUE).append(TrackExporter.CSV_COLUMN_DELIMITER);
-                    stringBuilder.append(TrackExporter.EMPTY_VALUE).append(TrackExporter.CSV_COLUMN_DELIMITER);
-                    stringBuilder.append(TrackExporter.EMPTY_VALUE).append(TrackExporter.CSV_COLUMN_DELIMITER);
+                    stringBuilder.append(EMPTY_VALUE).append(CSV_COLUMN_DELIMITER);
+                    stringBuilder.append(EMPTY_VALUE).append(CSV_COLUMN_DELIMITER);
+                    stringBuilder.append(EMPTY_VALUE).append(CSV_COLUMN_DELIMITER);
+                    stringBuilder.append(EMPTY_VALUE).append(CSV_COLUMN_DELIMITER);
                 }
 
                 if (i < hrPoints.size()) {
                     Integer hr = hrPoints.get(i);
-                    stringBuilder.append(hr).append(TrackExporter.CSV_COLUMN_DELIMITER);
+                    stringBuilder.append(hr).append(CSV_COLUMN_DELIMITER);
                 } else {
-                    stringBuilder.append(TrackExporter.EMPTY_VALUE).append(TrackExporter.CSV_COLUMN_DELIMITER);
+                    stringBuilder.append(EMPTY_VALUE).append(CSV_COLUMN_DELIMITER);
                 }
 
                 if (i < steps.size()) {
                     Model.Step step = steps.get(i);
-                    stringBuilder.append(step.first).append(TrackExporter.CSV_COLUMN_DELIMITER);
-                    stringBuilder.append(step.second).append(TrackExporter.CSV_COLUMN_DELIMITER);
-                    stringBuilder.append(step.cadence).append(TrackExporter.CSV_COLUMN_DELIMITER);
-                    stringBuilder.append(step.stride).append(TrackExporter.CSV_COLUMN_DELIMITER);
+                    stringBuilder.append(step.first).append(CSV_COLUMN_DELIMITER);
+                    stringBuilder.append(step.second).append(CSV_COLUMN_DELIMITER);
+                    stringBuilder.append(step.cadence).append(CSV_COLUMN_DELIMITER);
+                    stringBuilder.append(step.stride).append(CSV_COLUMN_DELIMITER);
                 } else {
-                    stringBuilder.append(TrackExporter.EMPTY_VALUE).append(TrackExporter.CSV_COLUMN_DELIMITER);
-                    stringBuilder.append(TrackExporter.EMPTY_VALUE).append(TrackExporter.CSV_COLUMN_DELIMITER);
-                    stringBuilder.append(TrackExporter.EMPTY_VALUE).append(TrackExporter.CSV_COLUMN_DELIMITER);
-                    stringBuilder.append(TrackExporter.EMPTY_VALUE).append(TrackExporter.CSV_COLUMN_DELIMITER);
+                    stringBuilder.append(EMPTY_VALUE).append(CSV_COLUMN_DELIMITER);
+                    stringBuilder.append(EMPTY_VALUE).append(CSV_COLUMN_DELIMITER);
+                    stringBuilder.append(EMPTY_VALUE).append(CSV_COLUMN_DELIMITER);
+                    stringBuilder.append(EMPTY_VALUE).append(CSV_COLUMN_DELIMITER);
                 }
                 stringBuilder.append("\r\n");
             }

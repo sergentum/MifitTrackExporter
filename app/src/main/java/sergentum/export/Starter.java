@@ -1,17 +1,41 @@
 package sergentum.export;
 
 import sergentum.export.core.Model;
+import sergentum.export.core.Printer;
 import sergentum.export.core.RawData;
+import sergentum.export.core.RawData.QueryData;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
+import static sergentum.export.core.Model.formatTimestampHumanReadable;
+
 public abstract class Starter {
+    public static final String RAW_CSV = "-raw.csv";
+    public static final String TCX_EXT = ".tcx";
+    public static final String GPX_EXT = ".gpx";
+    public static final String COMMA = ",";
+    public static final String SEMICOLON = ";";
+    public static final String EMPTY_VALUE = "-";
+    public static final String CSV_COLUMN_DELIMITER = ";";
+
+    public static String DEVICE_PATH = "";
+    public static String FILE_FORMAT;
+    // I HATE YOU DEVELOPER WHEN YOU PUT YOUR F*CKING FILES INTO THE ROOT OF MY STORAGE
+    public static String EXPORT_PATH = "Android/Mifit/";
+    public static final String DEBUG_OUT_PATH = "debug/";
+    public static final String DEBUG_LOG_FILE = "log.txt";
+
     public static final String TAG = "mifit";
     static final String EXT_DB_NAME = "origin.db";
+    static Boolean debug;
+
 
     static final String TRACK_ID_QUERY = "   SELECT " +
             "       TRACKRECORD.TRACKID," +
@@ -42,11 +66,19 @@ public abstract class Starter {
                     "WHERE TRACKDATA.TRACKID = TRACKRECORD.TRACKID " +
                     "AND TRACKDATA.TRACKID = ";
 
-    public abstract Map<Long, Model.TrackHeader> loadTrackHeadersFromDb();
+    public static String getFullPath() {
+        return DEVICE_PATH + EXPORT_PATH;
+    }
+
+    public static String getDebugPath() {
+        return DEVICE_PATH + EXPORT_PATH + DEBUG_OUT_PATH;
+    }
+
+    public abstract Map<Long, Model.TrackSummary> loadTrackSummaryFromDb();
 
     public abstract void showTracks();
 
-    public abstract void readRawDataWithId(long id);
+    public abstract QueryData readRawDataWithId(long id);
 
     public boolean log(String... args) {
         String s = stringArrayToString(args);
@@ -94,6 +126,28 @@ public abstract class Starter {
             result = false;
         }
         return result;
+    }
+
+    String exportGPX(Model.Track track) {
+        String fileName = generateFileName(track);
+        String gpx = Printer.printGpx(track);
+        String gpxFullPath = getFullPath() + fileName + GPX_EXT;
+        writeStringToFile(gpx, gpxFullPath);
+        return fileName + GPX_EXT;
+    }
+
+    String exportTCX(Model.Track track) {
+        String fileName = generateFileName(track);
+        String tcx = Printer.printTcx(track);
+        String tcxFullPath = getFullPath() + fileName + TCX_EXT;
+        writeStringToFile(tcx, tcxFullPath);
+        return fileName + TCX_EXT;
+    }
+
+    private static String generateFileName(Model.Track track) {
+        return String.format(Locale.US, "%s_%d",
+                formatTimestampHumanReadable(track.summary.startTime),
+                track.summary.distance);
     }
 
     boolean checkIfPathExistAndCreate(String filePath) {
@@ -153,5 +207,9 @@ public abstract class Starter {
                 queryData.BULKFLAG = columnValue;
             }
         }
+    }
+
+    public Boolean getDebug() {
+        return debug;
     }
 }

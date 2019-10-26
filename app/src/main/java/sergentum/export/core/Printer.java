@@ -1,13 +1,21 @@
 package sergentum.export.core;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
-import sergentum.export.core.Model.*;
+import java.util.TimeZone;
 
+import sergentum.export.core.Model.Track;
+import sergentum.export.core.Model.TrackPoint;
+
+import static sergentum.export.Starter.CSV_COLUMN_DELIMITER;
+import static sergentum.export.Starter.EMPTY_VALUE;
 import static sergentum.export.core.Model.formatTimestamp;
 
-class Printer {
+public class Printer {
     static String printRawPoints(
             ArrayList<TrackPoint> hrTrackPoints,
             Map<Long, TrackPoint> coordTrackPoints,
@@ -15,51 +23,51 @@ class Printer {
     ) {
         StringBuilder trackPointsBuilder = new StringBuilder();
 
-        int csvSize = hrTrackPoints.size() > coordTrackPoints.size() ? hrTrackPoints.size() : coordTrackPoints.size();
+        int csvSize = Math.max(hrTrackPoints.size(), coordTrackPoints.size());
         Iterator<Map.Entry<Long, TrackPoint>> iteratorCoords = coordTrackPoints.entrySet().iterator();
         Iterator<Map.Entry<Long, TrackPoint>> iteratorSteps = stepTrackPoints.entrySet().iterator();
         for (int i = 0; i < csvSize; i++) {
 
             if (i < hrTrackPoints.size()) {
                 TrackPoint trackPoint = hrTrackPoints.get(i);
-                trackPointsBuilder.append(formatTimestamp(trackPoint.timestamp)).append(TrackExporter.CSV_COLUMN_DELIMITER);
-                trackPointsBuilder.append(trackPoint.heartRate).append(TrackExporter.CSV_COLUMN_DELIMITER);
+                trackPointsBuilder.append(formatTimestamp(trackPoint.timestamp)).append(CSV_COLUMN_DELIMITER);
+                trackPointsBuilder.append(trackPoint.heartRate).append(CSV_COLUMN_DELIMITER);
             } else {
-                trackPointsBuilder.append(TrackExporter.EMPTY_VALUE).append(TrackExporter.CSV_COLUMN_DELIMITER);
-                trackPointsBuilder.append(TrackExporter.EMPTY_VALUE).append(TrackExporter.CSV_COLUMN_DELIMITER);
+                trackPointsBuilder.append(EMPTY_VALUE).append(CSV_COLUMN_DELIMITER);
+                trackPointsBuilder.append(EMPTY_VALUE).append(CSV_COLUMN_DELIMITER);
             }
 
             if (iteratorCoords.hasNext()) {
                 TrackPoint trackPoint = iteratorCoords.next().getValue();
-                trackPointsBuilder.append(trackPoint.altitude).append(TrackExporter.CSV_COLUMN_DELIMITER);
-                trackPointsBuilder.append(trackPoint.latitude).append(TrackExporter.CSV_COLUMN_DELIMITER);
-                trackPointsBuilder.append(trackPoint.longitude).append(TrackExporter.CSV_COLUMN_DELIMITER);
-                trackPointsBuilder.append(formatTimestamp(trackPoint.timestamp)).append(TrackExporter.CSV_COLUMN_DELIMITER);
+                trackPointsBuilder.append(trackPoint.altitude).append(CSV_COLUMN_DELIMITER);
+                trackPointsBuilder.append(trackPoint.latitude).append(CSV_COLUMN_DELIMITER);
+                trackPointsBuilder.append(trackPoint.longitude).append(CSV_COLUMN_DELIMITER);
+                trackPointsBuilder.append(formatTimestamp(trackPoint.timestamp)).append(CSV_COLUMN_DELIMITER);
             } else {
-                trackPointsBuilder.append(TrackExporter.EMPTY_VALUE).append(TrackExporter.CSV_COLUMN_DELIMITER);
-                trackPointsBuilder.append(TrackExporter.EMPTY_VALUE).append(TrackExporter.CSV_COLUMN_DELIMITER);
-                trackPointsBuilder.append(TrackExporter.EMPTY_VALUE).append(TrackExporter.CSV_COLUMN_DELIMITER);
-                trackPointsBuilder.append(TrackExporter.EMPTY_VALUE).append(TrackExporter.CSV_COLUMN_DELIMITER);
+                trackPointsBuilder.append(EMPTY_VALUE).append(CSV_COLUMN_DELIMITER);
+                trackPointsBuilder.append(EMPTY_VALUE).append(CSV_COLUMN_DELIMITER);
+                trackPointsBuilder.append(EMPTY_VALUE).append(CSV_COLUMN_DELIMITER);
+                trackPointsBuilder.append(EMPTY_VALUE).append(CSV_COLUMN_DELIMITER);
             }
 
             if (iteratorSteps.hasNext()) {
                 TrackPoint trackPoint = iteratorSteps.next().getValue();
-                trackPointsBuilder.append(formatTimestamp(trackPoint.timestamp)).append(TrackExporter.CSV_COLUMN_DELIMITER);
-                trackPointsBuilder.append("second").append(TrackExporter.CSV_COLUMN_DELIMITER);
-                trackPointsBuilder.append(trackPoint.cadence).append(TrackExporter.CSV_COLUMN_DELIMITER);
-                trackPointsBuilder.append(trackPoint.stride).append(TrackExporter.CSV_COLUMN_DELIMITER);
+                trackPointsBuilder.append(formatTimestamp(trackPoint.timestamp)).append(CSV_COLUMN_DELIMITER);
+                trackPointsBuilder.append("second").append(CSV_COLUMN_DELIMITER);
+                trackPointsBuilder.append(trackPoint.cadence).append(CSV_COLUMN_DELIMITER);
+                trackPointsBuilder.append(trackPoint.stride).append(CSV_COLUMN_DELIMITER);
             } else {
-                trackPointsBuilder.append(TrackExporter.EMPTY_VALUE).append(TrackExporter.CSV_COLUMN_DELIMITER);
-                trackPointsBuilder.append(TrackExporter.EMPTY_VALUE).append(TrackExporter.CSV_COLUMN_DELIMITER);
-                trackPointsBuilder.append(TrackExporter.EMPTY_VALUE).append(TrackExporter.CSV_COLUMN_DELIMITER);
-                trackPointsBuilder.append(TrackExporter.EMPTY_VALUE).append(TrackExporter.CSV_COLUMN_DELIMITER);
+                trackPointsBuilder.append(EMPTY_VALUE).append(CSV_COLUMN_DELIMITER);
+                trackPointsBuilder.append(EMPTY_VALUE).append(CSV_COLUMN_DELIMITER);
+                trackPointsBuilder.append(EMPTY_VALUE).append(CSV_COLUMN_DELIMITER);
+                trackPointsBuilder.append(EMPTY_VALUE).append(CSV_COLUMN_DELIMITER);
             }
             trackPointsBuilder.append("\r\n");
         }
         return trackPointsBuilder.toString();
     }
 
-    static String printTcx(Track track) {
+    public static String printTcx(Track track) {
         return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "\n" +
                 "<TrainingCenterDatabase " +
                 "xsi:schemaLocation=\"" + "\n" +
@@ -71,11 +79,11 @@ class Printer {
                 "xmlns=\"http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2\" " + "\n" +
                 "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">" + "\n" +
                 "<Activities>" + "\n" +
-                "<Activity Sport=\"" + track.getActivityTypeDescription() + "\">" + "\n" +
-                "<Id>" + formatTimestamp(track.startTime) + "</Id>" + "\n" +
-                "<Lap StartTime=\"" + track.getStartTimeAsDate() + "\">" + "\n" +
-                "<TotalTimeSeconds>" + (track.endTime - track.startTime) + "</TotalTimeSeconds>" + "\n" +
-                "<DistanceMeters>" + track.distance + "</DistanceMeters>" + "\n" +
+                "<Activity Sport=\"" + track.summary.getActivityTypeDescription() + "\">" + "\n" +
+                "<Id>" + formatTimestamp(track.summary.startTime) + "</Id>" + "\n" +
+                "<Lap StartTime=\"" + track.summary.getStartTimeAsDate() + "\">" + "\n" +
+                "<TotalTimeSeconds>" + (track.summary.endTime - track.summary.startTime) + "</TotalTimeSeconds>" + "\n" +
+                "<DistanceMeters>" + track.summary.distance + "</DistanceMeters>" + "\n" +
                 "<Track>" + "\n" +
                 printTcxPoints(track) +
                 "</Track>" + "\n" +
@@ -157,7 +165,7 @@ class Printer {
         return stringBuilder.toString();
     }
 
-    static String printGpx(Track track) {
+    public static String printGpx(Track track) {
         return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<gpx version=\"1.1\" creator=\"Endomondo.com\"\n" +
                 "    xsi:schemaLocation=\"http://www.topografix.com/GPX/1/1\n" +
@@ -171,10 +179,10 @@ class Printer {
                 "    xmlns:gpxx=\"http://www.garmin.com/xmlschemas/GpxExtensions/v3\"\n" +
                 "    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">" +
                 "    <metadata>\n" +
-                "        <time>" + formatTimestamp(track.startTime) + " </time>\n" +
+                "        <time>" + formatTimestamp(track.summary.startTime) + " </time>\n" +
                 "    </metadata>" +
                 "<trk>" + "\n" +
-                "<type>" + track.getActivityTypeDescription() + "</type>" +
+                "<type>" + track.summary.getActivityTypeDescription() + "</type>" +
                 "<trkseg>" + "\n" +
                 printGpxPoints(track) +
                 "</trkseg>" + "\n" +
@@ -203,6 +211,7 @@ class Printer {
     }
 
     private static String printGpxLatitude(TrackPoint trackPoint) {
+        // TODO: 2019-10-26 check that null check and remove
         if (trackPoint.latitude != null) {
             return " lat=\"" + trackPoint.getLatitudeString() + "\"";
         } else return "";
@@ -247,5 +256,56 @@ class Printer {
         if (trackPoint.cadence != null) {
             return "<gpxtpx:cad>" + trackPoint.cadence +"</gpxtpx:cad>";
         } else return "";
+    }
+
+    public static String printEndomondoTrack(Track track) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss 'UTC'", Locale.US);
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        StringBuilder lines = new StringBuilder();
+        StringBuilder line = new StringBuilder();
+        ArrayList<TrackPoint> trackPoints = track.trackPoints;
+        for (int i = 0, trackPointsSize = trackPoints.size(); i < trackPointsSize; i++) {
+            TrackPoint trackPoint = trackPoints.get(i);
+            // # timestamp;
+            // # type (2=start, 3=end, 0=pause, 1=resume);
+            // # latitude;
+            // # longitude;
+            // #    distance; km
+            // #    speed; km/h
+            // # alt;
+            // # hr;
+            // # cadence;
+            // # power;
+            Date trackPointDate = new Date(trackPoint.timestamp * 1000);
+            line.append(simpleDateFormat.format(trackPointDate)).append(";");
+            if (i == 0) {
+                line.append("2;");
+            } else if (i == (trackPointsSize - 1)){
+                line.append("3;");
+            } else {
+                line.append(";");
+            }
+            line.append(trackPoint.getLatitudeString()).append(";");
+            line.append(trackPoint.getLongitudeString()).append(";");
+            line.append(";");
+            line.append(";");
+            line.append(trackPoint.getAltitudeString()).append(";");
+            line.append(trackPoint.getHeartRateString()).append(";");
+            line.append(trackPoint.getCadenceString()).append(";\n");
+//            2019-04-24 05:19:08 UTC;
+//            1;
+//            55.03489303;
+//            82.92135985;
+//            0.006360674673691392;
+//            ;
+//            183.55387575579368;
+//            124;
+//            150;
+//            ;
+        }
+
+        lines.append(line).append("\n");
+        return lines.toString();
     }
 }

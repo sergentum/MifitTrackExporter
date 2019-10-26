@@ -1,9 +1,9 @@
-package sergentum.sync;
+package sergentum.runner;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
-import android.util.Log;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
@@ -12,14 +12,14 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.TimeZone;
 
-import sergentum.sync.Constants.*;
+import sergentum.runner.Constants.*;
 
-public class EndomondoTrack {
+public class EndomondoRunnerTrack {
 
     private SQLiteDatabase mDB = null;
     private SimpleDateFormat simpleDateFormat = null;
 
-    public EndomondoTrack(final SQLiteDatabase db) {
+    public EndomondoRunnerTrack(final SQLiteDatabase db) {
         mDB = db;
         simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss 'UTC'",
                 Locale.US);
@@ -56,7 +56,7 @@ public class EndomondoTrack {
             summary.hr = null;
             summary.distance = distance;
             summary.duration = duration;
-            summary.sport = EndomondoSynchronizer.sport2endomondoMap.get(Sport.valueOf(cursor.getInt(5)));
+            summary.sport = EndomondoRunnerSynchronizer.sport2endomondoMap.get(Sport.valueOf(cursor.getInt(5)));
             if (!cursor.isNull(6)) {
                 summary.hr = cursor.getLong(6);
             }
@@ -153,7 +153,6 @@ public class EndomondoTrack {
                     writer.append('\n');
                 } while (cursor.moveToNext());
             }
-            Log.d("mifit", writer.toString());
         } finally {
             if (cursor != null)
                 cursor.close();

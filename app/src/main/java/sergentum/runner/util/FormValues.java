@@ -15,7 +15,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package sergentum.sync.util;
+package sergentum.runner.util;
 
 import java.io.DataOutputStream;
 import java.io.IOException;

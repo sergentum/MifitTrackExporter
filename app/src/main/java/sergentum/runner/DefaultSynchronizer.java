@@ -15,15 +15,15 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package sergentum.sync;
+package sergentum.runner;
 
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Pair;
-import sergentum.sync.util.FormValues;
-import sergentum.sync.util.SyncHelper;
+import sergentum.runner.util.FormValues;
+import sergentum.runner.util.SyncHelper;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;

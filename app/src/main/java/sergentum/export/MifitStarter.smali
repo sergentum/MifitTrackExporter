@@ -22,41 +22,103 @@
 
 .field private logFilePath:Ljava/lang/String;
 
+.field private sp:Landroid/content/SharedPreferences;
+
 
 # direct methods
 .method public constructor <init>(Landroid/app/Activity;)V
-    .registers 8
+    .registers 7
     .param p1, "activity"    # Landroid/app/Activity;
 
     .prologue
-    const/4 v5, 0x0
+    const/4 v4, 0x0
 
-    .line 34
+    .line 47
     invoke-direct {p0}, Lsergentum/export/Starter;-><init>()V
 
-    .line 35
+    .line 48
     iput-object p1, p0, Lsergentum/export/MifitStarter;->activity:Landroid/app/Activity;
 
-    .line 36
+    .line 49
+    new-instance v1, Ljava/lang/StringBuilder;
+
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-static {}, Landroid/os/Environment;->getExternalStorageDirectory()Ljava/io/File;
+
+    move-result-object v2
+
+    invoke-virtual {v2}, Ljava/io/File;->getPath()Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v1
+
+    const-string v2, "/"
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v1
+
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v1
+
+    sput-object v1, Lsergentum/export/MifitStarter;->DEVICE_PATH:Ljava/lang/String;
+
+    .line 50
+    invoke-static {p1}, Landroid/preference/PreferenceManager;->getDefaultSharedPreferences(Landroid/content/Context;)Landroid/content/SharedPreferences;
+
+    move-result-object v1
+
+    iput-object v1, p0, Lsergentum/export/MifitStarter;->sp:Landroid/content/SharedPreferences;
+
+    .line 51
+    iget-object v1, p0, Lsergentum/export/MifitStarter;->sp:Landroid/content/SharedPreferences;
+
+    const-string v2, "export_format"
+
+    const-string v3, ""
+
+    invoke-interface {v1, v2, v3}, Landroid/content/SharedPreferences;->getString(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v1
+
+    sput-object v1, Lsergentum/export/MifitStarter;->FILE_FORMAT:Ljava/lang/String;
+
+    .line 52
+    iget-object v1, p0, Lsergentum/export/MifitStarter;->sp:Landroid/content/SharedPreferences;
+
+    const-string v2, "debug"
+
+    invoke-interface {v1, v2, v4}, Landroid/content/SharedPreferences;->getBoolean(Ljava/lang/String;Z)Z
+
+    move-result v1
+
+    invoke-static {v1}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
+
+    move-result-object v1
+
+    sput-object v1, Lsergentum/export/MifitStarter;->debug:Ljava/lang/Boolean;
+
+    .line 53
+    const-string v1, "mifit"
+
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    invoke-static {}, Landroid/os/Environment;->getExternalStorageDirectory()Ljava/io/File;
-
-    move-result-object v3
-
-    invoke-virtual {v3}, Ljava/io/File;->getPath()Ljava/lang/String;
-
-    move-result-object v3
+    const-string v3, "TrackExporter.debug: "
 
     invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     move-result-object v2
 
-    const-string v3, "/"
+    sget-object v3, Lsergentum/export/MifitStarter;->debug:Ljava/lang/Boolean;
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
     move-result-object v2
 
@@ -64,128 +126,77 @@
 
     move-result-object v2
 
-    sput-object v2, Lsergentum/export/core/TrackExporter;->DEVICE_PATH:Ljava/lang/String;
+    invoke-static {v1, v2}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 37
-    invoke-static {p1}, Landroid/preference/PreferenceManager;->getDefaultSharedPreferences(Landroid/content/Context;)Landroid/content/SharedPreferences;
+    .line 55
+    invoke-static {}, Ljava/util/Locale;->getDefault()Ljava/util/Locale;
 
     move-result-object v1
 
-    .line 38
-    .local v1, "sp":Landroid/content/SharedPreferences;
-    const-string v2, "export_format"
-
-    const-string v3, ""
-
-    invoke-interface {v1, v2, v3}, Landroid/content/SharedPreferences;->getString(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object v2
-
-    sput-object v2, Lsergentum/export/core/TrackExporter;->FILE_FORMAT:Ljava/lang/String;
-
-    .line 39
-    const-string v2, "debug"
-
-    invoke-interface {v1, v2, v5}, Landroid/content/SharedPreferences;->getBoolean(Ljava/lang/String;Z)Z
-
-    move-result v2
-
-    sput-boolean v2, Lsergentum/export/core/TrackExporter;->debug:Z
-
-    .line 40
-    const-string v2, "mifit"
-
-    new-instance v3, Ljava/lang/StringBuilder;
-
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v4, "TrackExporter.debug: "
-
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    move-result-object v3
-
-    sget-boolean v4, Lsergentum/export/core/TrackExporter;->debug:Z
-
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
-
-    move-result-object v3
-
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v3
-
-    invoke-static {v2, v3}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 42
-    invoke-static {}, Ljava/util/Locale;->getDefault()Ljava/util/Locale;
-
-    move-result-object v2
-
-    invoke-virtual {v2}, Ljava/util/Locale;->getLanguage()Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/util/Locale;->getLanguage()Ljava/lang/String;
 
     move-result-object v0
 
-    .line 43
+    .line 56
     .local v0, "language":Ljava/lang/String;
-    const-string v2, "mifit"
+    const-string v1, "mifit"
 
-    new-instance v3, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "Locale.getDefault().getLanguage(): "
+    const-string v3, "Locale.getDefault().getLanguage(): "
 
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    move-result-object v3
+    move-result-object v2
 
-    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    move-result-object v3
+    move-result-object v2
 
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v3
+    move-result-object v2
 
-    invoke-static {v2, v3}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 45
+    .line 58
     invoke-direct {p0}, Lsergentum/export/MifitStarter;->checkFilePath()Z
 
-    move-result v2
+    move-result v1
 
-    if-eqz v2, :cond_80
+    if-eqz v1, :cond_8a
 
-    .line 46
+    .line 59
     invoke-direct {p0}, Lsergentum/export/MifitStarter;->getDbPath()Ljava/lang/String;
 
-    move-result-object v2
+    move-result-object v1
 
-    iput-object v2, p0, Lsergentum/export/MifitStarter;->dbPath:Ljava/lang/String;
+    iput-object v1, p0, Lsergentum/export/MifitStarter;->dbPath:Ljava/lang/String;
 
-    .line 51
-    :goto_7f
+    .line 64
+    :goto_89
     return-void
 
-    .line 48
-    :cond_80
+    .line 61
+    :cond_8a
+    const-string v1, "can\'t get access to filesystem"
+
+    invoke-static {p1, v1, v4}, Landroid/widget/Toast;->makeText(Landroid/content/Context;Ljava/lang/CharSequence;I)Landroid/widget/Toast;
+
+    move-result-object v1
+
+    invoke-virtual {v1}, Landroid/widget/Toast;->show()V
+
+    .line 62
+    const-string v1, "mifit"
+
     const-string v2, "can\'t get access to filesystem"
 
-    invoke-static {p1, v2, v5}, Landroid/widget/Toast;->makeText(Landroid/content/Context;Ljava/lang/CharSequence;I)Landroid/widget/Toast;
+    invoke-static {v1, v2}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    move-result-object v2
-
-    invoke-virtual {v2}, Landroid/widget/Toast;->show()V
-
-    .line 49
-    const-string v2, "mifit"
-
-    const-string v3, "can\'t get access to filesystem"
-
-    invoke-static {v2, v3}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
-
-    goto :goto_7f
+    goto :goto_89
 .end method
 
 .method static synthetic access$000(Lsergentum/export/MifitStarter;)Landroid/app/Activity;
@@ -193,7 +204,7 @@
     .param p0, "x0"    # Lsergentum/export/MifitStarter;
 
     .prologue
-    .line 24
+    .line 36
     iget-object v0, p0, Lsergentum/export/MifitStarter;->activity:Landroid/app/Activity;
 
     return-object v0
@@ -207,21 +218,21 @@
 
     const/4 v8, 0x0
 
-    .line 186
-    invoke-static {}, Lsergentum/export/core/TrackExporter;->getFullPath()Ljava/lang/String;
+    .line 238
+    invoke-static {}, Lsergentum/export/MifitStarter;->getFullPath()Ljava/lang/String;
 
     move-result-object v5
 
-    .line 187
+    .line 239
     .local v5, "mifit_dir_path":Ljava/lang/String;
     invoke-virtual {p0, v5}, Lsergentum/export/MifitStarter;->checkIfPathExistAndCreate(Ljava/lang/String;)Z
 
-    .line 188
+    .line 240
     new-instance v4, Ljava/io/File;
 
     invoke-direct {v4, v5}, Ljava/io/File;-><init>(Ljava/lang/String;)V
 
-    .line 189
+    .line 241
     .local v4, "mifit_dir":Ljava/io/File;
     new-array v7, v12, [Ljava/lang/String;
 
@@ -247,20 +258,20 @@
 
     invoke-virtual {p0, v7}, Lsergentum/export/MifitStarter;->log([Ljava/lang/String;)Z
 
-    .line 190
+    .line 242
     invoke-virtual {v4}, Ljava/io/File;->exists()Z
 
     move-result v7
 
     if-eqz v7, :cond_a9
 
-    .line 192
+    .line 244
     :try_start_2e
     invoke-virtual {v4}, Ljava/io/File;->list()[Ljava/lang/String;
 
     move-result-object v3
 
-    .line 193
+    .line 245
     .local v3, "list":[Ljava/lang/String;
     array-length v9, v3
 
@@ -271,13 +282,13 @@
 
     aget-object v2, v3, v7
 
-    .line 194
+    .line 246
     .local v2, "fileName":Ljava/lang/String;
     new-instance v0, Ljava/io/File;
 
     invoke-direct {v0, v5, v2}, Ljava/io/File;-><init>(Ljava/lang/String;Ljava/lang/String;)V
 
-    .line 195
+    .line 247
     .local v0, "curFile":Ljava/io/File;
     invoke-virtual {v0}, Ljava/io/File;->isDirectory()Z
 
@@ -297,12 +308,12 @@
 
     if-eqz v10, :cond_87
 
-    .line 196
+    .line 248
     invoke-virtual {v0}, Ljava/io/File;->getPath()Ljava/lang/String;
 
     move-result-object v6
 
-    .line 197
+    .line 249
     .local v6, "result":Ljava/lang/String;
     const/4 v7, 0x1
 
@@ -332,7 +343,7 @@
 
     invoke-virtual {p0, v7}, Lsergentum/export/MifitStarter;->log([Ljava/lang/String;)Z
 
-    .line 198
+    .line 250
     new-instance v7, Ljava/lang/StringBuilder;
 
     invoke-direct {v7}, Ljava/lang/StringBuilder;-><init>()V
@@ -357,7 +368,7 @@
     :try_end_86
     .catch Ljava/lang/Exception; {:try_start_2e .. :try_end_86} :catch_8a
 
-    .line 207
+    .line 259
     .end local v0    # "curFile":Ljava/io/File;
     .end local v2    # "fileName":Ljava/lang/String;
     .end local v3    # "list":[Ljava/lang/String;
@@ -365,7 +376,7 @@
     :goto_86
     return-object v6
 
-    .line 193
+    .line 245
     .restart local v0    # "curFile":Ljava/io/File;
     .restart local v2    # "fileName":Ljava/lang/String;
     .restart local v3    # "list":[Ljava/lang/String;
@@ -374,14 +385,14 @@
 
     goto :goto_34
 
-    .line 202
+    .line 254
     .end local v0    # "curFile":Ljava/io/File;
     .end local v2    # "fileName":Ljava/lang/String;
     .end local v3    # "list":[Ljava/lang/String;
     :catch_8a
     move-exception v1
 
-    .line 203
+    .line 255
     .local v1, "ex":Ljava/lang/Exception;
     new-array v7, v12, [Ljava/lang/String;
 
@@ -411,7 +422,7 @@
 
     invoke-virtual {p0, v7}, Lsergentum/export/MifitStarter;->log([Ljava/lang/String;)Z
 
-    .line 206
+    .line 258
     .end local v1    # "ex":Ljava/lang/Exception;
     :cond_a9
     new-array v7, v12, [Ljava/lang/String;
@@ -422,7 +433,7 @@
 
     invoke-virtual {p0, v7}, Lsergentum/export/MifitStarter;->log([Ljava/lang/String;)Z
 
-    .line 207
+    .line 259
     const/4 v6, 0x0
 
     goto :goto_86
@@ -434,12 +445,12 @@
     .prologue
     const/4 v1, 0x0
 
-    .line 244
-    invoke-static {}, Lsergentum/export/core/TrackExporter;->getDebugPath()Ljava/lang/String;
+    .line 296
+    invoke-static {}, Lsergentum/export/MifitStarter;->getDebugPath()Ljava/lang/String;
 
     move-result-object v0
 
-    .line 245
+    .line 297
     .local v0, "filePath":Ljava/lang/String;
     invoke-virtual {p0, v0}, Lsergentum/export/MifitStarter;->checkIfPathExistAndCreate(Ljava/lang/String;)Z
 
@@ -447,7 +458,7 @@
 
     if-eqz v2, :cond_2b
 
-    .line 246
+    .line 298
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
@@ -468,7 +479,7 @@
 
     iput-object v2, p0, Lsergentum/export/MifitStarter;->logFilePath:Ljava/lang/String;
 
-    .line 247
+    .line 299
     const/4 v2, 0x1
 
     new-array v2, v2, [Ljava/lang/String;
@@ -481,7 +492,7 @@
 
     move-result v1
 
-    .line 249
+    .line 301
     :cond_2b
     return v1
 .end method
@@ -492,7 +503,7 @@
     .prologue
     const/4 v6, 0x0
 
-    .line 234
+    .line 286
     iget-object v3, p0, Lsergentum/export/MifitStarter;->activity:Landroid/app/Activity;
 
     const-string v4, "tmp.db"
@@ -503,27 +514,27 @@
 
     move-result-object v0
 
-    .line 235
+    .line 287
     .local v0, "sqLiteDatabase":Landroid/database/sqlite/SQLiteDatabase;
     const-string v3, "CREATE TABLE IF NOT EXISTS dummy (\"_id\"  INTEGER primary key autoincrement, \n  \"CALENDAR\" INTEGER )"
 
     invoke-virtual {v0, v3}, Landroid/database/sqlite/SQLiteDatabase;->execSQL(Ljava/lang/String;)V
 
-    .line 236
+    .line 288
     invoke-virtual {v0}, Landroid/database/sqlite/SQLiteDatabase;->getPath()Ljava/lang/String;
 
     move-result-object v2
 
-    .line 237
+    .line 289
     .local v2, "tmpDbPath":Ljava/lang/String;
     invoke-virtual {v0}, Landroid/database/sqlite/SQLiteDatabase;->close()V
 
-    .line 238
+    .line 290
     new-instance v1, Ljava/io/File;
 
     invoke-direct {v1, v2}, Ljava/io/File;-><init>(Ljava/lang/String;)V
 
-    .line 239
+    .line 291
     .local v1, "tmpDb":Ljava/io/File;
     const/4 v3, 0x1
 
@@ -555,7 +566,7 @@
 
     invoke-virtual {p0, v3}, Lsergentum/export/MifitStarter;->log([Ljava/lang/String;)Z
 
-    .line 240
+    .line 292
     invoke-virtual {v1}, Ljava/io/File;->getParent()Ljava/lang/String;
 
     move-result-object v3
@@ -571,32 +582,32 @@
 
     const/4 v9, 0x0
 
-    .line 211
+    .line 263
     const-string v8, "^origin_db_[A-Za-z0-9]*$"
 
     invoke-static {v8}, Ljava/util/regex/Pattern;->compile(Ljava/lang/String;)Ljava/util/regex/Pattern;
 
     move-result-object v7
 
-    .line 213
+    .line 265
     .local v7, "pattern":Ljava/util/regex/Pattern;
     invoke-direct {p0}, Lsergentum/export/MifitStarter;->dbPathFinder()Ljava/lang/String;
 
     move-result-object v5
 
-    .line 215
+    .line 267
     .local v5, "pathToDb":Ljava/lang/String;
     new-instance v2, Ljava/io/File;
 
     invoke-direct {v2, v5}, Ljava/io/File;-><init>(Ljava/lang/String;)V
 
-    .line 216
+    .line 268
     .local v2, "directory":Ljava/io/File;
     invoke-virtual {v2}, Ljava/io/File;->list()[Ljava/lang/String;
 
     move-result-object v4
 
-    .line 218
+    .line 270
     .local v4, "list":[Ljava/lang/String;
     array-length v10, v4
 
@@ -607,7 +618,7 @@
 
     aget-object v3, v4, v8
 
-    .line 219
+    .line 271
     .local v3, "file":Ljava/lang/String;
     invoke-virtual {v7, v3}, Ljava/util/regex/Pattern;->matcher(Ljava/lang/CharSequence;)Ljava/util/regex/Matcher;
 
@@ -617,7 +628,7 @@
 
     move-result v1
 
-    .line 220
+    .line 272
     .local v1, "dbFound":Z
     new-array v11, v14, [Ljava/lang/String;
 
@@ -653,21 +664,21 @@
 
     invoke-virtual {p0, v11}, Lsergentum/export/MifitStarter;->log([Ljava/lang/String;)Z
 
-    .line 221
+    .line 273
     if-eqz v1, :cond_6d
 
-    .line 222
+    .line 274
     new-instance v0, Ljava/io/File;
 
     invoke-direct {v0, v5, v3}, Ljava/io/File;-><init>(Ljava/lang/String;Ljava/lang/String;)V
 
-    .line 223
+    .line 275
     .local v0, "dbFile":Ljava/io/File;
     invoke-virtual {v0}, Ljava/io/File;->getPath()Ljava/lang/String;
 
     move-result-object v6
 
-    .line 224
+    .line 276
     .local v6, "pathToOriginDb":Ljava/lang/String;
     new-array v8, v14, [Ljava/lang/String;
 
@@ -693,7 +704,7 @@
 
     invoke-virtual {p0, v8}, Lsergentum/export/MifitStarter;->log([Ljava/lang/String;)Z
 
-    .line 230
+    .line 282
     .end local v0    # "dbFile":Ljava/io/File;
     .end local v1    # "dbFound":Z
     .end local v3    # "file":Ljava/lang/String;
@@ -701,7 +712,7 @@
     :goto_6c
     return-object v6
 
-    .line 218
+    .line 270
     .restart local v1    # "dbFound":Z
     .restart local v3    # "file":Ljava/lang/String;
     :cond_6d
@@ -709,7 +720,7 @@
 
     goto :goto_17
 
-    .line 229
+    .line 281
     .end local v1    # "dbFound":Z
     .end local v3    # "file":Ljava/lang/String;
     :cond_70
@@ -721,7 +732,7 @@
 
     invoke-virtual {p0, v8}, Lsergentum/export/MifitStarter;->log([Ljava/lang/String;)Z
 
-    .line 230
+    .line 282
     const/4 v6, 0x0
 
     goto :goto_6c
@@ -731,40 +742,451 @@
     .registers 2
 
     .prologue
-    .line 177
+    .line 229
     invoke-direct {p0}, Lsergentum/export/MifitStarter;->checkExtDb()Ljava/lang/String;
 
     move-result-object v0
 
-    .line 178
+    .line 230
     .local v0, "result":Ljava/lang/String;
     if-nez v0, :cond_a
 
-    .line 179
+    .line 231
     invoke-direct {p0}, Lsergentum/export/MifitStarter;->findOriginDb()Ljava/lang/String;
 
     move-result-object v0
 
-    .line 181
+    .line 233
     :cond_a
     return-object v0
 .end method
 
 
 # virtual methods
-.method public bridge synthetic loadTrackHeadersFromDb()Ljava/util/Map;
+.method public exportTrack(Ljava/lang/Long;)V
+    .registers 16
+    .param p1, "trackId"    # Ljava/lang/Long;
+
+    .prologue
+    .line 172
+    invoke-virtual {p0, p1}, Lsergentum/export/MifitStarter;->fetchTrackById(Ljava/lang/Long;)Lsergentum/export/core/Model$Track;
+
+    move-result-object v8
+
+    .line 173
+    .local v8, "track":Lsergentum/export/core/Model$Track;
+    invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
+
+    move-result-wide v4
+
+    .line 174
+    .local v4, "start":J
+    const-string v2, ""
+
+    .line 175
+    .local v2, "message":Ljava/lang/String;
+    const/4 v10, 0x1
+
+    new-array v10, v10, [Ljava/lang/String;
+
+    const/4 v11, 0x0
+
+    new-instance v12, Ljava/lang/StringBuilder;
+
+    invoke-direct {v12}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v13, "Format selected: "
+
+    invoke-virtual {v12, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v12
+
+    sget-object v13, Lsergentum/export/MifitStarter;->FILE_FORMAT:Ljava/lang/String;
+
+    invoke-virtual {v12, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v12
+
+    invoke-virtual {v12}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v12
+
+    aput-object v12, v10, v11
+
+    invoke-virtual {p0, v10}, Lsergentum/export/MifitStarter;->log([Ljava/lang/String;)Z
+
+    .line 176
+    sget-object v11, Lsergentum/export/MifitStarter;->FILE_FORMAT:Ljava/lang/String;
+
+    const/4 v10, -0x1
+
+    invoke-virtual {v11}, Ljava/lang/String;->hashCode()I
+
+    move-result v12
+
+    sparse-switch v12, :sswitch_data_13c
+
+    :cond_32
+    :goto_32
+    packed-switch v10, :pswitch_data_14a
+
+    .line 195
+    new-instance v10, Ljava/lang/StringBuilder;
+
+    invoke-direct {v10}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v10, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v10
+
+    invoke-virtual {p0, v8}, Lsergentum/export/MifitStarter;->exportTCX(Lsergentum/export/core/Model$Track;)Ljava/lang/String;
+
+    move-result-object v11
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v10
+
+    invoke-virtual {v10}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    .line 196
+    new-instance v10, Ljava/lang/StringBuilder;
+
+    invoke-direct {v10}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v10, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v10
+
+    const-string v11, "\n"
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v10
+
+    invoke-virtual {p0, v8}, Lsergentum/export/MifitStarter;->exportGPX(Lsergentum/export/core/Model$Track;)Ljava/lang/String;
+
+    move-result-object v11
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v10
+
+    invoke-virtual {v10}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    .line 200
+    :goto_65
+    invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
+
+    move-result-wide v6
+
+    .line 201
+    .local v6, "stop":J
+    new-instance v10, Ljava/lang/StringBuilder;
+
+    invoke-direct {v10}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v10, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v10
+
+    const-string v11, "\n Spent "
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v10
+
+    sub-long v12, v6, v4
+
+    invoke-virtual {v10, v12, v13}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+
+    move-result-object v10
+
+    const-string v11, " ms "
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v10
+
+    invoke-virtual {v10}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v3
+
+    .line 202
+    .local v3, "successMessage":Ljava/lang/String;
+    const/4 v10, 0x1
+
+    new-array v10, v10, [Ljava/lang/String;
+
+    const/4 v11, 0x0
+
+    aput-object v3, v10, v11
+
+    invoke-virtual {p0, v10}, Lsergentum/export/MifitStarter;->log([Ljava/lang/String;)Z
+
+    .line 203
+    const/4 v10, 0x1
+
+    invoke-virtual {p0, v3, v10}, Lsergentum/export/MifitStarter;->showToast(Ljava/lang/String;I)V
+
+    .line 204
+    return-void
+
+    .line 176
+    .end local v3    # "successMessage":Ljava/lang/String;
+    .end local v6    # "stop":J
+    :sswitch_96
+    const-string v12, ".tcx"
+
+    invoke-virtual {v11, v12}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v11
+
+    if-eqz v11, :cond_32
+
+    const/4 v10, 0x0
+
+    goto :goto_32
+
+    :sswitch_a0
+    const-string v12, ".gpx"
+
+    invoke-virtual {v11, v12}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v11
+
+    if-eqz v11, :cond_32
+
+    const/4 v10, 0x1
+
+    goto :goto_32
+
+    :sswitch_aa
+    const-string v12, "endomondo"
+
+    invoke-virtual {v11, v12}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v11
+
+    if-eqz v11, :cond_32
+
+    const/4 v10, 0x2
+
+    goto/16 :goto_32
+
+    .line 178
+    :pswitch_b5
+    new-instance v10, Ljava/lang/StringBuilder;
+
+    invoke-direct {v10}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v10, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v10
+
+    invoke-virtual {p0, v8}, Lsergentum/export/MifitStarter;->exportTCX(Lsergentum/export/core/Model$Track;)Ljava/lang/String;
+
+    move-result-object v11
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v10
+
+    invoke-virtual {v10}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    .line 179
+    new-instance v10, Ljava/lang/StringBuilder;
+
+    invoke-direct {v10}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v10, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v10
+
+    const-string v11, "\nsaved to "
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v10
+
+    sget-object v11, Lsergentum/export/MifitStarter;->EXPORT_PATH:Ljava/lang/String;
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v10
+
+    invoke-virtual {v10}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    .line 180
+    goto :goto_65
+
+    .line 183
+    :pswitch_e4
+    new-instance v10, Ljava/lang/StringBuilder;
+
+    invoke-direct {v10}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v10, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v10
+
+    invoke-virtual {p0, v8}, Lsergentum/export/MifitStarter;->exportGPX(Lsergentum/export/core/Model$Track;)Ljava/lang/String;
+
+    move-result-object v11
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v10
+
+    invoke-virtual {v10}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    .line 184
+    new-instance v10, Ljava/lang/StringBuilder;
+
+    invoke-direct {v10}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v10, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v10
+
+    const-string v11, "\nsaved to "
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v10
+
+    sget-object v11, Lsergentum/export/MifitStarter;->EXPORT_PATH:Ljava/lang/String;
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v10
+
+    invoke-virtual {v10}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    .line 185
+    goto/16 :goto_65
+
+    .line 188
+    :pswitch_114
+    iget-object v10, p0, Lsergentum/export/MifitStarter;->sp:Landroid/content/SharedPreferences;
+
+    sget-object v11, Lsergentum/export/SettingsActivity;->ENDOMONDO_APIKEY:Ljava/lang/String;
+
+    const/4 v12, 0x0
+
+    invoke-interface {v10, v11, v12}, Landroid/content/SharedPreferences;->getString(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v0
+
+    .line 189
+    .local v0, "endoApiKey":Ljava/lang/String;
+    new-instance v1, Lsergentum/sync/EndomondoSyncronizer;
+
+    invoke-direct {v1, v0, p0}, Lsergentum/sync/EndomondoSyncronizer;-><init>(Ljava/lang/String;Lsergentum/export/Starter;)V
+
+    .line 190
+    .local v1, "endomondoSyncronizer":Lsergentum/sync/EndomondoSyncronizer;
+    invoke-virtual {v1, v8}, Lsergentum/sync/EndomondoSyncronizer;->upload(Lsergentum/export/core/Model$Track;)Lsergentum/sync/Synchronizer$Status;
+
+    move-result-object v9
+
+    .line 191
+    .local v9, "upload":Lsergentum/sync/Synchronizer$Status;
+    new-instance v10, Ljava/lang/StringBuilder;
+
+    invoke-direct {v10}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v10, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v10
+
+    iget-object v11, v9, Lsergentum/sync/Synchronizer$Status;->message:Ljava/lang/String;
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v10
+
+    invoke-virtual {v10}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v2
+
+    .line 192
+    goto/16 :goto_65
+
+    .line 176
+    nop
+
+    :sswitch_data_13c
+    .sparse-switch
+        -0x70b1b9dd -> :sswitch_aa
+        0x1679c1 -> :sswitch_a0
+        0x16a8fb -> :sswitch_96
+    .end sparse-switch
+
+    :pswitch_data_14a
+    .packed-switch 0x0
+        :pswitch_b5
+        :pswitch_e4
+        :pswitch_114
+    .end packed-switch
+.end method
+
+.method public fetchTrackById(Ljava/lang/Long;)Lsergentum/export/core/Model$Track;
+    .registers 8
+    .param p1, "trackId"    # Ljava/lang/Long;
+
+    .prologue
+    .line 164
+    invoke-virtual {p1}, Ljava/lang/Long;->longValue()J
+
+    move-result-wide v4
+
+    invoke-virtual {p0, v4, v5}, Lsergentum/export/MifitStarter;->readRawDataWithId(J)Lsergentum/export/core/RawData$QueryData;
+
+    move-result-object v0
+
+    .line 166
+    .local v0, "queryData":Lsergentum/export/core/RawData$QueryData;
+    new-instance v2, Lsergentum/export/core/TrackExporter;
+
+    invoke-direct {v2, p0}, Lsergentum/export/core/TrackExporter;-><init>(Lsergentum/export/Starter;)V
+
+    .line 167
+    .local v2, "trackExporter":Lsergentum/export/core/TrackExporter;
+    invoke-virtual {v2, v0}, Lsergentum/export/core/TrackExporter;->compileTrack(Lsergentum/export/core/RawData$QueryData;)Lsergentum/export/core/Model$Track;
+
+    move-result-object v1
+
+    .line 168
+    .local v1, "track":Lsergentum/export/core/Model$Track;
+    return-object v1
+.end method
+
+.method public bridge synthetic loadTrackSummaryFromDb()Ljava/util/Map;
     .registers 2
 
     .prologue
-    .line 24
-    invoke-virtual {p0}, Lsergentum/export/MifitStarter;->loadTrackHeadersFromDb()Ljava/util/TreeMap;
+    .line 36
+    invoke-virtual {p0}, Lsergentum/export/MifitStarter;->loadTrackSummaryFromDb()Ljava/util/TreeMap;
 
     move-result-object v0
 
     return-object v0
 .end method
 
-.method public loadTrackHeadersFromDb()Ljava/util/TreeMap;
+.method public loadTrackSummaryFromDb()Ljava/util/TreeMap;
     .registers 24
     .annotation system Ldalvik/annotation/Signature;
         value = {
@@ -772,559 +1194,622 @@
             "Ljava/util/TreeMap",
             "<",
             "Ljava/lang/Long;",
-            "Lsergentum/export/core/Model$TrackHeader;",
+            "Lsergentum/export/core/Model$TrackSummary;",
             ">;"
         }
     .end annotation
 
     .prologue
-    .line 55
-    new-instance v14, Ljava/util/TreeMap;
+    .line 68
+    new-instance v13, Ljava/util/TreeMap;
 
-    invoke-direct {v14}, Ljava/util/TreeMap;-><init>()V
+    invoke-direct {v13}, Ljava/util/TreeMap;-><init>()V
 
-    .line 56
-    .local v14, "trackHeaderMap":Ljava/util/TreeMap;, "Ljava/util/TreeMap<Ljava/lang/Long;Lsergentum/export/core/Model$TrackHeader;>;"
+    .line 69
+    .local v13, "trackSummaryMap":Ljava/util/TreeMap;, "Ljava/util/TreeMap<Ljava/lang/Long;Lsergentum/export/core/Model$TrackSummary;>;"
     move-object/from16 v0, p0
 
-    iget-object v15, v0, Lsergentum/export/MifitStarter;->dbPath:Ljava/lang/String;
+    iget-object v0, v0, Lsergentum/export/MifitStarter;->dbPath:Ljava/lang/String;
 
-    if-nez v15, :cond_42
+    move-object/from16 v16, v0
 
-    .line 57
+    if-nez v16, :cond_49
+
+    .line 70
     move-object/from16 v0, p0
 
-    iget-object v15, v0, Lsergentum/export/MifitStarter;->activity:Landroid/app/Activity;
+    iget-object v0, v0, Lsergentum/export/MifitStarter;->activity:Landroid/app/Activity;
 
-    const-string v18, "database not found"
+    move-object/from16 v16, v0
 
-    const/16 v19, 0x0
-
-    move-object/from16 v0, v18
-
-    move/from16 v1, v19
-
-    invoke-static {v15, v0, v1}, Landroid/widget/Toast;->makeText(Landroid/content/Context;Ljava/lang/CharSequence;I)Landroid/widget/Toast;
-
-    move-result-object v15
-
-    invoke-virtual {v15}, Landroid/widget/Toast;->show()V
-
-    .line 93
-    :cond_1e
-    :goto_1e
-    const/4 v15, 0x1
-
-    new-array v15, v15, [Ljava/lang/String;
+    const-string v17, "database not found"
 
     const/16 v18, 0x0
 
-    new-instance v19, Ljava/lang/StringBuilder;
+    invoke-static/range {v16 .. v18}, Landroid/widget/Toast;->makeText(Landroid/content/Context;Ljava/lang/CharSequence;I)Landroid/widget/Toast;
 
-    invoke-direct/range {v19 .. v19}, Ljava/lang/StringBuilder;-><init>()V
+    move-result-object v16
 
-    const-string v20, "trackHeaderMap.size(): "
+    invoke-virtual/range {v16 .. v16}, Landroid/widget/Toast;->show()V
 
-    invoke-virtual/range {v19 .. v20}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    .line 107
+    :cond_1e
+    :goto_1e
+    const/16 v16, 0x1
 
-    move-result-object v19
+    move/from16 v0, v16
 
-    invoke-virtual {v14}, Ljava/util/TreeMap;->size()I
+    new-array v0, v0, [Ljava/lang/String;
 
-    move-result v20
+    move-object/from16 v16, v0
 
-    invoke-virtual/range {v19 .. v20}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    const/16 v17, 0x0
 
-    move-result-object v19
+    new-instance v18, Ljava/lang/StringBuilder;
 
-    invoke-virtual/range {v19 .. v19}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-direct/range {v18 .. v18}, Ljava/lang/StringBuilder;-><init>()V
 
-    move-result-object v19
+    const-string v19, "trackHeaderMap.size(): "
 
-    aput-object v19, v15, v18
+    invoke-virtual/range {v18 .. v19}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v18
+
+    invoke-virtual {v13}, Ljava/util/TreeMap;->size()I
+
+    move-result v19
+
+    invoke-virtual/range {v18 .. v19}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    move-result-object v18
+
+    invoke-virtual/range {v18 .. v18}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v18
+
+    aput-object v18, v16, v17
 
     move-object/from16 v0, p0
 
-    invoke-virtual {v0, v15}, Lsergentum/export/MifitStarter;->log([Ljava/lang/String;)Z
+    move-object/from16 v1, v16
 
-    .line 94
-    return-object v14
+    invoke-virtual {v0, v1}, Lsergentum/export/MifitStarter;->log([Ljava/lang/String;)Z
 
-    .line 60
-    :cond_42
-    :try_start_42
+    .line 108
+    return-object v13
+
+    .line 73
+    :cond_49
+    :try_start_49
     move-object/from16 v0, p0
 
-    iget-object v15, v0, Lsergentum/export/MifitStarter;->activity:Landroid/app/Activity;
+    iget-object v0, v0, Lsergentum/export/MifitStarter;->activity:Landroid/app/Activity;
+
+    move-object/from16 v16, v0
 
     move-object/from16 v0, p0
 
     iget-object v0, v0, Lsergentum/export/MifitStarter;->dbPath:Ljava/lang/String;
 
-    move-object/from16 v18, v0
+    move-object/from16 v17, v0
+
+    const/16 v18, 0x0
 
     const/16 v19, 0x0
 
-    const/16 v20, 0x0
+    invoke-virtual/range {v16 .. v19}, Landroid/app/Activity;->openOrCreateDatabase(Ljava/lang/String;ILandroid/database/sqlite/SQLiteDatabase$CursorFactory;)Landroid/database/sqlite/SQLiteDatabase;
+    :try_end_5c
+    .catch Ljava/lang/Exception; {:try_start_49 .. :try_end_5c} :catch_136
 
-    move-object/from16 v0, v18
+    move-result-object v9
 
-    move/from16 v1, v19
+    .line 72
+    .local v9, "sqLiteDatabase":Landroid/database/sqlite/SQLiteDatabase;
+    const/16 v18, 0x0
 
-    move-object/from16 v2, v20
+    .line 74
+    :try_start_5f
+    const-string v16, "   SELECT        TRACKRECORD.TRACKID,       TRACKDATA.TYPE,       TRACKRECORD.DISTANCE,       TRACKRECORD.COSTTIME       FROM TRACKDATA, TRACKRECORD       WHERE TRACKDATA.TRACKID = TRACKRECORD.TRACKID ;"
 
-    invoke-virtual {v15, v0, v1, v2}, Landroid/app/Activity;->openOrCreateDatabase(Ljava/lang/String;ILandroid/database/sqlite/SQLiteDatabase$CursorFactory;)Landroid/database/sqlite/SQLiteDatabase;
-    :try_end_59
-    .catch Ljava/lang/Exception; {:try_start_42 .. :try_end_59} :catch_104
+    const/16 v17, 0x0
+
+    move-object/from16 v0, v16
+
+    move-object/from16 v1, v17
+
+    invoke-virtual {v9, v0, v1}, Landroid/database/sqlite/SQLiteDatabase;->rawQuery(Ljava/lang/String;[Ljava/lang/String;)Landroid/database/Cursor;
+    :try_end_6a
+    .catch Ljava/lang/Throwable; {:try_start_5f .. :try_end_6a} :catch_125
+    .catchall {:try_start_5f .. :try_end_6a} :catchall_1a3
+
+    move-result-object v2
+
+    .line 72
+    .local v2, "cursor":Landroid/database/Cursor;
+    const/16 v17, 0x0
+
+    .line 76
+    :try_start_6d
+    invoke-interface {v2}, Landroid/database/Cursor;->moveToFirst()Z
+
+    .line 77
+    new-instance v11, Ljava/lang/StringBuilder;
+
+    invoke-direct {v11}, Ljava/lang/StringBuilder;-><init>()V
+
+    .line 78
+    .local v11, "stringBuilder":Ljava/lang/StringBuilder;
+    :goto_75
+    invoke-interface {v2}, Landroid/database/Cursor;->isAfterLast()Z
+
+    move-result v16
+
+    if-nez v16, :cond_163
+
+    .line 79
+    const/4 v5, 0x0
+
+    .local v5, "i":I
+    :goto_7c
+    invoke-interface {v2}, Landroid/database/Cursor;->getColumnCount()I
+
+    move-result v16
+
+    move/from16 v0, v16
+
+    if-ge v5, v0, :cond_bc
+
+    .line 80
+    invoke-interface {v2, v5}, Landroid/database/Cursor;->getString(I)Ljava/lang/String;
+
+    move-result-object v16
+
+    move-object/from16 v0, v16
+
+    invoke-virtual {v11, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v16
+
+    const-string v19, " "
+
+    move-object/from16 v0, v16
+
+    move-object/from16 v1, v19
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    .line 81
+    if-nez v5, :cond_b9
+
+    .line 82
+    invoke-interface {v2, v5}, Landroid/database/Cursor;->getString(I)Ljava/lang/String;
 
     move-result-object v10
 
-    .line 59
-    .local v10, "sqLiteDatabase":Landroid/database/sqlite/SQLiteDatabase;
-    const/16 v19, 0x0
+    .line 83
+    .local v10, "string":Ljava/lang/String;
+    invoke-static {v10}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
 
-    .line 61
-    :try_start_5c
-    const-string v15, "   SELECT        TRACKRECORD.TRACKID,       TRACKDATA.TYPE,       TRACKRECORD.DISTANCE,       TRACKRECORD.COSTTIME       FROM TRACKDATA, TRACKRECORD       WHERE TRACKDATA.TRACKID = TRACKRECORD.TRACKID ;"
+    move-result-wide v6
 
-    const/16 v18, 0x0
-
-    move-object/from16 v0, v18
-
-    invoke-virtual {v10, v15, v0}, Landroid/database/sqlite/SQLiteDatabase;->rawQuery(Ljava/lang/String;[Ljava/lang/String;)Landroid/database/Cursor;
-    :try_end_65
-    .catch Ljava/lang/Throwable; {:try_start_5c .. :try_end_65} :catch_f3
-    .catchall {:try_start_5c .. :try_end_65} :catchall_15f
-
-    move-result-object v4
-
-    .line 59
-    .local v4, "cursor":Landroid/database/Cursor;
-    const/16 v18, 0x0
-
-    .line 63
-    :try_start_68
-    invoke-interface {v4}, Landroid/database/Cursor;->moveToFirst()Z
-
-    .line 64
-    new-instance v12, Ljava/lang/StringBuilder;
-
-    invoke-direct {v12}, Ljava/lang/StringBuilder;-><init>()V
-
-    .line 65
-    .local v12, "stringBuilder":Ljava/lang/StringBuilder;
-    :goto_70
-    invoke-interface {v4}, Landroid/database/Cursor;->isAfterLast()Z
-
-    move-result v15
-
-    if-nez v15, :cond_12a
-
-    .line 66
-    const/4 v7, 0x0
-
-    .local v7, "i":I
-    :goto_77
-    invoke-interface {v4}, Landroid/database/Cursor;->getColumnCount()I
-
-    move-result v15
-
-    if-ge v7, v15, :cond_af
-
-    .line 67
-    invoke-interface {v4, v7}, Landroid/database/Cursor;->getString(I)Ljava/lang/String;
-
-    move-result-object v15
-
-    invoke-virtual {v12, v15}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    move-result-object v15
-
-    const-string v20, " "
-
-    move-object/from16 v0, v20
-
-    invoke-virtual {v15, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    .line 68
-    if-nez v7, :cond_ac
-
-    .line 69
-    invoke-interface {v4, v7}, Landroid/database/Cursor;->getString(I)Ljava/lang/String;
-
-    move-result-object v11
-
-    .line 70
-    .local v11, "string":Ljava/lang/String;
-    invoke-static {v11}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
-
-    move-result-wide v8
-
-    .line 71
-    .local v8, "l":J
-    new-instance v5, Ljava/util/Date;
+    .line 84
+    .local v6, "l":J
+    new-instance v3, Ljava/util/Date;
 
     const-wide/16 v20, 0x3e8
 
-    mul-long v20, v20, v8
+    mul-long v20, v20, v6
 
     move-wide/from16 v0, v20
 
-    invoke-direct {v5, v0, v1}, Ljava/util/Date;-><init>(J)V
+    invoke-direct {v3, v0, v1}, Ljava/util/Date;-><init>(J)V
 
-    .line 72
-    .local v5, "date":Ljava/util/Date;
-    invoke-virtual {v12, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    .line 85
+    .local v3, "date":Ljava/util/Date;
+    invoke-virtual {v11, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    move-result-object v15
+    move-result-object v16
 
-    const-string v20, " "
+    const-string v19, " "
 
-    move-object/from16 v0, v20
+    move-object/from16 v0, v16
 
-    invoke-virtual {v15, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    move-object/from16 v1, v19
 
-    .line 66
-    .end local v5    # "date":Ljava/util/Date;
-    .end local v8    # "l":J
-    .end local v11    # "string":Ljava/lang/String;
-    :cond_ac
-    add-int/lit8 v7, v7, 0x1
-
-    goto :goto_77
-
-    .line 75
-    :cond_af
-    const-string v15, "\n"
-
-    invoke-virtual {v12, v15}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    .line 77
-    new-instance v13, Lsergentum/export/core/Model$TrackHeader;
-
-    invoke-direct {v13}, Lsergentum/export/core/Model$TrackHeader;-><init>()V
-
-    .line 78
-    .local v13, "trackHeader":Lsergentum/export/core/Model$TrackHeader;
-    const/4 v15, 0x0
-
-    invoke-interface {v4, v15}, Landroid/database/Cursor;->getLong(I)J
-
-    move-result-wide v16
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 79
-    .local v16, "trackId":J
-    move-wide/from16 v0, v16
+    .end local v3    # "date":Ljava/util/Date;
+    .end local v6    # "l":J
+    .end local v10    # "string":Ljava/lang/String;
+    :cond_b9
+    add-int/lit8 v5, v5, 0x1
 
-    iput-wide v0, v13, Lsergentum/export/core/Model$TrackHeader;->id:J
+    goto :goto_7c
 
-    .line 80
-    const/4 v15, 0x1
+    .line 88
+    :cond_bc
+    const-string v16, "\n"
 
-    invoke-interface {v4, v15}, Landroid/database/Cursor;->getInt(I)I
+    move-object/from16 v0, v16
 
-    move-result v15
-
-    iput v15, v13, Lsergentum/export/core/Model$TrackHeader;->type:I
-
-    .line 81
-    const/4 v15, 0x2
-
-    invoke-interface {v4, v15}, Landroid/database/Cursor;->getInt(I)I
-
-    move-result v15
-
-    iput v15, v13, Lsergentum/export/core/Model$TrackHeader;->distance:I
-
-    .line 82
-    const/4 v15, 0x3
-
-    invoke-interface {v4, v15}, Landroid/database/Cursor;->getInt(I)I
-
-    move-result v15
-
-    iput v15, v13, Lsergentum/export/core/Model$TrackHeader;->duration:I
-
-    .line 83
-    invoke-static/range {v16 .. v17}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
-
-    move-result-object v15
-
-    invoke-virtual {v14, v15, v13}, Ljava/util/TreeMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
-
-    .line 84
-    invoke-interface {v4}, Landroid/database/Cursor;->moveToNext()Z
-    :try_end_e1
-    .catch Ljava/lang/Throwable; {:try_start_68 .. :try_end_e1} :catch_e2
-    .catchall {:try_start_68 .. :try_end_e1} :catchall_183
-
-    goto :goto_70
-
-    .line 59
-    .end local v7    # "i":I
-    .end local v12    # "stringBuilder":Ljava/lang/StringBuilder;
-    .end local v13    # "trackHeader":Lsergentum/export/core/Model$TrackHeader;
-    .end local v16    # "trackId":J
-    :catch_e2
-    move-exception v15
-
-    :try_start_e3
-    throw v15
-    :try_end_e4
-    .catchall {:try_start_e3 .. :try_end_e4} :catchall_e4
-
-    .line 89
-    :catchall_e4
-    move-exception v18
-
-    move-object/from16 v22, v18
-
-    move-object/from16 v18, v15
-
-    move-object/from16 v15, v22
-
-    :goto_eb
-    if-eqz v4, :cond_f2
-
-    if-eqz v18, :cond_170
-
-    :try_start_ef
-    invoke-interface {v4}, Landroid/database/Cursor;->close()V
-    :try_end_f2
-    .catch Ljava/lang/Throwable; {:try_start_ef .. :try_end_f2} :catch_167
-    .catchall {:try_start_ef .. :try_end_f2} :catchall_15f
-
-    :cond_f2
-    :goto_f2
-    :try_start_f2
-    throw v15
-    :try_end_f3
-    .catch Ljava/lang/Throwable; {:try_start_f2 .. :try_end_f3} :catch_f3
-    .catchall {:try_start_f2 .. :try_end_f3} :catchall_15f
-
-    .line 59
-    .end local v4    # "cursor":Landroid/database/Cursor;
-    :catch_f3
-    move-exception v15
-
-    :try_start_f4
-    throw v15
-    :try_end_f5
-    .catchall {:try_start_f4 .. :try_end_f5} :catchall_f5
-
-    .line 89
-    :catchall_f5
-    move-exception v18
-
-    move-object/from16 v22, v18
-
-    move-object/from16 v18, v15
-
-    move-object/from16 v15, v22
-
-    :goto_fc
-    if-eqz v10, :cond_103
-
-    if-eqz v18, :cond_17f
-
-    :try_start_100
-    invoke-virtual {v10}, Landroid/database/sqlite/SQLiteDatabase;->close()V
-    :try_end_103
-    .catch Ljava/lang/Throwable; {:try_start_100 .. :try_end_103} :catch_17a
-    .catch Ljava/lang/Exception; {:try_start_100 .. :try_end_103} :catch_104
-
-    :cond_103
-    :goto_103
-    :try_start_103
-    throw v15
-    :try_end_104
-    .catch Ljava/lang/Exception; {:try_start_103 .. :try_end_104} :catch_104
-
-    .end local v10    # "sqLiteDatabase":Landroid/database/sqlite/SQLiteDatabase;
-    :catch_104
-    move-exception v6
+    invoke-virtual {v11, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     .line 90
-    .local v6, "e":Ljava/lang/Exception;
-    const/4 v15, 0x1
+    new-instance v12, Lsergentum/export/core/Model$TrackSummary;
 
-    new-array v15, v15, [Ljava/lang/String;
+    invoke-direct {v12}, Lsergentum/export/core/Model$TrackSummary;-><init>()V
 
-    const/16 v18, 0x0
+    .line 91
+    .local v12, "trackHeader":Lsergentum/export/core/Model$TrackSummary;
+    const/16 v16, 0x0
 
-    new-instance v19, Ljava/lang/StringBuilder;
+    move/from16 v0, v16
 
-    invoke-direct/range {v19 .. v19}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-interface {v2, v0}, Landroid/database/Cursor;->getLong(I)J
 
-    const-string v20, "showTracks():"
+    move-result-wide v14
 
-    invoke-virtual/range {v19 .. v20}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    .line 92
+    .local v14, "trackId":J
+    iput-wide v14, v12, Lsergentum/export/core/Model$TrackSummary;->id:J
+
+    .line 93
+    const/16 v16, 0x1
+
+    move/from16 v0, v16
+
+    invoke-interface {v2, v0}, Landroid/database/Cursor;->getInt(I)I
+
+    move-result v8
+
+    .line 94
+    .local v8, "miSportType":I
+    sget-object v16, Lsergentum/export/core/TrackExporter;->mi2sport:Ljava/util/HashMap;
+
+    invoke-static {v8}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
     move-result-object v19
 
-    invoke-virtual {v6}, Ljava/lang/Exception;->getMessage()Ljava/lang/String;
+    move-object/from16 v0, v16
+
+    move-object/from16 v1, v19
+
+    invoke-virtual {v0, v1}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+
+    move-result-object v16
+
+    check-cast v16, Lsergentum/export/core/Model$ActivityType;
+
+    move-object/from16 v0, v16
+
+    iput-object v0, v12, Lsergentum/export/core/Model$TrackSummary;->activityType:Lsergentum/export/core/Model$ActivityType;
+
+    .line 95
+    const/16 v16, 0x2
+
+    move/from16 v0, v16
+
+    invoke-interface {v2, v0}, Landroid/database/Cursor;->getInt(I)I
+
+    move-result v16
+
+    move/from16 v0, v16
+
+    iput v0, v12, Lsergentum/export/core/Model$TrackSummary;->distance:I
+
+    .line 96
+    const/16 v16, 0x3
+
+    move/from16 v0, v16
+
+    invoke-interface {v2, v0}, Landroid/database/Cursor;->getInt(I)I
+
+    move-result v16
+
+    move/from16 v0, v16
+
+    iput v0, v12, Lsergentum/export/core/Model$TrackSummary;->duration:I
+
+    .line 97
+    invoke-static {v14, v15}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+
+    move-result-object v16
+
+    move-object/from16 v0, v16
+
+    invoke-virtual {v13, v0, v12}, Ljava/util/TreeMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+
+    .line 98
+    invoke-interface {v2}, Landroid/database/Cursor;->moveToNext()Z
+    :try_end_112
+    .catch Ljava/lang/Throwable; {:try_start_6d .. :try_end_112} :catch_114
+    .catchall {:try_start_6d .. :try_end_112} :catchall_1ca
+
+    goto/16 :goto_75
+
+    .line 72
+    .end local v5    # "i":I
+    .end local v8    # "miSportType":I
+    .end local v11    # "stringBuilder":Ljava/lang/StringBuilder;
+    .end local v12    # "trackHeader":Lsergentum/export/core/Model$TrackSummary;
+    .end local v14    # "trackId":J
+    :catch_114
+    move-exception v16
+
+    :try_start_115
+    throw v16
+    :try_end_116
+    .catchall {:try_start_115 .. :try_end_116} :catchall_116
+
+    .line 103
+    :catchall_116
+    move-exception v17
+
+    move-object/from16 v22, v17
+
+    move-object/from16 v17, v16
+
+    move-object/from16 v16, v22
+
+    :goto_11d
+    if-eqz v2, :cond_124
+
+    if-eqz v17, :cond_1b5
+
+    :try_start_121
+    invoke-interface {v2}, Landroid/database/Cursor;->close()V
+    :try_end_124
+    .catch Ljava/lang/Throwable; {:try_start_121 .. :try_end_124} :catch_1ab
+    .catchall {:try_start_121 .. :try_end_124} :catchall_1a3
+
+    :cond_124
+    :goto_124
+    :try_start_124
+    throw v16
+    :try_end_125
+    .catch Ljava/lang/Throwable; {:try_start_124 .. :try_end_125} :catch_125
+    .catchall {:try_start_124 .. :try_end_125} :catchall_1a3
+
+    .line 72
+    .end local v2    # "cursor":Landroid/database/Cursor;
+    :catch_125
+    move-exception v16
+
+    :try_start_126
+    throw v16
+    :try_end_127
+    .catchall {:try_start_126 .. :try_end_127} :catchall_127
+
+    .line 103
+    :catchall_127
+    move-exception v17
+
+    move-object/from16 v22, v17
+
+    move-object/from16 v17, v16
+
+    move-object/from16 v16, v22
+
+    :goto_12e
+    if-eqz v9, :cond_135
+
+    if-eqz v17, :cond_1c5
+
+    :try_start_132
+    invoke-virtual {v9}, Landroid/database/sqlite/SQLiteDatabase;->close()V
+    :try_end_135
+    .catch Ljava/lang/Throwable; {:try_start_132 .. :try_end_135} :catch_1bf
+    .catch Ljava/lang/Exception; {:try_start_132 .. :try_end_135} :catch_136
+
+    :cond_135
+    :goto_135
+    :try_start_135
+    throw v16
+    :try_end_136
+    .catch Ljava/lang/Exception; {:try_start_135 .. :try_end_136} :catch_136
+
+    .end local v9    # "sqLiteDatabase":Landroid/database/sqlite/SQLiteDatabase;
+    :catch_136
+    move-exception v4
+
+    .line 104
+    .local v4, "e":Ljava/lang/Exception;
+    const/16 v16, 0x1
+
+    move/from16 v0, v16
+
+    new-array v0, v0, [Ljava/lang/String;
+
+    move-object/from16 v16, v0
+
+    const/16 v17, 0x0
+
+    new-instance v18, Ljava/lang/StringBuilder;
+
+    invoke-direct/range {v18 .. v18}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v19, "showTracks():"
+
+    invoke-virtual/range {v18 .. v19}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v18
+
+    invoke-virtual {v4}, Ljava/lang/Exception;->getMessage()Ljava/lang/String;
+
+    move-result-object v19
+
+    invoke-virtual/range {v18 .. v19}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v18
+
+    invoke-virtual/range {v18 .. v18}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v18
+
+    aput-object v18, v16, v17
+
+    move-object/from16 v0, p0
+
+    move-object/from16 v1, v16
+
+    invoke-virtual {v0, v1}, Lsergentum/export/MifitStarter;->log([Ljava/lang/String;)Z
+
+    goto/16 :goto_1e
+
+    .line 100
+    .end local v4    # "e":Ljava/lang/Exception;
+    .restart local v2    # "cursor":Landroid/database/Cursor;
+    .restart local v9    # "sqLiteDatabase":Landroid/database/sqlite/SQLiteDatabase;
+    .restart local v11    # "stringBuilder":Ljava/lang/StringBuilder;
+    :cond_163
+    :try_start_163
+    invoke-interface {v2}, Landroid/database/Cursor;->close()V
+
+    .line 101
+    invoke-virtual {v9}, Landroid/database/sqlite/SQLiteDatabase;->close()V
+
+    .line 102
+    const/16 v16, 0x1
+
+    move/from16 v0, v16
+
+    new-array v0, v0, [Ljava/lang/String;
+
+    move-object/from16 v16, v0
+
+    const/16 v19, 0x0
+
+    invoke-virtual {v11}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v20
 
-    invoke-virtual/range {v19 .. v20}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    move-result-object v19
-
-    invoke-virtual/range {v19 .. v19}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v19
-
-    aput-object v19, v15, v18
+    aput-object v20, v16, v19
 
     move-object/from16 v0, p0
 
-    invoke-virtual {v0, v15}, Lsergentum/export/MifitStarter;->log([Ljava/lang/String;)Z
+    move-object/from16 v1, v16
+
+    invoke-virtual {v0, v1}, Lsergentum/export/MifitStarter;->log([Ljava/lang/String;)Z
+    :try_end_180
+    .catch Ljava/lang/Throwable; {:try_start_163 .. :try_end_180} :catch_114
+    .catchall {:try_start_163 .. :try_end_180} :catchall_1ca
+
+    .line 103
+    if-eqz v2, :cond_187
+
+    if-eqz v17, :cond_1a7
+
+    :try_start_184
+    invoke-interface {v2}, Landroid/database/Cursor;->close()V
+    :try_end_187
+    .catch Ljava/lang/Throwable; {:try_start_184 .. :try_end_187} :catch_19a
+    .catchall {:try_start_184 .. :try_end_187} :catchall_1a3
+
+    :cond_187
+    :goto_187
+    if-eqz v9, :cond_1e
+
+    if-eqz v18, :cond_1ba
+
+    :try_start_18b
+    invoke-virtual {v9}, Landroid/database/sqlite/SQLiteDatabase;->close()V
+    :try_end_18e
+    .catch Ljava/lang/Throwable; {:try_start_18b .. :try_end_18e} :catch_190
+    .catch Ljava/lang/Exception; {:try_start_18b .. :try_end_18e} :catch_136
 
     goto/16 :goto_1e
 
-    .line 86
-    .end local v6    # "e":Ljava/lang/Exception;
-    .restart local v4    # "cursor":Landroid/database/Cursor;
-    .restart local v10    # "sqLiteDatabase":Landroid/database/sqlite/SQLiteDatabase;
-    .restart local v12    # "stringBuilder":Ljava/lang/StringBuilder;
-    :cond_12a
-    :try_start_12a
-    invoke-interface {v4}, Landroid/database/Cursor;->close()V
+    :catch_190
+    move-exception v16
 
-    .line 87
-    invoke-virtual {v10}, Landroid/database/sqlite/SQLiteDatabase;->close()V
-
-    .line 88
-    const/4 v15, 0x1
-
-    new-array v15, v15, [Ljava/lang/String;
-
-    const/16 v20, 0x0
-
-    invoke-virtual {v12}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v21
-
-    aput-object v21, v15, v20
-
-    move-object/from16 v0, p0
-
-    invoke-virtual {v0, v15}, Lsergentum/export/MifitStarter;->log([Ljava/lang/String;)Z
-    :try_end_140
-    .catch Ljava/lang/Throwable; {:try_start_12a .. :try_end_140} :catch_e2
-    .catchall {:try_start_12a .. :try_end_140} :catchall_183
-
-    .line 89
-    if-eqz v4, :cond_147
-
-    if-eqz v18, :cond_163
-
-    :try_start_144
-    invoke-interface {v4}, Landroid/database/Cursor;->close()V
-    :try_end_147
-    .catch Ljava/lang/Throwable; {:try_start_144 .. :try_end_147} :catch_158
-    .catchall {:try_start_144 .. :try_end_147} :catchall_15f
-
-    :cond_147
-    :goto_147
-    if-eqz v10, :cond_1e
-
-    if-eqz v19, :cond_175
-
-    :try_start_14b
-    invoke-virtual {v10}, Landroid/database/sqlite/SQLiteDatabase;->close()V
-    :try_end_14e
-    .catch Ljava/lang/Throwable; {:try_start_14b .. :try_end_14e} :catch_150
-    .catch Ljava/lang/Exception; {:try_start_14b .. :try_end_14e} :catch_104
-
-    goto/16 :goto_1e
-
-    :catch_150
-    move-exception v15
-
-    :try_start_151
-    move-object/from16 v0, v19
-
-    invoke-virtual {v0, v15}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
-    :try_end_156
-    .catch Ljava/lang/Exception; {:try_start_151 .. :try_end_156} :catch_104
-
-    goto/16 :goto_1e
-
-    :catch_158
-    move-exception v15
-
-    :try_start_159
+    :try_start_191
     move-object/from16 v0, v18
 
-    invoke-virtual {v0, v15}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
+    move-object/from16 v1, v16
 
-    goto :goto_147
+    invoke-virtual {v0, v1}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
+    :try_end_198
+    .catch Ljava/lang/Exception; {:try_start_191 .. :try_end_198} :catch_136
 
-    .end local v4    # "cursor":Landroid/database/Cursor;
-    .end local v12    # "stringBuilder":Ljava/lang/StringBuilder;
-    :catchall_15f
-    move-exception v15
+    goto/16 :goto_1e
 
-    move-object/from16 v18, v19
+    :catch_19a
+    move-exception v16
 
-    goto :goto_fc
+    :try_start_19b
+    move-object/from16 v0, v17
 
-    .restart local v4    # "cursor":Landroid/database/Cursor;
-    .restart local v12    # "stringBuilder":Ljava/lang/StringBuilder;
-    :cond_163
-    invoke-interface {v4}, Landroid/database/Cursor;->close()V
-
-    goto :goto_147
-
-    .end local v12    # "stringBuilder":Ljava/lang/StringBuilder;
-    :catch_167
-    move-exception v20
-
-    move-object/from16 v0, v18
-
-    move-object/from16 v1, v20
+    move-object/from16 v1, v16
 
     invoke-virtual {v0, v1}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
 
-    goto :goto_f2
+    goto :goto_187
 
-    :cond_170
-    invoke-interface {v4}, Landroid/database/Cursor;->close()V
-    :try_end_173
-    .catch Ljava/lang/Throwable; {:try_start_159 .. :try_end_173} :catch_f3
-    .catchall {:try_start_159 .. :try_end_173} :catchall_15f
+    .end local v2    # "cursor":Landroid/database/Cursor;
+    .end local v11    # "stringBuilder":Ljava/lang/StringBuilder;
+    :catchall_1a3
+    move-exception v16
 
-    goto/16 :goto_f2
+    move-object/from16 v17, v18
 
-    .restart local v12    # "stringBuilder":Ljava/lang/StringBuilder;
-    :cond_175
-    :try_start_175
-    invoke-virtual {v10}, Landroid/database/sqlite/SQLiteDatabase;->close()V
+    goto :goto_12e
+
+    .restart local v2    # "cursor":Landroid/database/Cursor;
+    .restart local v11    # "stringBuilder":Ljava/lang/StringBuilder;
+    :cond_1a7
+    invoke-interface {v2}, Landroid/database/Cursor;->close()V
+
+    goto :goto_187
+
+    .end local v11    # "stringBuilder":Ljava/lang/StringBuilder;
+    :catch_1ab
+    move-exception v19
+
+    move-object/from16 v0, v17
+
+    move-object/from16 v1, v19
+
+    invoke-virtual {v0, v1}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
+
+    goto/16 :goto_124
+
+    :cond_1b5
+    invoke-interface {v2}, Landroid/database/Cursor;->close()V
+    :try_end_1b8
+    .catch Ljava/lang/Throwable; {:try_start_19b .. :try_end_1b8} :catch_125
+    .catchall {:try_start_19b .. :try_end_1b8} :catchall_1a3
+
+    goto/16 :goto_124
+
+    .restart local v11    # "stringBuilder":Ljava/lang/StringBuilder;
+    :cond_1ba
+    :try_start_1ba
+    invoke-virtual {v9}, Landroid/database/sqlite/SQLiteDatabase;->close()V
 
     goto/16 :goto_1e
 
-    .end local v4    # "cursor":Landroid/database/Cursor;
-    .end local v12    # "stringBuilder":Ljava/lang/StringBuilder;
-    :catch_17a
-    move-exception v19
+    .end local v2    # "cursor":Landroid/database/Cursor;
+    .end local v11    # "stringBuilder":Ljava/lang/StringBuilder;
+    :catch_1bf
+    move-exception v18
 
-    invoke-virtual/range {v18 .. v19}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
+    invoke-virtual/range {v17 .. v18}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
 
-    goto :goto_103
+    goto/16 :goto_135
 
-    :cond_17f
-    invoke-virtual {v10}, Landroid/database/sqlite/SQLiteDatabase;->close()V
-    :try_end_182
-    .catch Ljava/lang/Exception; {:try_start_175 .. :try_end_182} :catch_104
+    :cond_1c5
+    invoke-virtual {v9}, Landroid/database/sqlite/SQLiteDatabase;->close()V
+    :try_end_1c8
+    .catch Ljava/lang/Exception; {:try_start_1ba .. :try_end_1c8} :catch_136
 
-    goto :goto_103
+    goto/16 :goto_135
 
-    .restart local v4    # "cursor":Landroid/database/Cursor;
-    :catchall_183
-    move-exception v15
+    .restart local v2    # "cursor":Landroid/database/Cursor;
+    :catchall_1ca
+    move-exception v16
 
-    goto/16 :goto_eb
+    goto/16 :goto_11d
 .end method
 
 .method public varargs log([Ljava/lang/String;)Z
@@ -1334,12 +1819,12 @@
     .prologue
     const/4 v3, 0x1
 
-    .line 255
+    .line 307
     invoke-super {p0, p1}, Lsergentum/export/Starter;->stringArrayToString([Ljava/lang/String;)Ljava/lang/String;
 
     move-result-object v0
 
-    .line 256
+    .line 308
     .local v0, "arrAsSingleString":Ljava/lang/String;
     :try_start_5
     new-instance v2, Ljava/io/FileWriter;
@@ -1356,17 +1841,17 @@
     .local v2, "fileWriter":Ljava/io/FileWriter;
     const/4 v4, 0x0
 
-    .line 257
+    .line 309
     :try_start_e
     invoke-virtual {v2, v0}, Ljava/io/FileWriter;->write(Ljava/lang/String;)V
 
-    .line 258
+    .line 310
     invoke-virtual {v2}, Ljava/io/FileWriter;->flush()V
     :try_end_14
     .catch Ljava/lang/Throwable; {:try_start_e .. :try_end_14} :catch_40
     .catchall {:try_start_e .. :try_end_14} :catchall_57
 
-    .line 259
+    .line 311
     if-eqz v2, :cond_1b
 
     if-eqz v4, :cond_35
@@ -1378,19 +1863,19 @@
     .catch Ljava/lang/Exception; {:try_start_18 .. :try_end_1b} :catch_26
     .catchall {:try_start_18 .. :try_end_1b} :catchall_39
 
-    .line 263
+    .line 315
     :cond_1b
     :goto_1b
     const-string v4, "mifit"
 
     invoke-static {v4, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 265
+    .line 317
     .end local v2    # "fileWriter":Ljava/io/FileWriter;
     :goto_20
     return v3
 
-    .line 259
+    .line 311
     .restart local v2    # "fileWriter":Ljava/io/FileWriter;
     :catch_21
     move-exception v5
@@ -1407,7 +1892,7 @@
     :catch_26
     move-exception v1
 
-    .line 260
+    .line 312
     .local v1, "e":Ljava/lang/Exception;
     :try_start_27
     const-string v3, "mifit"
@@ -1418,17 +1903,17 @@
     :try_end_2e
     .catchall {:try_start_27 .. :try_end_2e} :catchall_39
 
-    .line 261
+    .line 313
     const/4 v3, 0x0
 
-    .line 263
+    .line 315
     const-string v4, "mifit"
 
     invoke-static {v4, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     goto :goto_20
 
-    .line 259
+    .line 311
     .end local v1    # "e":Ljava/lang/Exception;
     .restart local v2    # "fileWriter":Ljava/io/FileWriter;
     :cond_35
@@ -1440,7 +1925,7 @@
 
     goto :goto_1b
 
-    .line 263
+    .line 315
     .end local v2    # "fileWriter":Ljava/io/FileWriter;
     :catchall_39
     move-exception v3
@@ -1449,10 +1934,10 @@
 
     invoke-static {v4, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 264
+    .line 316
     throw v3
 
-    .line 256
+    .line 308
     .restart local v2    # "fileWriter":Ljava/io/FileWriter;
     :catch_40
     move-exception v3
@@ -1462,7 +1947,7 @@
     :try_end_42
     .catchall {:try_start_41 .. :try_end_42} :catchall_42
 
-    .line 259
+    .line 311
     :catchall_42
     move-exception v4
 
@@ -1510,244 +1995,126 @@
     goto :goto_46
 .end method
 
-.method public readRawDataWithId(J)V
+.method public readRawDataWithId(J)Lsergentum/export/core/RawData$QueryData;
     .registers 20
     .param p1, "id"    # J
 
     .prologue
-    .line 154
-    :try_start_0
-    move-object/from16 v0, p0
-
-    iget-object v11, v0, Lsergentum/export/MifitStarter;->activity:Landroid/app/Activity;
-
-    move-object/from16 v0, p0
-
-    iget-object v12, v0, Lsergentum/export/MifitStarter;->dbPath:Ljava/lang/String;
-
-    const/4 v13, 0x0
-
-    const/4 v14, 0x0
-
-    invoke-virtual {v11, v12, v13, v14}, Landroid/app/Activity;->openOrCreateDatabase(Ljava/lang/String;ILandroid/database/sqlite/SQLiteDatabase$CursorFactory;)Landroid/database/sqlite/SQLiteDatabase;
-    :try_end_d
-    .catch Ljava/lang/Exception; {:try_start_0 .. :try_end_d} :catch_81
-
-    move-result-object v9
-
-    .line 153
-    .local v9, "sqLiteDatabase":Landroid/database/sqlite/SQLiteDatabase;
-    const/4 v13, 0x0
-
-    .line 155
-    :try_start_f
-    new-instance v11, Ljava/lang/StringBuilder;
-
-    invoke-direct {v11}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v12, "SELECT TRACKDATA.TRACKID,TRACKDATA.SIZE,TRACKDATA.BULKLL,TRACKDATA.BULKGAIT,TRACKDATA.BULKAL,TRACKDATA.BULKTIME,TRACKDATA.BULKHR,TRACKDATA.BULKPACE,TRACKDATA.BULKPAUSE,TRACKDATA.BULKSPEED,TRACKDATA.TYPE,TRACKDATA.BULKFLAG,TRACKRECORD.COSTTIME,TRACKRECORD.ENDTIME, TRACKRECORD.DISTANCE FROM TRACKDATA, TRACKRECORD WHERE TRACKDATA.TRACKID = TRACKRECORD.TRACKID AND TRACKDATA.TRACKID = "
-
-    invoke-virtual {v11, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    move-result-object v11
-
-    move-wide/from16 v0, p1
-
-    invoke-virtual {v11, v0, v1}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
-
-    move-result-object v11
-
-    invoke-virtual {v11}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v11
-
-    const/4 v12, 0x0
-
-    invoke-virtual {v9, v11, v12}, Landroid/database/sqlite/SQLiteDatabase;->rawQuery(Ljava/lang/String;[Ljava/lang/String;)Landroid/database/Cursor;
-    :try_end_28
-    .catch Ljava/lang/Throwable; {:try_start_f .. :try_end_28} :catch_73
-    .catchall {:try_start_f .. :try_end_28} :catchall_b5
-
-    move-result-object v4
-
-    .line 153
-    .local v4, "cursor":Landroid/database/Cursor;
-    const/4 v12, 0x0
-
-    .line 157
-    :try_start_2a
-    invoke-interface {v4}, Landroid/database/Cursor;->moveToFirst()Z
-
-    .line 158
-    new-instance v8, Ljava/util/ArrayList;
-
-    invoke-direct {v8}, Ljava/util/ArrayList;-><init>()V
-
-    .line 159
-    .local v8, "queryDataArrayList":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lsergentum/export/core/RawData$QueryData;>;"
-    invoke-interface {v4}, Landroid/database/Cursor;->isAfterLast()Z
-
-    move-result v11
-
-    if-nez v11, :cond_55
-
-    .line 160
+    .line 207
     new-instance v7, Lsergentum/export/core/RawData$QueryData;
 
     invoke-direct {v7}, Lsergentum/export/core/RawData$QueryData;-><init>()V
 
-    .line 161
+    .line 209
     .local v7, "queryData":Lsergentum/export/core/RawData$QueryData;
+    :try_start_5
+    move-object/from16 v0, p0
+
+    iget-object v9, v0, Lsergentum/export/MifitStarter;->activity:Landroid/app/Activity;
+
+    move-object/from16 v0, p0
+
+    iget-object v10, v0, Lsergentum/export/MifitStarter;->dbPath:Ljava/lang/String;
+
+    const/4 v11, 0x0
+
+    const/4 v12, 0x0
+
+    invoke-virtual {v9, v10, v11, v12}, Landroid/app/Activity;->openOrCreateDatabase(Ljava/lang/String;ILandroid/database/sqlite/SQLiteDatabase$CursorFactory;)Landroid/database/sqlite/SQLiteDatabase;
+    :try_end_12
+    .catch Ljava/lang/Exception; {:try_start_5 .. :try_end_12} :catch_8f
+
+    move-result-object v8
+
+    .line 208
+    .local v8, "sqLiteDatabase":Landroid/database/sqlite/SQLiteDatabase;
+    const/4 v11, 0x0
+
+    .line 210
+    :try_start_14
+    new-instance v9, Ljava/lang/StringBuilder;
+
+    invoke-direct {v9}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v10, "SELECT TRACKDATA.TRACKID,TRACKDATA.SIZE,TRACKDATA.BULKLL,TRACKDATA.BULKGAIT,TRACKDATA.BULKAL,TRACKDATA.BULKTIME,TRACKDATA.BULKHR,TRACKDATA.BULKPACE,TRACKDATA.BULKPAUSE,TRACKDATA.BULKSPEED,TRACKDATA.TYPE,TRACKDATA.BULKFLAG,TRACKRECORD.COSTTIME,TRACKRECORD.ENDTIME, TRACKRECORD.DISTANCE FROM TRACKDATA, TRACKRECORD WHERE TRACKDATA.TRACKID = TRACKRECORD.TRACKID AND TRACKDATA.TRACKID = "
+
+    invoke-virtual {v9, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v9
+
+    move-wide/from16 v0, p1
+
+    invoke-virtual {v9, v0, v1}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+
+    move-result-object v9
+
+    invoke-virtual {v9}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v9
+
+    const/4 v10, 0x0
+
+    invoke-virtual {v8, v9, v10}, Landroid/database/sqlite/SQLiteDatabase;->rawQuery(Ljava/lang/String;[Ljava/lang/String;)Landroid/database/Cursor;
+    :try_end_2d
+    .catch Ljava/lang/Throwable; {:try_start_14 .. :try_end_2d} :catch_81
+    .catchall {:try_start_14 .. :try_end_2d} :catchall_c3
+
+    move-result-object v4
+
+    .line 208
+    .local v4, "cursor":Landroid/database/Cursor;
+    const/4 v10, 0x0
+
+    .line 212
+    :try_start_2f
+    invoke-interface {v4}, Landroid/database/Cursor;->moveToFirst()Z
+
+    .line 213
+    invoke-interface {v4}, Landroid/database/Cursor;->isAfterLast()Z
+
+    move-result v9
+
+    if-nez v9, :cond_4d
+
+    .line 214
     const/4 v6, 0x0
 
     .local v6, "i":I
-    :goto_3e
+    :goto_39
     invoke-interface {v4}, Landroid/database/Cursor;->getColumnCount()I
 
-    move-result v11
+    move-result v9
 
-    if-ge v6, v11, :cond_52
+    if-ge v6, v9, :cond_6d
 
-    .line 162
+    .line 215
     invoke-interface {v4, v6}, Landroid/database/Cursor;->getString(I)Ljava/lang/String;
 
     move-result-object v3
 
-    .line 163
+    .line 216
     .local v3, "columnValue":Ljava/lang/String;
     invoke-interface {v4, v6}, Landroid/database/Cursor;->getColumnName(I)Ljava/lang/String;
 
     move-result-object v2
 
-    .line 164
+    .line 217
     .local v2, "columnName":Ljava/lang/String;
     invoke-static {v7, v2, v3}, Lsergentum/export/MifitStarter;->mapRawDataToQueryData(Lsergentum/export/core/RawData$QueryData;Ljava/lang/String;Ljava/lang/String;)V
 
-    .line 161
+    .line 214
     add-int/lit8 v6, v6, 0x1
 
-    goto :goto_3e
+    goto :goto_39
 
-    .line 166
+    .line 220
     .end local v2    # "columnName":Ljava/lang/String;
     .end local v3    # "columnValue":Ljava/lang/String;
-    :cond_52
-    invoke-virtual {v8, v7}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
-
-    .line 168
     .end local v6    # "i":I
-    .end local v7    # "queryData":Lsergentum/export/core/RawData$QueryData;
-    :cond_55
-    new-instance v10, Lsergentum/export/core/TrackExporter;
+    :cond_4d
+    const/4 v9, 0x1
 
-    move-object/from16 v0, p0
-
-    invoke-direct {v10, v0}, Lsergentum/export/core/TrackExporter;-><init>(Lsergentum/export/Starter;)V
-
-    .line 169
-    .local v10, "trackExporter":Lsergentum/export/core/TrackExporter;
-    invoke-virtual {v10, v8}, Lsergentum/export/core/TrackExporter;->launchExport(Ljava/util/ArrayList;)V
-    :try_end_5f
-    .catch Ljava/lang/Throwable; {:try_start_2a .. :try_end_5f} :catch_b8
-    .catchall {:try_start_2a .. :try_end_5f} :catchall_e1
-
-    .line 171
-    if-eqz v4, :cond_66
-
-    if-eqz v12, :cond_b1
-
-    :try_start_63
-    invoke-interface {v4}, Landroid/database/Cursor;->close()V
-    :try_end_66
-    .catch Ljava/lang/Throwable; {:try_start_63 .. :try_end_66} :catch_6e
-    .catchall {:try_start_63 .. :try_end_66} :catchall_b5
-
-    :cond_66
-    :goto_66
-    if-eqz v9, :cond_6d
-
-    if-eqz v13, :cond_d4
-
-    :try_start_6a
-    invoke-virtual {v9}, Landroid/database/sqlite/SQLiteDatabase;->close()V
-    :try_end_6d
-    .catch Ljava/lang/Throwable; {:try_start_6a .. :try_end_6d} :catch_cf
-    .catch Ljava/lang/Exception; {:try_start_6a .. :try_end_6d} :catch_81
-
-    .line 174
-    .end local v4    # "cursor":Landroid/database/Cursor;
-    .end local v8    # "queryDataArrayList":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lsergentum/export/core/RawData$QueryData;>;"
-    .end local v9    # "sqLiteDatabase":Landroid/database/sqlite/SQLiteDatabase;
-    .end local v10    # "trackExporter":Lsergentum/export/core/TrackExporter;
-    :cond_6d
-    :goto_6d
-    return-void
-
-    .line 171
-    .restart local v4    # "cursor":Landroid/database/Cursor;
-    .restart local v8    # "queryDataArrayList":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lsergentum/export/core/RawData$QueryData;>;"
-    .restart local v9    # "sqLiteDatabase":Landroid/database/sqlite/SQLiteDatabase;
-    .restart local v10    # "trackExporter":Lsergentum/export/core/TrackExporter;
-    :catch_6e
-    move-exception v11
-
-    :try_start_6f
-    invoke-virtual {v12, v11}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
-    :try_end_72
-    .catch Ljava/lang/Throwable; {:try_start_6f .. :try_end_72} :catch_73
-    .catchall {:try_start_6f .. :try_end_72} :catchall_b5
-
-    goto :goto_66
-
-    .line 153
-    .end local v4    # "cursor":Landroid/database/Cursor;
-    .end local v8    # "queryDataArrayList":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lsergentum/export/core/RawData$QueryData;>;"
-    .end local v10    # "trackExporter":Lsergentum/export/core/TrackExporter;
-    :catch_73
-    move-exception v11
-
-    :try_start_74
-    throw v11
-    :try_end_75
-    .catchall {:try_start_74 .. :try_end_75} :catchall_75
-
-    .line 171
-    :catchall_75
-    move-exception v12
-
-    move-object v15, v12
-
-    move-object v12, v11
-
-    move-object v11, v15
-
-    :goto_79
-    if-eqz v9, :cond_80
-
-    if-eqz v12, :cond_dd
-
-    :try_start_7d
-    invoke-virtual {v9}, Landroid/database/sqlite/SQLiteDatabase;->close()V
-    :try_end_80
-    .catch Ljava/lang/Throwable; {:try_start_7d .. :try_end_80} :catch_d8
-    .catch Ljava/lang/Exception; {:try_start_7d .. :try_end_80} :catch_81
-
-    :cond_80
-    :goto_80
-    :try_start_80
-    throw v11
-    :try_end_81
-    .catch Ljava/lang/Exception; {:try_start_80 .. :try_end_81} :catch_81
-
-    .end local v9    # "sqLiteDatabase":Landroid/database/sqlite/SQLiteDatabase;
-    :catch_81
-    move-exception v5
-
-    .line 172
-    .local v5, "e":Ljava/lang/Exception;
-    const/4 v11, 0x1
-
-    new-array v11, v11, [Ljava/lang/String;
+    new-array v9, v9, [Ljava/lang/String;
 
     const/4 v12, 0x0
 
@@ -1755,7 +2122,7 @@
 
     invoke-direct {v13}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v14, "readRawDataWithId("
+    const-string v14, "There is no track entry in db with such id: "
 
     invoke-virtual {v13, v14}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -1767,145 +2134,261 @@
 
     move-result-object v13
 
-    const-string v14, "):"
-
-    invoke-virtual {v13, v14}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    move-result-object v13
-
-    invoke-virtual {v5}, Ljava/lang/Exception;->getMessage()Ljava/lang/String;
-
-    move-result-object v14
-
-    invoke-virtual {v13, v14}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    move-result-object v13
-
     invoke-virtual {v13}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v13
 
-    aput-object v13, v11, v12
+    aput-object v13, v9, v12
 
     move-object/from16 v0, p0
 
-    invoke-virtual {v0, v11}, Lsergentum/export/MifitStarter;->log([Ljava/lang/String;)Z
+    invoke-virtual {v0, v9}, Lsergentum/export/MifitStarter;->log([Ljava/lang/String;)Z
+    :try_end_6d
+    .catch Ljava/lang/Throwable; {:try_start_2f .. :try_end_6d} :catch_c6
+    .catchall {:try_start_2f .. :try_end_6d} :catchall_ef
 
-    goto :goto_6d
+    .line 222
+    :cond_6d
+    if-eqz v4, :cond_74
 
-    .line 171
+    if-eqz v10, :cond_bf
+
+    :try_start_71
+    invoke-interface {v4}, Landroid/database/Cursor;->close()V
+    :try_end_74
+    .catch Ljava/lang/Throwable; {:try_start_71 .. :try_end_74} :catch_7c
+    .catchall {:try_start_71 .. :try_end_74} :catchall_c3
+
+    :cond_74
+    :goto_74
+    if-eqz v8, :cond_7b
+
+    if-eqz v11, :cond_e2
+
+    :try_start_78
+    invoke-virtual {v8}, Landroid/database/sqlite/SQLiteDatabase;->close()V
+    :try_end_7b
+    .catch Ljava/lang/Throwable; {:try_start_78 .. :try_end_7b} :catch_dd
+    .catch Ljava/lang/Exception; {:try_start_78 .. :try_end_7b} :catch_8f
+
+    .line 225
+    .end local v4    # "cursor":Landroid/database/Cursor;
+    .end local v8    # "sqLiteDatabase":Landroid/database/sqlite/SQLiteDatabase;
+    :cond_7b
+    :goto_7b
+    return-object v7
+
+    .line 222
+    .restart local v4    # "cursor":Landroid/database/Cursor;
+    .restart local v8    # "sqLiteDatabase":Landroid/database/sqlite/SQLiteDatabase;
+    :catch_7c
+    move-exception v9
+
+    :try_start_7d
+    invoke-virtual {v10, v9}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
+    :try_end_80
+    .catch Ljava/lang/Throwable; {:try_start_7d .. :try_end_80} :catch_81
+    .catchall {:try_start_7d .. :try_end_80} :catchall_c3
+
+    goto :goto_74
+
+    .line 208
+    .end local v4    # "cursor":Landroid/database/Cursor;
+    :catch_81
+    move-exception v9
+
+    :try_start_82
+    throw v9
+    :try_end_83
+    .catchall {:try_start_82 .. :try_end_83} :catchall_83
+
+    .line 222
+    :catchall_83
+    move-exception v10
+
+    move-object v15, v10
+
+    move-object v10, v9
+
+    move-object v9, v15
+
+    :goto_87
+    if-eqz v8, :cond_8e
+
+    if-eqz v10, :cond_eb
+
+    :try_start_8b
+    invoke-virtual {v8}, Landroid/database/sqlite/SQLiteDatabase;->close()V
+    :try_end_8e
+    .catch Ljava/lang/Throwable; {:try_start_8b .. :try_end_8e} :catch_e6
+    .catch Ljava/lang/Exception; {:try_start_8b .. :try_end_8e} :catch_8f
+
+    :cond_8e
+    :goto_8e
+    :try_start_8e
+    throw v9
+    :try_end_8f
+    .catch Ljava/lang/Exception; {:try_start_8e .. :try_end_8f} :catch_8f
+
+    .end local v8    # "sqLiteDatabase":Landroid/database/sqlite/SQLiteDatabase;
+    :catch_8f
+    move-exception v5
+
+    .line 223
+    .local v5, "e":Ljava/lang/Exception;
+    const/4 v9, 0x1
+
+    new-array v9, v9, [Ljava/lang/String;
+
+    const/4 v10, 0x0
+
+    new-instance v11, Ljava/lang/StringBuilder;
+
+    invoke-direct {v11}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v12, "readRawDataWithId("
+
+    invoke-virtual {v11, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v11
+
+    move-wide/from16 v0, p1
+
+    invoke-virtual {v11, v0, v1}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+
+    move-result-object v11
+
+    const-string v12, "):"
+
+    invoke-virtual {v11, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v11
+
+    invoke-virtual {v5}, Ljava/lang/Exception;->getMessage()Ljava/lang/String;
+
+    move-result-object v12
+
+    invoke-virtual {v11, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v11
+
+    invoke-virtual {v11}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v11
+
+    aput-object v11, v9, v10
+
+    move-object/from16 v0, p0
+
+    invoke-virtual {v0, v9}, Lsergentum/export/MifitStarter;->log([Ljava/lang/String;)Z
+
+    goto :goto_7b
+
+    .line 222
     .end local v5    # "e":Ljava/lang/Exception;
     .restart local v4    # "cursor":Landroid/database/Cursor;
-    .restart local v8    # "queryDataArrayList":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lsergentum/export/core/RawData$QueryData;>;"
-    .restart local v9    # "sqLiteDatabase":Landroid/database/sqlite/SQLiteDatabase;
-    .restart local v10    # "trackExporter":Lsergentum/export/core/TrackExporter;
-    :cond_b1
-    :try_start_b1
+    .restart local v8    # "sqLiteDatabase":Landroid/database/sqlite/SQLiteDatabase;
+    :cond_bf
+    :try_start_bf
     invoke-interface {v4}, Landroid/database/Cursor;->close()V
-    :try_end_b4
-    .catch Ljava/lang/Throwable; {:try_start_b1 .. :try_end_b4} :catch_73
-    .catchall {:try_start_b1 .. :try_end_b4} :catchall_b5
+    :try_end_c2
+    .catch Ljava/lang/Throwable; {:try_start_bf .. :try_end_c2} :catch_81
+    .catchall {:try_start_bf .. :try_end_c2} :catchall_c3
 
-    goto :goto_66
+    goto :goto_74
 
     .end local v4    # "cursor":Landroid/database/Cursor;
-    .end local v8    # "queryDataArrayList":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lsergentum/export/core/RawData$QueryData;>;"
-    .end local v10    # "trackExporter":Lsergentum/export/core/TrackExporter;
-    :catchall_b5
-    move-exception v11
+    :catchall_c3
+    move-exception v9
 
-    move-object v12, v13
+    move-object v10, v11
 
-    goto :goto_79
+    goto :goto_87
 
-    .line 153
+    .line 208
     .restart local v4    # "cursor":Landroid/database/Cursor;
-    :catch_b8
-    move-exception v11
-
-    :try_start_b9
-    throw v11
-    :try_end_ba
-    .catchall {:try_start_b9 .. :try_end_ba} :catchall_ba
-
-    .line 171
-    :catchall_ba
-    move-exception v12
-
-    move-object v15, v12
-
-    move-object v12, v11
-
-    move-object v11, v15
-
-    :goto_be
-    if-eqz v4, :cond_c5
-
-    if-eqz v12, :cond_cb
-
-    :try_start_c2
-    invoke-interface {v4}, Landroid/database/Cursor;->close()V
-    :try_end_c5
-    .catch Ljava/lang/Throwable; {:try_start_c2 .. :try_end_c5} :catch_c6
-    .catchall {:try_start_c2 .. :try_end_c5} :catchall_b5
-
-    :cond_c5
-    :goto_c5
-    :try_start_c5
-    throw v11
-
     :catch_c6
-    move-exception v14
+    move-exception v9
 
-    invoke-virtual {v12, v14}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
+    :try_start_c7
+    throw v9
+    :try_end_c8
+    .catchall {:try_start_c7 .. :try_end_c8} :catchall_c8
 
-    goto :goto_c5
+    .line 222
+    :catchall_c8
+    move-exception v10
 
-    :cond_cb
-    invoke-interface {v4}, Landroid/database/Cursor;->close()V
-    :try_end_ce
-    .catch Ljava/lang/Throwable; {:try_start_c5 .. :try_end_ce} :catch_73
-    .catchall {:try_start_c5 .. :try_end_ce} :catchall_b5
+    move-object v15, v10
 
-    goto :goto_c5
+    move-object v10, v9
 
-    .restart local v8    # "queryDataArrayList":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lsergentum/export/core/RawData$QueryData;>;"
-    .restart local v10    # "trackExporter":Lsergentum/export/core/TrackExporter;
-    :catch_cf
-    move-exception v11
+    move-object v9, v15
+
+    :goto_cc
+    if-eqz v4, :cond_d3
+
+    if-eqz v10, :cond_d9
 
     :try_start_d0
-    invoke-virtual {v13, v11}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
+    invoke-interface {v4}, Landroid/database/Cursor;->close()V
+    :try_end_d3
+    .catch Ljava/lang/Throwable; {:try_start_d0 .. :try_end_d3} :catch_d4
+    .catchall {:try_start_d0 .. :try_end_d3} :catchall_c3
 
-    goto :goto_6d
+    :cond_d3
+    :goto_d3
+    :try_start_d3
+    throw v9
 
-    :cond_d4
-    invoke-virtual {v9}, Landroid/database/sqlite/SQLiteDatabase;->close()V
+    :catch_d4
+    move-exception v12
 
-    goto :goto_6d
+    invoke-virtual {v10, v12}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
+
+    goto :goto_d3
+
+    :cond_d9
+    invoke-interface {v4}, Landroid/database/Cursor;->close()V
+    :try_end_dc
+    .catch Ljava/lang/Throwable; {:try_start_d3 .. :try_end_dc} :catch_81
+    .catchall {:try_start_d3 .. :try_end_dc} :catchall_c3
+
+    goto :goto_d3
+
+    :catch_dd
+    move-exception v9
+
+    :try_start_de
+    invoke-virtual {v11, v9}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
+
+    goto :goto_7b
+
+    :cond_e2
+    invoke-virtual {v8}, Landroid/database/sqlite/SQLiteDatabase;->close()V
+
+    goto :goto_7b
 
     .end local v4    # "cursor":Landroid/database/Cursor;
-    .end local v8    # "queryDataArrayList":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lsergentum/export/core/RawData$QueryData;>;"
-    .end local v10    # "trackExporter":Lsergentum/export/core/TrackExporter;
-    :catch_d8
-    move-exception v13
-
-    invoke-virtual {v12, v13}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
-
-    goto :goto_80
-
-    :cond_dd
-    invoke-virtual {v9}, Landroid/database/sqlite/SQLiteDatabase;->close()V
-    :try_end_e0
-    .catch Ljava/lang/Exception; {:try_start_d0 .. :try_end_e0} :catch_81
-
-    goto :goto_80
-
-    .restart local v4    # "cursor":Landroid/database/Cursor;
-    :catchall_e1
+    :catch_e6
     move-exception v11
 
-    goto :goto_be
+    invoke-virtual {v10, v11}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
+
+    goto :goto_8e
+
+    :cond_eb
+    invoke-virtual {v8}, Landroid/database/sqlite/SQLiteDatabase;->close()V
+    :try_end_ee
+    .catch Ljava/lang/Exception; {:try_start_de .. :try_end_ee} :catch_8f
+
+    goto :goto_8e
+
+    .restart local v4    # "cursor":Landroid/database/Cursor;
+    :catchall_ef
+    move-exception v9
+
+    goto :goto_cc
 .end method
 
 .method public showToast(Ljava/lang/String;I)V
@@ -1914,7 +2397,7 @@
     .param p2, "length"    # I
 
     .prologue
-    .line 270
+    .line 322
     iget-object v0, p0, Lsergentum/export/MifitStarter;->activity:Landroid/app/Activity;
 
     invoke-static {v0, p1, p2}, Landroid/widget/Toast;->makeText(Landroid/content/Context;Ljava/lang/CharSequence;I)Landroid/widget/Toast;
@@ -1923,7 +2406,7 @@
 
     invoke-virtual {v0}, Landroid/widget/Toast;->show()V
 
-    .line 271
+    .line 323
     return-void
 .end method
 
@@ -1931,24 +2414,24 @@
     .registers 13
 
     .prologue
-    .line 98
-    invoke-virtual {p0}, Lsergentum/export/MifitStarter;->loadTrackHeadersFromDb()Ljava/util/TreeMap;
+    .line 112
+    invoke-virtual {p0}, Lsergentum/export/MifitStarter;->loadTrackSummaryFromDb()Ljava/util/TreeMap;
 
-    move-result-object v7
+    move-result-object v8
 
-    .line 100
-    .local v7, "trackHeaderMap":Ljava/util/TreeMap;, "Ljava/util/TreeMap<Ljava/lang/Long;Lsergentum/export/core/Model$TrackHeader;>;"
+    .line 114
+    .local v8, "trackSummaryTreeMap":Ljava/util/TreeMap;, "Ljava/util/TreeMap<Ljava/lang/Long;Lsergentum/export/core/Model$TrackSummary;>;"
     const/4 v4, 0x1
 
-    .line 101
+    .line 115
     .local v4, "settingsScreenExist":Z
-    new-instance v8, Ljava/util/ArrayList;
+    new-instance v7, Ljava/util/ArrayList;
 
-    invoke-direct {v8}, Ljava/util/ArrayList;-><init>()V
+    invoke-direct {v7}, Ljava/util/ArrayList;-><init>()V
 
-    .line 103
-    .local v8, "trackIds":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/Long;>;"
-    invoke-virtual {v7}, Ljava/util/TreeMap;->descendingMap()Ljava/util/NavigableMap;
+    .line 117
+    .local v7, "trackIds":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/Long;>;"
+    invoke-virtual {v8}, Ljava/util/TreeMap;->descendingMap()Ljava/util/NavigableMap;
 
     move-result-object v9
 
@@ -1956,25 +2439,25 @@
 
     move-result-object v1
 
-    .line 104
-    .local v1, "entries":Ljava/util/Set;, "Ljava/util/Set<Ljava/util/Map$Entry<Ljava/lang/Long;Lsergentum/export/core/Model$TrackHeader;>;>;"
+    .line 118
+    .local v1, "entries":Ljava/util/Set;, "Ljava/util/Set<Ljava/util/Map$Entry<Ljava/lang/Long;Lsergentum/export/core/Model$TrackSummary;>;>;"
     const/4 v3, 0x0
 
-    .line 106
+    .line 120
     .local v3, "i":I
     if-eqz v4, :cond_53
 
-    .line 108
+    .line 122
     const-wide/16 v10, 0x0
 
     invoke-static {v10, v11}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
 
     move-result-object v9
 
-    invoke-virtual {v8, v9}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v7, v9}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
-    .line 109
-    invoke-virtual {v7}, Ljava/util/TreeMap;->size()I
+    .line 123
+    invoke-virtual {v8}, Ljava/util/TreeMap;->size()I
 
     move-result v9
 
@@ -1982,7 +2465,7 @@
 
     new-array v6, v9, [Ljava/lang/String;
 
-    .line 110
+    .line 124
     .local v6, "trackDesc":[Ljava/lang/String;
     const/4 v9, 0x0
 
@@ -1990,10 +2473,10 @@
 
     aput-object v10, v6, v9
 
-    .line 112
+    .line 126
     add-int/lit8 v3, v3, 0x1
 
-    .line 117
+    .line 131
     :goto_2d
     invoke-interface {v1}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
 
@@ -2012,38 +2495,38 @@
 
     check-cast v2, Ljava/util/Map$Entry;
 
-    .line 118
-    .local v2, "entry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/Long;Lsergentum/export/core/Model$TrackHeader;>;"
+    .line 132
+    .local v2, "entry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/Long;Lsergentum/export/core/Model$TrackSummary;>;"
     invoke-interface {v2}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
 
     move-result-object v9
 
-    invoke-virtual {v8, v9}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    invoke-virtual {v7, v9}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
-    .line 119
+    .line 133
     invoke-interface {v2}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
 
     move-result-object v9
 
-    check-cast v9, Lsergentum/export/core/Model$TrackHeader;
+    check-cast v9, Lsergentum/export/core/Model$TrackSummary;
 
-    invoke-virtual {v9}, Lsergentum/export/core/Model$TrackHeader;->toString()Ljava/lang/String;
+    invoke-virtual {v9}, Lsergentum/export/core/Model$TrackSummary;->toString()Ljava/lang/String;
 
     move-result-object v9
 
     aput-object v9, v6, v3
 
-    .line 120
+    .line 134
     add-int/lit8 v3, v3, 0x1
 
-    .line 121
+    .line 135
     goto :goto_31
 
-    .line 114
-    .end local v2    # "entry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/Long;Lsergentum/export/core/Model$TrackHeader;>;"
+    .line 128
+    .end local v2    # "entry":Ljava/util/Map$Entry;, "Ljava/util/Map$Entry<Ljava/lang/Long;Lsergentum/export/core/Model$TrackSummary;>;"
     .end local v6    # "trackDesc":[Ljava/lang/String;
     :cond_53
-    invoke-virtual {v7}, Ljava/util/TreeMap;->size()I
+    invoke-virtual {v8}, Ljava/util/TreeMap;->size()I
 
     move-result v9
 
@@ -2052,13 +2535,13 @@
     .restart local v6    # "trackDesc":[Ljava/lang/String;
     goto :goto_2d
 
-    .line 123
+    .line 137
     :cond_5a
     new-instance v5, Lsergentum/export/MifitStarter$ChooseTrackClickListener;
 
-    invoke-direct {v5, p0, p0, v8}, Lsergentum/export/MifitStarter$ChooseTrackClickListener;-><init>(Lsergentum/export/MifitStarter;Lsergentum/export/MifitStarter;Ljava/util/ArrayList;)V
+    invoke-direct {v5, p0, v7}, Lsergentum/export/MifitStarter$ChooseTrackClickListener;-><init>(Lsergentum/export/MifitStarter;Ljava/util/ArrayList;)V
 
-    .line 125
+    .line 139
     .local v5, "trackChooseListener":Lsergentum/export/MifitStarter$ChooseTrackClickListener;
     new-instance v0, Landroid/app/AlertDialog$Builder;
 
@@ -2066,22 +2549,22 @@
 
     invoke-direct {v0, v9}, Landroid/app/AlertDialog$Builder;-><init>(Landroid/content/Context;)V
 
-    .line 126
+    .line 140
     .local v0, "alert":Landroid/app/AlertDialog$Builder;
     const-string v9, "Choose track to export:"
 
     invoke-virtual {v0, v9}, Landroid/app/AlertDialog$Builder;->setTitle(Ljava/lang/CharSequence;)Landroid/app/AlertDialog$Builder;
 
-    .line 127
+    .line 141
     invoke-virtual {v0, v6, v5}, Landroid/app/AlertDialog$Builder;->setItems([Ljava/lang/CharSequence;Landroid/content/DialogInterface$OnClickListener;)Landroid/app/AlertDialog$Builder;
 
-    .line 128
+    .line 142
     invoke-virtual {v0}, Landroid/app/AlertDialog$Builder;->create()Landroid/app/AlertDialog;
 
     move-result-object v9
 
     invoke-virtual {v9}, Landroid/app/AlertDialog;->show()V
 
-    .line 129
+    .line 143
     return-void
 .end method

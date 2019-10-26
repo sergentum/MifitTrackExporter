@@ -15,17 +15,7 @@
 
 
 # instance fields
-.field activityType:I
-
-.field distance:I
-
-.field duration:J
-
-.field endTime:J
-
-.field size:I
-
-.field startTime:J
+.field public summary:Lsergentum/export/core/Model$TrackSummary;
 
 .field trackPoints:Ljava/util/ArrayList;
     .annotation system Ldalvik/annotation/Signature;
@@ -44,10 +34,10 @@
     .registers 2
 
     .prologue
-    .line 178
+    .line 202
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 188
+    .line 205
     new-instance v0, Ljava/util/ArrayList;
 
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
@@ -57,30 +47,16 @@
     return-void
 .end method
 
-.method private getEndTimeAsDate()Ljava/lang/String;
-    .registers 3
-
-    .prologue
-    .line 195
-    iget-wide v0, p0, Lsergentum/export/core/Model$Track;->endTime:J
-
-    invoke-static {v0, v1}, Lsergentum/export/core/Model;->formatTimestamp(J)Ljava/lang/String;
-
-    move-result-object v0
-
-    return-object v0
-.end method
-
 .method private printTrackPoints()Ljava/lang/String;
     .registers 6
 
     .prologue
-    .line 203
+    .line 208
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    .line 204
+    .line 209
     .local v0, "stringBuffer":Ljava/lang/StringBuilder;
     const-string v2, "size:"
 
@@ -96,7 +72,7 @@
 
     invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
-    .line 205
+    .line 210
     iget-object v2, p0, Lsergentum/export/core/Model$Track;->trackPoints:Ljava/util/ArrayList;
 
     invoke-virtual {v2}, Ljava/util/ArrayList;->size()I
@@ -105,12 +81,12 @@
 
     if-lez v2, :cond_42
 
-    .line 206
+    .line 211
     const-string v2, "\r\n"
 
     invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 207
+    .line 212
     iget-object v2, p0, Lsergentum/export/core/Model$Track;->trackPoints:Ljava/util/ArrayList;
 
     invoke-virtual {v2}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
@@ -130,7 +106,7 @@
 
     check-cast v1, Lsergentum/export/core/Model$TrackPoint;
 
-    .line 208
+    .line 213
     .local v1, "trackPoint":Lsergentum/export/core/Model$TrackPoint;
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
@@ -142,14 +118,14 @@
 
     goto :goto_27
 
-    .line 210
+    .line 215
     .end local v1    # "trackPoint":Lsergentum/export/core/Model$TrackPoint;
     :cond_3d
     const-string v2, "\r\n"
 
     invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 212
+    .line 217
     :cond_42
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
@@ -160,39 +136,11 @@
 
 
 # virtual methods
-.method getActivityTypeDescription()Ljava/lang/String;
-    .registers 2
-
-    .prologue
-    .line 199
-    iget v0, p0, Lsergentum/export/core/Model$Track;->activityType:I
-
-    invoke-static {v0}, Lsergentum/export/core/Model;->access$000(I)Ljava/lang/String;
-
-    move-result-object v0
-
-    return-object v0
-.end method
-
-.method getStartTimeAsDate()Ljava/lang/String;
-    .registers 3
-
-    .prologue
-    .line 191
-    iget-wide v0, p0, Lsergentum/export/core/Model$Track;->startTime:J
-
-    invoke-static {v0, v1}, Lsergentum/export/core/Model;->formatTimestamp(J)Ljava/lang/String;
-
-    move-result-object v0
-
-    return-object v0
-.end method
-
 .method public toString()Ljava/lang/String;
     .registers 5
 
     .prologue
-    .line 217
+    .line 222
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -203,7 +151,9 @@
 
     move-result-object v0
 
-    iget-wide v2, p0, Lsergentum/export/core/Model$Track;->startTime:J
+    iget-object v1, p0, Lsergentum/export/core/Model$Track;->summary:Lsergentum/export/core/Model$TrackSummary;
+
+    iget-wide v2, v1, Lsergentum/export/core/Model$TrackSummary;->startTime:J
 
     invoke-virtual {v0, v2, v3}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
 
@@ -215,9 +165,11 @@
 
     move-result-object v0
 
-    iget-wide v2, p0, Lsergentum/export/core/Model$Track;->duration:J
+    iget-object v1, p0, Lsergentum/export/core/Model$Track;->summary:Lsergentum/export/core/Model$TrackSummary;
 
-    invoke-virtual {v0, v2, v3}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+    iget v1, v1, Lsergentum/export/core/Model$TrackSummary;->duration:I
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
     move-result-object v0
 
@@ -227,7 +179,9 @@
 
     move-result-object v0
 
-    iget v1, p0, Lsergentum/export/core/Model$Track;->size:I
+    iget-object v1, p0, Lsergentum/export/core/Model$Track;->summary:Lsergentum/export/core/Model$TrackSummary;
+
+    iget v1, v1, Lsergentum/export/core/Model$TrackSummary;->size:I
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
 
@@ -239,8 +193,10 @@
 
     move-result-object v0
 
-    .line 221
-    invoke-virtual {p0}, Lsergentum/export/core/Model$Track;->getStartTimeAsDate()Ljava/lang/String;
+    iget-object v1, p0, Lsergentum/export/core/Model$Track;->summary:Lsergentum/export/core/Model$TrackSummary;
+
+    .line 226
+    invoke-virtual {v1}, Lsergentum/export/core/Model$TrackSummary;->getStartTimeAsDate()Ljava/lang/String;
 
     move-result-object v1
 
@@ -254,8 +210,10 @@
 
     move-result-object v0
 
-    .line 222
-    invoke-direct {p0}, Lsergentum/export/core/Model$Track;->getEndTimeAsDate()Ljava/lang/String;
+    iget-object v1, p0, Lsergentum/export/core/Model$Track;->summary:Lsergentum/export/core/Model$TrackSummary;
+
+    .line 227
+    invoke-virtual {v1}, Lsergentum/export/core/Model$TrackSummary;->getEndTimeAsDate()Ljava/lang/String;
 
     move-result-object v1
 
@@ -269,8 +227,10 @@
 
     move-result-object v0
 
-    .line 223
-    invoke-virtual {p0}, Lsergentum/export/core/Model$Track;->getActivityTypeDescription()Ljava/lang/String;
+    iget-object v1, p0, Lsergentum/export/core/Model$Track;->summary:Lsergentum/export/core/Model$TrackSummary;
+
+    .line 228
+    invoke-virtual {v1}, Lsergentum/export/core/Model$TrackSummary;->getActivityTypeDescription()Ljava/lang/String;
 
     move-result-object v1
 
@@ -290,7 +250,7 @@
 
     move-result-object v0
 
-    .line 224
+    .line 229
     invoke-direct {p0}, Lsergentum/export/core/Model$Track;->printTrackPoints()Ljava/lang/String;
 
     move-result-object v1
@@ -309,6 +269,6 @@
 
     move-result-object v0
 
-    .line 217
+    .line 222
     return-object v0
 .end method

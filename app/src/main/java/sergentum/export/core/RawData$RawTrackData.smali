@@ -45,7 +45,7 @@
     .end annotation
 .end field
 
-.field public size:I
+.field size:I
 
 .field startTime:J
 
@@ -77,31 +77,31 @@
     .registers 2
 
     .prologue
-    .line 199
+    .line 202
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 210
+    .line 213
     new-instance v0, Ljava/util/ArrayList;
 
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
     iput-object v0, p0, Lsergentum/export/core/RawData$RawTrackData;->times:Ljava/util/ArrayList;
 
-    .line 211
+    .line 214
     new-instance v0, Ljava/util/ArrayList;
 
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
     iput-object v0, p0, Lsergentum/export/core/RawData$RawTrackData;->coordinates:Ljava/util/ArrayList;
 
-    .line 216
+    .line 219
     new-instance v0, Ljava/util/ArrayList;
 
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
 
     iput-object v0, p0, Lsergentum/export/core/RawData$RawTrackData;->hrPoints:Ljava/util/ArrayList;
 
-    .line 218
+    .line 221
     new-instance v0, Ljava/util/ArrayList;
 
     invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
@@ -121,12 +121,12 @@
 
     const/4 v12, 0x0
 
-    .line 222
+    .line 225
     new-instance v5, Ljava/lang/StringBuilder;
 
     invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    .line 223
+    .line 226
     .local v5, "stringBuilder":Ljava/lang/StringBuilder;
     sget-object v6, Ljava/util/Locale;->US:Ljava/util/Locale;
 
@@ -154,7 +154,7 @@
 
     invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 224
+    .line 227
     sget-object v6, Ljava/util/Locale;->US:Ljava/util/Locale;
 
     const-string v7, "Duration: %d"
@@ -181,7 +181,7 @@
 
     invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 225
+    .line 228
     sget-object v6, Ljava/util/Locale;->US:Ljava/util/Locale;
 
     const-string v7, "End: %d"
@@ -208,7 +208,7 @@
 
     invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 226
+    .line 229
     sget-object v6, Ljava/util/Locale;->US:Ljava/util/Locale;
 
     const-string v7, "Type: %d"
@@ -235,12 +235,12 @@
 
     invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 227
+    .line 230
     const-string v6, "\r\n"
 
     invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 229
+    .line 232
     const-string v6, "Altitude"
 
     invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -251,7 +251,7 @@
 
     invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 230
+    .line 233
     const-string v6, "Latitude"
 
     invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -262,7 +262,7 @@
 
     invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 231
+    .line 234
     const-string v6, "Longitude"
 
     invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -273,7 +273,7 @@
 
     invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 232
+    .line 235
     const-string v6, "Time"
 
     invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -284,7 +284,7 @@
 
     invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 233
+    .line 236
     const-string v6, "HeartRate"
 
     invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -295,7 +295,7 @@
 
     invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 234
+    .line 237
     const-string v6, "First"
 
     invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -306,7 +306,7 @@
 
     invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 235
+    .line 238
     const-string v6, "Second"
 
     invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -317,7 +317,7 @@
 
     invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 236
+    .line 239
     const-string v6, "Cadence"
 
     invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -328,7 +328,7 @@
 
     invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 237
+    .line 240
     const-string v6, "Stride"
 
     invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -339,12 +339,12 @@
 
     invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 238
+    .line 241
     const-string v6, "\r\n"
 
     invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 241
+    .line 244
     iget-object v6, p0, Lsergentum/export/core/RawData$RawTrackData;->hrPoints:Ljava/util/ArrayList;
 
     invoke-virtual {v6}, Ljava/util/ArrayList;->size()I
@@ -357,43 +357,39 @@
 
     move-result v7
 
-    if-le v6, v7, :cond_19d
-
-    iget-object v6, p0, Lsergentum/export/core/RawData$RawTrackData;->hrPoints:Ljava/util/ArrayList;
-
-    invoke-virtual {v6}, Ljava/util/ArrayList;->size()I
+    invoke-static {v6, v7}, Ljava/lang/Math;->max(II)I
 
     move-result v3
 
-    .line 242
+    .line 245
     .local v3, "rowCount":I
-    :goto_f4
     iget-object v6, p0, Lsergentum/export/core/RawData$RawTrackData;->coordinates:Ljava/util/ArrayList;
 
     invoke-virtual {v6}, Ljava/util/ArrayList;->size()I
 
     move-result v6
 
-    if-le v3, v6, :cond_1a5
+    invoke-static {v3, v6}, Ljava/lang/Math;->max(II)I
 
-    .line 243
-    :goto_fc
+    move-result v3
+
+    .line 246
     const/4 v2, 0x0
 
     .local v2, "i":I
-    :goto_fd
-    if-ge v2, v3, :cond_215
+    :goto_fb
+    if-ge v2, v3, :cond_202
 
-    .line 244
+    .line 247
     iget-object v6, p0, Lsergentum/export/core/RawData$RawTrackData;->coordinates:Ljava/util/ArrayList;
 
     invoke-virtual {v6}, Ljava/util/ArrayList;->size()I
 
     move-result v6
 
-    if-ge v2, v6, :cond_1ad
+    if-ge v2, v6, :cond_19b
 
-    .line 245
+    .line 248
     iget-object v6, p0, Lsergentum/export/core/RawData$RawTrackData;->coordinates:Ljava/util/ArrayList;
 
     invoke-virtual {v6, v2}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
@@ -402,7 +398,7 @@
 
     check-cast v0, Lsergentum/export/core/Model$Coordinate;
 
-    .line 246
+    .line 249
     .local v0, "coordinate":Lsergentum/export/core/Model$Coordinate;
     iget-wide v6, v0, Lsergentum/export/core/Model$Coordinate;->altitude:J
 
@@ -414,7 +410,7 @@
 
     invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 247
+    .line 250
     iget-wide v6, v0, Lsergentum/export/core/Model$Coordinate;->latitude:J
 
     invoke-virtual {v5, v6, v7}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
@@ -425,7 +421,7 @@
 
     invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 248
+    .line 251
     iget-wide v6, v0, Lsergentum/export/core/Model$Coordinate;->longitude:J
 
     invoke-virtual {v5, v6, v7}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
@@ -436,7 +432,7 @@
 
     invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 249
+    .line 252
     iget-object v6, p0, Lsergentum/export/core/RawData$RawTrackData;->times:Ljava/util/ArrayList;
 
     invoke-virtual {v6, v2}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
@@ -451,18 +447,18 @@
 
     invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 257
+    .line 260
     .end local v0    # "coordinate":Lsergentum/export/core/Model$Coordinate;
-    :goto_13f
+    :goto_13d
     iget-object v6, p0, Lsergentum/export/core/RawData$RawTrackData;->hrPoints:Ljava/util/ArrayList;
 
     invoke-virtual {v6}, Ljava/util/ArrayList;->size()I
 
     move-result v6
 
-    if-ge v2, v6, :cond_1db
+    if-ge v2, v6, :cond_1c9
 
-    .line 258
+    .line 261
     iget-object v6, p0, Lsergentum/export/core/RawData$RawTrackData;->hrPoints:Ljava/util/ArrayList;
 
     invoke-virtual {v6, v2}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
@@ -471,7 +467,7 @@
 
     check-cast v1, Ljava/lang/Integer;
 
-    .line 259
+    .line 262
     .local v1, "hr":Ljava/lang/Integer;
     invoke-virtual {v5, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
@@ -481,18 +477,18 @@
 
     invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 264
+    .line 267
     .end local v1    # "hr":Ljava/lang/Integer;
-    :goto_158
+    :goto_156
     iget-object v6, p0, Lsergentum/export/core/RawData$RawTrackData;->steps:Ljava/util/ArrayList;
 
     invoke-virtual {v6}, Ljava/util/ArrayList;->size()I
 
     move-result v6
 
-    if-ge v2, v6, :cond_1e8
+    if-ge v2, v6, :cond_1d5
 
-    .line 265
+    .line 268
     iget-object v6, p0, Lsergentum/export/core/RawData$RawTrackData;->steps:Ljava/util/ArrayList;
 
     invoke-virtual {v6, v2}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
@@ -501,7 +497,7 @@
 
     check-cast v4, Lsergentum/export/core/Model$Step;
 
-    .line 266
+    .line 269
     .local v4, "step":Lsergentum/export/core/Model$Step;
     iget v6, v4, Lsergentum/export/core/Model$Step;->first:I
 
@@ -513,7 +509,7 @@
 
     invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 267
+    .line 270
     iget v6, v4, Lsergentum/export/core/Model$Step;->second:I
 
     invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
@@ -524,7 +520,7 @@
 
     invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 268
+    .line 271
     iget v6, v4, Lsergentum/export/core/Model$Step;->cadence:I
 
     invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
@@ -535,7 +531,7 @@
 
     invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 269
+    .line 272
     iget v6, v4, Lsergentum/export/core/Model$Step;->stride:I
 
     invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
@@ -546,77 +542,20 @@
 
     invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 276
+    .line 279
     .end local v4    # "step":Lsergentum/export/core/Model$Step;
-    :goto_194
+    :goto_192
     const-string v6, "\r\n"
 
     invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 243
+    .line 246
     add-int/lit8 v2, v2, 0x1
 
-    goto/16 :goto_fd
-
-    .line 241
-    .end local v2    # "i":I
-    .end local v3    # "rowCount":I
-    :cond_19d
-    iget-object v6, p0, Lsergentum/export/core/RawData$RawTrackData;->steps:Ljava/util/ArrayList;
-
-    invoke-virtual {v6}, Ljava/util/ArrayList;->size()I
-
-    move-result v3
-
-    goto/16 :goto_f4
-
-    .line 242
-    .restart local v3    # "rowCount":I
-    :cond_1a5
-    iget-object v6, p0, Lsergentum/export/core/RawData$RawTrackData;->coordinates:Ljava/util/ArrayList;
-
-    invoke-virtual {v6}, Ljava/util/ArrayList;->size()I
-
-    move-result v3
-
-    goto/16 :goto_fc
-
-    .line 251
-    .restart local v2    # "i":I
-    :cond_1ad
-    const-string v6, "-"
-
-    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    move-result-object v6
-
-    const-string v7, ";"
-
-    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    .line 252
-    const-string v6, "-"
-
-    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    move-result-object v6
-
-    const-string v7, ";"
-
-    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    .line 253
-    const-string v6, "-"
-
-    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    move-result-object v6
-
-    const-string v7, ";"
-
-    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    goto/16 :goto_fb
 
     .line 254
+    :cond_19b
     const-string v6, "-"
 
     invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -627,10 +566,7 @@
 
     invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    goto/16 :goto_13f
-
-    .line 261
-    :cond_1db
+    .line 255
     const-string v6, "-"
 
     invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -641,10 +577,7 @@
 
     invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    goto/16 :goto_158
-
-    .line 271
-    :cond_1e8
+    .line 256
     const-string v6, "-"
 
     invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -655,7 +588,7 @@
 
     invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 272
+    .line 257
     const-string v6, "-"
 
     invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -666,7 +599,10 @@
 
     invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    .line 273
+    goto/16 :goto_13d
+
+    .line 264
+    :cond_1c9
     const-string v6, "-"
 
     invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -676,8 +612,11 @@
     const-string v7, ";"
 
     invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    goto :goto_156
 
     .line 274
+    :cond_1d5
     const-string v6, "-"
 
     invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -688,10 +627,43 @@
 
     invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    goto :goto_194
+    .line 275
+    const-string v6, "-"
 
-    .line 278
-    :cond_215
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v6
+
+    const-string v7, ";"
+
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    .line 276
+    const-string v6, "-"
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v6
+
+    const-string v7, ";"
+
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    .line 277
+    const-string v6, "-"
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v6
+
+    const-string v7, ";"
+
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    goto :goto_192
+
+    .line 281
+    :cond_202
     invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v6

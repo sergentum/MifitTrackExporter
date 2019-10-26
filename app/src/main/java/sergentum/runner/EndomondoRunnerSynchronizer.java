@@ -15,14 +15,14 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package sergentum.sync;
+package sergentum.runner;
 
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.util.SparseArray;
-import sergentum.sync.util.FormValues;
-import sergentum.sync.util.SyncHelper;
+import sergentum.runner.util.FormValues;
+import sergentum.runner.util.SyncHelper;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -46,13 +46,16 @@ import java.util.zip.GZIPOutputStream;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static sergentum.export.Starter.TAG;
+import static sergentum.util.HttpUtil.parseKVP;
+
 
 /**
  * @author jonas Based on https://github.com/cpfair/tapiriik
  */
 
 
-public class EndomondoSynchronizer extends DefaultSynchronizer {
+public class EndomondoRunnerSynchronizer extends DefaultSynchronizer {
 
     public static final String NAME = "Endomondo";
     private static final String PUBLIC_URL = "https://www.endomondo.com";
@@ -226,33 +229,17 @@ public class EndomondoSynchronizer extends DefaultSynchronizer {
         return s;
     }
 
-    private static JSONObject parseKVP(BufferedReader in) throws IOException, JSONException {
-        JSONObject obj = new JSONObject();
-        int lineno = 0;
-        String s;
-        while ((s = in.readLine()) != null) {
-            int c = s.indexOf('=');
-            if (c == -1) {
-                obj.put("_" + Integer.toString(lineno), s);
-            } else {
-                obj.put(s.substring(0, c), s.substring(c + 1));
-            }
-            lineno++;
-        }
-        return obj;
-    }
-
     public Status upload(SQLiteDatabase db, long mID) {
-        Status s;
-        if ((s = connect()) != Status.OK) {
-            return s;
-        }
+        Status s = Status.OK;
+//        if ((s = connect()) != Status.OK) {
+//            return s;
+//        }
 
-        EndomondoTrack tcx = new EndomondoTrack(db);
+        EndomondoRunnerTrack tcx = new EndomondoRunnerTrack(db);
         HttpURLConnection conn;
         Exception ex;
         try {
-            EndomondoTrack.Summary summary = new EndomondoTrack.Summary();
+            EndomondoRunnerTrack.Summary summary = new EndomondoRunnerTrack.Summary();
             StringWriter writer = new StringWriter();
             tcx.export(mID, writer, summary);
 //            Log.d("endomondo", writer.toString());
@@ -261,7 +248,7 @@ public class EndomondoSynchronizer extends DefaultSynchronizer {
             Log.e(getName(), "workoutId: " + workoutId);
 
             StringBuilder url = new StringBuilder();
-            url.append(UPLOAD_URL).append("?authToken=").append("apikeyasdf");
+            url.append(UPLOAD_URL).append("?authToken=").append(authToken);
             url.append("&workoutId=").append(workoutId);
             url.append("&sport=").append(summary.sport);
             url.append("&duration=").append(summary.duration);
@@ -272,12 +259,17 @@ public class EndomondoSynchronizer extends DefaultSynchronizer {
             url.append("&gzip=true");
             url.append("&extendedResponse=true");
 
+            if (true) {
+                Log.d(TAG, "URL: " + url.toString());
+                Log.d(TAG, "Body: " + writer.getBuffer().toString());
+                return Status.OK;
+            }
+
             conn = (HttpURLConnection) new URL(url.toString()).openConnection();
             conn.setDoOutput(true);
             conn.setRequestMethod(RequestMethod.POST.name());
             conn.addRequestProperty("Content-Type", "application/octet-stream");
-            OutputStream out = new GZIPOutputStream(
-                    new BufferedOutputStream(conn.getOutputStream()));
+            OutputStream out = new GZIPOutputStream(new BufferedOutputStream(conn.getOutputStream()));
             out.write(writer.getBuffer().toString().getBytes());
             out.flush();
             out.close();
@@ -368,10 +360,10 @@ public class EndomondoSynchronizer extends DefaultSynchronizer {
         return s;
     }
 
-    static class GetFeedTask implements Callable<Status> {
-        EndomondoSynchronizer synchronizer;
+    public static class GetFeedTask implements Callable<Status> {
+        EndomondoRunnerSynchronizer synchronizer;
 
-        public GetFeedTask(EndomondoSynchronizer synchronizer) {
+        public GetFeedTask(EndomondoRunnerSynchronizer synchronizer) {
             this.synchronizer = synchronizer;
         }
 

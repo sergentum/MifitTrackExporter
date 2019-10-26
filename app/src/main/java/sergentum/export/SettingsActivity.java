@@ -7,10 +7,10 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import org.json.JSONObject;
-import sergentum.sync.DefSynchronizer;
+import sergentum.runner.DefSynchronizer;
 import sergentum.sync.Response;
-import sergentum.sync.util.FormValues;
-import sergentum.sync.util.SyncHelper;
+import sergentum.runner.util.FormValues;
+import sergentum.runner.util.SyncHelper;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -22,6 +22,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 
 import static sergentum.export.Starter.TAG;
+import static sergentum.util.HttpUtil.parseKVP;
 
 public class SettingsActivity extends PreferenceActivity {
     private SharedPreferences sp;
@@ -78,15 +79,16 @@ public class SettingsActivity extends PreferenceActivity {
 
                         if (response.result) {
                             sp.edit().putString(ENDOMONDO_APIKEY, response.apikey).apply();
-                            sp.edit().putString("endomondo_password", "").apply();
+                            // TODO: 2019-10-24 don't store password
+//                            sp.edit().putString("endomondo_password", "").apply();
                             allowToggle = true;
                         }
-                        Log.i(TAG, response.message);
+                        Log.i(TAG, "" + response.message);
                         starter.showToast(response.message, 1);
                     } else {
                         // user tries to disable sync
                         Log.i(TAG, "synchronization disabled, apikey removed");
-                        sp.edit().putString(ENDOMONDO_APIKEY, "").apply();
+                        sp.edit().putString(ENDOMONDO_APIKEY, "apikey").apply();
                         allowToggle = true;
                     }
 
@@ -94,26 +96,6 @@ public class SettingsActivity extends PreferenceActivity {
                 }
             });
         }
-    }
-
-    private static JSONObject parseKVP(BufferedReader in) {
-        JSONObject obj = new JSONObject();
-        try {
-            int lineno = 0;
-            String s;
-            while ((s = in.readLine()) != null) {
-                int c = s.indexOf('=');
-                if (c == -1) {
-                    obj.put("_" + Integer.toString(lineno), s);
-                } else {
-                    obj.put(s.substring(0, c), s.substring(c + 1));
-                }
-                lineno++;
-            }
-        } catch (Exception ex) {
-            Log.e(TAG, ex.getMessage() + " " + ex.getCause());
-        }
-        return obj;
     }
 
     static class AuthTask implements Callable<Response> {
@@ -128,8 +110,16 @@ public class SettingsActivity extends PreferenceActivity {
             Response response = new Response();
             try {
                 FormValues kv = new FormValues();
-                kv.put("email", params.get("endomondo_login"));
-                kv.put("password", params.get("endomondo_password"));
+                String endomondo_login = params.get("endomondo_login");
+                String endomondo_password = params.get("endomondo_password");
+                if (endomondo_login == null || endomondo_login.isEmpty()) {
+                    if (endomondo_password == null || endomondo_password.isEmpty()) {
+                        response.message = "login or password is empty";
+                        return response;
+                    }
+                }
+                kv.put("email", endomondo_login);
+                kv.put("password", endomondo_password);
                 kv.put("v", "2.4");
                 kv.put("action", "pair");
                 kv.put("deviceId", params.get("deviceId"));

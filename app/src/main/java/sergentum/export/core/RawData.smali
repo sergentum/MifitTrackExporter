@@ -25,16 +25,16 @@
     .param p2, "queryData"    # Lsergentum/export/core/RawData$QueryData;
 
     .prologue
-    .line 13
+    .line 16
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 14
+    .line 17
     iput-object p1, p0, Lsergentum/export/core/RawData;->starter:Lsergentum/export/Starter;
 
-    .line 15
+    .line 18
     iput-object p2, p0, Lsergentum/export/core/RawData;->queryData:Lsergentum/export/core/RawData$QueryData;
 
-    .line 16
+    .line 19
     return-void
 .end method
 
@@ -49,7 +49,7 @@
 
     const/4 v10, 0x1
 
-    .line 148
+    .line 151
     invoke-virtual {p1}, Ljava/lang/String;->length()I
 
     move-result v8
@@ -58,12 +58,12 @@
 
     if-ge v8, v9, :cond_a
 
-    .line 166
+    .line 169
     :cond_9
     :goto_9
     return-object v1
 
-    .line 151
+    .line 154
     :cond_a
     const-string v8, ","
 
@@ -71,13 +71,13 @@
 
     move-result-object v0
 
-    .line 152
+    .line 155
     .local v0, "stringCoords":[Ljava/lang/String;
     array-length v8, v0
 
     if-le v8, v10, :cond_9
 
-    .line 153
+    .line 156
     const/4 v1, 0x0
 
     aget-object v1, v0, v1
@@ -86,7 +86,7 @@
 
     move-result-wide v2
 
-    .line 154
+    .line 157
     .local v2, "currentLat":J
     aget-object v1, v0, v10
 
@@ -94,35 +94,35 @@
 
     move-result-wide v4
 
-    .line 155
+    .line 158
     .local v4, "currentLon":J
     invoke-static {p2}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
 
     move-result-wide v6
 
-    .line 156
+    .line 159
     .local v6, "currentAlt":J
     if-nez p3, :cond_2c
 
-    .line 158
+    .line 161
     new-instance v1, Lsergentum/export/core/Model$Coordinate;
 
     invoke-direct/range {v1 .. v7}, Lsergentum/export/core/Model$Coordinate;-><init>(JJJ)V
 
     goto :goto_9
 
-    .line 161
+    .line 164
     :cond_2c
     iget-wide v8, p3, Lsergentum/export/core/Model$Coordinate;->latitude:J
 
     add-long/2addr v2, v8
 
-    .line 162
+    .line 165
     iget-wide v8, p3, Lsergentum/export/core/Model$Coordinate;->longitude:J
 
     add-long/2addr v4, v8
 
-    .line 163
+    .line 166
     new-instance v1, Lsergentum/export/core/Model$Coordinate;
 
     invoke-direct/range {v1 .. v7}, Lsergentum/export/core/Model$Coordinate;-><init>(JJJ)V
@@ -150,14 +150,14 @@
     .prologue
     const/4 v8, 0x0
 
-    .line 128
+    .line 131
     const-string v6, ";"
 
     invoke-virtual {p1, v6}, Ljava/lang/String;->split(Ljava/lang/String;)[Ljava/lang/String;
 
     move-result-object v1
 
-    .line 129
+    .line 132
     .local v1, "BULKLL_stringArr":[Ljava/lang/String;
     const-string v6, ";"
 
@@ -165,13 +165,13 @@
 
     move-result-object v0
 
-    .line 131
+    .line 134
     .local v0, "BULKAL_split":[Ljava/lang/String;
     new-instance v3, Ljava/util/ArrayList;
 
     invoke-direct {v3}, Ljava/util/ArrayList;-><init>()V
 
-    .line 132
+    .line 135
     .local v3, "coordinates":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lsergentum/export/core/Model$Coordinate;>;"
     array-length v6, v1
 
@@ -179,7 +179,7 @@
 
     if-le v6, v7, :cond_35
 
-    .line 133
+    .line 136
     aget-object v6, v1, v8
 
     aget-object v7, v0, v8
@@ -190,11 +190,11 @@
 
     move-result-object v2
 
-    .line 134
+    .line 137
     .local v2, "coordinate":Lsergentum/export/core/Model$Coordinate;
     invoke-virtual {v3, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
-    .line 135
+    .line 138
     const/4 v5, 0x1
 
     .local v5, "i":I
@@ -203,7 +203,7 @@
 
     if-ge v5, v6, :cond_35
 
-    .line 136
+    .line 139
     aget-object v6, v1, v5
 
     aget-object v7, v0, v5
@@ -212,19 +212,19 @@
 
     move-result-object v4
 
-    .line 137
+    .line 140
     .local v4, "currentCoordinate":Lsergentum/export/core/Model$Coordinate;
     invoke-virtual {v3, v4}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
-    .line 139
+    .line 142
     move-object v2, v4
 
-    .line 135
+    .line 138
     add-int/lit8 v5, v5, 0x1
 
     goto :goto_23
 
-    .line 143
+    .line 146
     .end local v2    # "coordinate":Lsergentum/export/core/Model$Coordinate;
     .end local v4    # "currentCoordinate":Lsergentum/export/core/Model$Coordinate;
     .end local v5    # "i":I
@@ -252,39 +252,39 @@
 
     const/4 v13, 0x0
 
-    .line 74
+    .line 77
     const-string v12, ";"
 
     invoke-virtual {p1, v12}, Ljava/lang/String;->split(Ljava/lang/String;)[Ljava/lang/String;
 
     move-result-object v0
 
-    .line 75
+    .line 78
     .local v0, "BULKHR_split":[Ljava/lang/String;
     array-length v12, v0
 
     if-ge v12, v11, :cond_11
 
-    .line 76
+    .line 79
     new-instance v5, Ljava/util/ArrayList;
 
     invoke-direct {v5}, Ljava/util/ArrayList;-><init>()V
 
-    .line 98
+    .line 101
     :cond_10
     return-object v5
 
-    .line 78
+    .line 81
     :cond_11
     new-instance v5, Ljava/util/ArrayList;
 
     invoke-direct {v5}, Ljava/util/ArrayList;-><init>()V
 
-    .line 79
+    .line 82
     .local v5, "hrPoints":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/Integer;>;"
     aget-object v10, v0, v13
 
-    .line 80
+    .line 83
     .local v10, "startHrAsString":Ljava/lang/String;
     const-string v12, ","
 
@@ -292,7 +292,7 @@
 
     move-result-object v9
 
-    .line 81
+    .line 84
     .local v9, "startHr":[Ljava/lang/String;
     aget-object v12, v9, v13
 
@@ -308,7 +308,7 @@
 
     move-result v1
 
-    .line 82
+    .line 85
     .local v1, "count":I
     :goto_2c
     aget-object v12, v9, v11
@@ -317,7 +317,7 @@
 
     move-result v6
 
-    .line 83
+    .line 86
     .local v6, "hrValue":I
     const/4 v7, 0x0
 
@@ -325,14 +325,14 @@
     :goto_33
     if-ge v7, v1, :cond_41
 
-    .line 84
+    .line 87
     invoke-static {v6}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
     move-result-object v12
 
     invoke-virtual {v5, v12}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
-    .line 83
+    .line 86
     add-int/lit8 v7, v7, 0x1
 
     goto :goto_33
@@ -343,10 +343,10 @@
     :cond_3f
     move v1, v11
 
-    .line 81
+    .line 84
     goto :goto_2c
 
-    .line 87
+    .line 90
     .restart local v1    # "count":I
     .restart local v6    # "hrValue":I
     .restart local v7    # "i":I
@@ -358,10 +358,10 @@
 
     if-ge v7, v12, :cond_10
 
-    .line 88
+    .line 91
     aget-object v4, v0, v7
 
-    .line 89
+    .line 92
     .local v4, "hrPointAsString":Ljava/lang/String;
     const-string v12, ","
 
@@ -369,7 +369,7 @@
 
     move-result-object v3
 
-    .line 90
+    .line 93
     .local v3, "hrPointAsArr":[Ljava/lang/String;
     aget-object v12, v3, v11
 
@@ -377,37 +377,37 @@
 
     move-result v2
 
-    .line 92
+    .line 95
     .local v2, "hrIncrement":I
     add-int/2addr v6, v2
 
-    .line 93
+    .line 96
     aget-object v12, v3, v13
 
     invoke-static {v12}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
 
     move-result v1
 
-    .line 94
+    .line 97
     const/4 v8, 0x0
 
     .local v8, "j":I
     :goto_5b
     if-ge v8, v1, :cond_67
 
-    .line 95
+    .line 98
     invoke-static {v6}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
     move-result-object v12
 
     invoke-virtual {v5, v12}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
-    .line 94
+    .line 97
     add-int/lit8 v8, v8, 0x1
 
     goto :goto_5b
 
-    .line 87
+    .line 90
     :cond_67
     add-int/lit8 v7, v7, 0x1
 
@@ -421,21 +421,21 @@
     .prologue
     const/4 v6, 0x3
 
-    .line 61
+    .line 64
     invoke-virtual {p1}, Ljava/lang/String;->length()I
 
     move-result v5
 
     if-le v5, v6, :cond_2e
 
-    .line 62
+    .line 65
     const-string v5, ","
 
     invoke-virtual {p1, v5}, Ljava/lang/String;->split(Ljava/lang/String;)[Ljava/lang/String;
 
     move-result-object v3
 
-    .line 63
+    .line 66
     .local v3, "stepParts":[Ljava/lang/String;
     const/4 v5, 0x0
 
@@ -445,7 +445,7 @@
 
     move-result v1
 
-    .line 64
+    .line 67
     .local v1, "first":I
     const/4 v5, 0x1
 
@@ -455,7 +455,7 @@
 
     move-result v2
 
-    .line 65
+    .line 68
     .local v2, "second":I
     const/4 v5, 0x2
 
@@ -465,7 +465,7 @@
 
     move-result v4
 
-    .line 66
+    .line 69
     .local v4, "stride":I
     aget-object v5, v3, v6
 
@@ -473,13 +473,13 @@
 
     move-result v0
 
-    .line 67
+    .line 70
     .local v0, "cadence":I
     new-instance v5, Lsergentum/export/core/Model$Step;
 
     invoke-direct {v5, v1, v2, v4, v0}, Lsergentum/export/core/Model$Step;-><init>(IIII)V
 
-    .line 69
+    .line 72
     .end local v0    # "cadence":I
     .end local v1    # "first":I
     .end local v2    # "second":I
@@ -510,12 +510,12 @@
     .end annotation
 
     .prologue
-    .line 46
+    .line 49
     new-instance v3, Ljava/util/ArrayList;
 
     invoke-direct {v3}, Ljava/util/ArrayList;-><init>()V
 
-    .line 47
+    .line 50
     .local v3, "steps":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Lsergentum/export/core/Model$Step;>;"
     if-eqz p1, :cond_e
 
@@ -527,11 +527,11 @@
 
     if-ge v4, v5, :cond_f
 
-    .line 57
+    .line 60
     :cond_e
     return-object v3
 
-    .line 50
+    .line 53
     :cond_f
     const-string v4, ";"
 
@@ -539,7 +539,7 @@
 
     move-result-object v0
 
-    .line 51
+    .line 54
     .local v0, "BULKGAIT_split":[Ljava/lang/String;
     array-length v5, v0
 
@@ -550,20 +550,20 @@
 
     aget-object v2, v0, v4
 
-    .line 52
+    .line 55
     .local v2, "stepString":Ljava/lang/String;
     invoke-direct {p0, v2}, Lsergentum/export/core/RawData;->parseStep(Ljava/lang/String;)Lsergentum/export/core/Model$Step;
 
     move-result-object v1
 
-    .line 53
+    .line 56
     .local v1, "step":Lsergentum/export/core/Model$Step;
     if-eqz v1, :cond_24
 
-    .line 54
+    .line 57
     invoke-virtual {v3, v1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
-    .line 51
+    .line 54
     :cond_24
     add-int/lit8 v4, v4, 0x1
 
@@ -588,12 +588,12 @@
     .prologue
     const/4 v7, 0x1
 
-    .line 102
+    .line 105
     new-instance v5, Ljava/util/ArrayList;
 
     invoke-direct {v5}, Ljava/util/ArrayList;-><init>()V
 
-    .line 103
+    .line 106
     .local v5, "times":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/Integer;>;"
     invoke-virtual {p1}, Ljava/lang/String;->length()I
 
@@ -601,18 +601,18 @@
 
     if-le v6, v7, :cond_40
 
-    .line 104
+    .line 107
     const-string v6, ";"
 
     invoke-virtual {p1, v6}, Ljava/lang/String;->split(Ljava/lang/String;)[Ljava/lang/String;
 
     move-result-object v0
 
-    .line 105
+    .line 108
     .local v0, "BULKTIME_split":[Ljava/lang/String;
     const/4 v1, 0x0
 
-    .line 106
+    .line 109
     .local v1, "firstNumber":I
     const/4 v2, 0x0
 
@@ -622,10 +622,10 @@
 
     if-ge v2, v6, :cond_40
 
-    .line 107
+    .line 110
     aget-object v4, v0, v2
 
-    .line 108
+    .line 111
     .local v4, "timeString":Ljava/lang/String;
     if-eqz v4, :cond_36
 
@@ -639,42 +639,42 @@
 
     move-result v3
 
-    .line 112
+    .line 115
     .local v3, "time":I
     :goto_25
     if-nez v2, :cond_28
 
-    .line 113
+    .line 116
     move v1, v3
 
-    .line 116
+    .line 119
     :cond_28
     if-lez v1, :cond_38
 
-    .line 117
+    .line 120
     invoke-static {v7}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
     move-result-object v6
 
     invoke-virtual {v5, v6}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
 
-    .line 118
+    .line 121
     add-int/lit8 v1, v1, -0x1
 
-    .line 106
+    .line 109
     :goto_33
     add-int/lit8 v2, v2, 0x1
 
     goto :goto_14
 
-    .line 108
+    .line 111
     .end local v3    # "time":I
     :cond_36
     const/4 v3, 0x0
 
     goto :goto_25
 
-    .line 120
+    .line 123
     .restart local v3    # "time":I
     :cond_38
     invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
@@ -685,7 +685,7 @@
 
     goto :goto_33
 
-    .line 124
+    .line 127
     .end local v0    # "BULKTIME_split":[Ljava/lang/String;
     .end local v1    # "firstNumber":I
     .end local v2    # "index":I
@@ -701,12 +701,12 @@
     .registers 8
 
     .prologue
-    .line 19
+    .line 22
     new-instance v2, Lsergentum/export/core/RawData$RawTrackData;
 
     invoke-direct {v2}, Lsergentum/export/core/RawData$RawTrackData;-><init>()V
 
-    .line 21
+    .line 24
     .local v2, "rawTrackData":Lsergentum/export/core/RawData$RawTrackData;
     :try_start_5
     iget-object v4, p0, Lsergentum/export/core/RawData;->queryData:Lsergentum/export/core/RawData$QueryData;
@@ -719,7 +719,7 @@
 
     iput-wide v4, v2, Lsergentum/export/core/RawData$RawTrackData;->startTime:J
 
-    .line 22
+    .line 25
     iget-object v4, p0, Lsergentum/export/core/RawData;->queryData:Lsergentum/export/core/RawData$QueryData;
 
     iget-object v4, v4, Lsergentum/export/core/RawData$QueryData;->endTime:Ljava/lang/String;
@@ -730,7 +730,7 @@
 
     iput-wide v4, v2, Lsergentum/export/core/RawData$RawTrackData;->endTime:J
 
-    .line 23
+    .line 26
     iget-object v4, p0, Lsergentum/export/core/RawData;->queryData:Lsergentum/export/core/RawData$QueryData;
 
     iget-object v4, v4, Lsergentum/export/core/RawData$QueryData;->costTime:Ljava/lang/String;
@@ -741,7 +741,7 @@
 
     iput v4, v2, Lsergentum/export/core/RawData$RawTrackData;->costTime:I
 
-    .line 24
+    .line 27
     iget-object v4, p0, Lsergentum/export/core/RawData;->queryData:Lsergentum/export/core/RawData$QueryData;
 
     iget-object v4, v4, Lsergentum/export/core/RawData$QueryData;->distance:Ljava/lang/String;
@@ -752,7 +752,7 @@
 
     iput v4, v2, Lsergentum/export/core/RawData$RawTrackData;->distance:I
 
-    .line 25
+    .line 28
     iget-object v4, p0, Lsergentum/export/core/RawData;->queryData:Lsergentum/export/core/RawData$QueryData;
 
     iget-object v4, v4, Lsergentum/export/core/RawData$QueryData;->activityType:Ljava/lang/String;
@@ -763,7 +763,7 @@
 
     iput v4, v2, Lsergentum/export/core/RawData$RawTrackData;->activityType:I
 
-    .line 27
+    .line 30
     iget-object v4, p0, Lsergentum/export/core/RawData;->queryData:Lsergentum/export/core/RawData$QueryData;
 
     iget-object v4, v4, Lsergentum/export/core/RawData$QueryData;->BULKTIME:Ljava/lang/String;
@@ -774,7 +774,7 @@
 
     iput-object v4, v2, Lsergentum/export/core/RawData$RawTrackData;->times:Ljava/util/ArrayList;
 
-    .line 28
+    .line 31
     iget-object v4, p0, Lsergentum/export/core/RawData;->queryData:Lsergentum/export/core/RawData$QueryData;
 
     iget-object v4, v4, Lsergentum/export/core/RawData$QueryData;->BULKLL:Ljava/lang/String;
@@ -789,7 +789,7 @@
 
     iput-object v4, v2, Lsergentum/export/core/RawData$RawTrackData;->coordinates:Ljava/util/ArrayList;
 
-    .line 31
+    .line 34
     iget-object v4, p0, Lsergentum/export/core/RawData;->queryData:Lsergentum/export/core/RawData$QueryData;
 
     iget-object v4, v4, Lsergentum/export/core/RawData$QueryData;->size:Ljava/lang/String;
@@ -814,7 +814,7 @@
 
     move-result v3
 
-    .line 32
+    .line 35
     .local v3, "size":I
     :goto_67
     if-eqz v3, :cond_9e
@@ -823,7 +823,7 @@
     :goto_69
     iput v3, v2, Lsergentum/export/core/RawData$RawTrackData;->size:I
 
-    .line 34
+    .line 37
     iget-object v4, p0, Lsergentum/export/core/RawData;->queryData:Lsergentum/export/core/RawData$QueryData;
 
     iget-object v4, v4, Lsergentum/export/core/RawData$QueryData;->BULKHR:Ljava/lang/String;
@@ -832,11 +832,11 @@
 
     move-result-object v0
 
-    .line 35
+    .line 38
     .local v0, "HRs":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/Integer;>;"
     iput-object v0, v2, Lsergentum/export/core/RawData$RawTrackData;->hrPoints:Ljava/util/ArrayList;
 
-    .line 36
+    .line 39
     sget-object v4, Ljava/lang/System;->out:Ljava/io/PrintStream;
 
     new-instance v5, Ljava/lang/StringBuilder;
@@ -863,7 +863,7 @@
 
     invoke-virtual {v4, v5}, Ljava/io/PrintStream;->println(Ljava/lang/String;)V
 
-    .line 38
+    .line 41
     iget-object v4, p0, Lsergentum/export/core/RawData;->queryData:Lsergentum/export/core/RawData$QueryData;
 
     iget-object v4, v4, Lsergentum/export/core/RawData$QueryData;->BULKGAIT:Ljava/lang/String;
@@ -874,18 +874,18 @@
 
     iput-object v4, v2, Lsergentum/export/core/RawData$RawTrackData;->steps:Ljava/util/ArrayList;
 
-    .line 42
+    .line 45
     .end local v0    # "HRs":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/Integer;>;"
     :goto_9b
     return-object v2
 
-    .line 31
+    .line 34
     :cond_9c
     const/4 v3, 0x0
 
     goto :goto_67
 
-    .line 32
+    .line 35
     .restart local v3    # "size":I
     :cond_9e
     iget-object v4, v2, Lsergentum/export/core/RawData$RawTrackData;->times:Ljava/util/ArrayList;
@@ -898,12 +898,12 @@
 
     goto :goto_69
 
-    .line 39
+    .line 42
     .end local v3    # "size":I
     :catch_a5
     move-exception v1
 
-    .line 40
+    .line 43
     .local v1, "e":Ljava/lang/Exception;
     iget-object v4, p0, Lsergentum/export/core/RawData;->starter:Lsergentum/export/Starter;
 

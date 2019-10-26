@@ -18,8 +18,6 @@
 
 
 # instance fields
-.field private starter:Lsergentum/export/MifitStarter;
-
 .field final synthetic this$0:Lsergentum/export/MifitStarter;
 
 .field private trackIds:Ljava/util/ArrayList;
@@ -35,14 +33,12 @@
 
 
 # direct methods
-.method constructor <init>(Lsergentum/export/MifitStarter;Lsergentum/export/MifitStarter;Ljava/util/ArrayList;)V
-    .registers 4
+.method constructor <init>(Lsergentum/export/MifitStarter;Ljava/util/ArrayList;)V
+    .registers 3
     .param p1, "this$0"    # Lsergentum/export/MifitStarter;
-    .param p2, "starter"    # Lsergentum/export/MifitStarter;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "(",
-            "Lsergentum/export/MifitStarter;",
             "Ljava/util/ArrayList",
             "<",
             "Ljava/lang/Long;",
@@ -51,19 +47,16 @@
     .end annotation
 
     .prologue
-    .line 135
-    .local p3, "trackIds":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/Long;>;"
+    .line 148
+    .local p2, "trackIds":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/Long;>;"
     iput-object p1, p0, Lsergentum/export/MifitStarter$ChooseTrackClickListener;->this$0:Lsergentum/export/MifitStarter;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 136
-    iput-object p2, p0, Lsergentum/export/MifitStarter$ChooseTrackClickListener;->starter:Lsergentum/export/MifitStarter;
+    .line 149
+    iput-object p2, p0, Lsergentum/export/MifitStarter$ChooseTrackClickListener;->trackIds:Ljava/util/ArrayList;
 
-    .line 137
-    iput-object p3, p0, Lsergentum/export/MifitStarter$ChooseTrackClickListener;->trackIds:Ljava/util/ArrayList;
-
-    .line 138
+    .line 150
     return-void
 .end method
 
@@ -75,7 +68,7 @@
     .param p2, "i"    # I
 
     .prologue
-    .line 141
+    .line 153
     iget-object v2, p0, Lsergentum/export/MifitStarter$ChooseTrackClickListener;->trackIds:Ljava/util/ArrayList;
 
     invoke-virtual {v2, p2}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
@@ -84,7 +77,7 @@
 
     check-cast v1, Ljava/lang/Long;
 
-    .line 142
+    .line 154
     .local v1, "trackId":Ljava/lang/Long;
     invoke-virtual {v1}, Ljava/lang/Long;->longValue()J
 
@@ -96,7 +89,7 @@
 
     if-nez v2, :cond_29
 
-    .line 143
+    .line 155
     new-instance v0, Landroid/content/Intent;
 
     iget-object v2, p0, Lsergentum/export/MifitStarter$ChooseTrackClickListener;->this$0:Lsergentum/export/MifitStarter;
@@ -109,7 +102,7 @@
 
     invoke-direct {v0, v2, v3}, Landroid/content/Intent;-><init>(Landroid/content/Context;Ljava/lang/Class;)V
 
-    .line 144
+    .line 156
     .local v0, "intent":Landroid/content/Intent;
     iget-object v2, p0, Lsergentum/export/MifitStarter$ChooseTrackClickListener;->this$0:Lsergentum/export/MifitStarter;
 
@@ -119,20 +112,16 @@
 
     invoke-virtual {v2, v0}, Landroid/app/Activity;->startActivity(Landroid/content/Intent;)V
 
-    .line 149
+    .line 160
     .end local v0    # "intent":Landroid/content/Intent;
     :goto_28
     return-void
 
-    .line 147
+    .line 158
     :cond_29
-    iget-object v2, p0, Lsergentum/export/MifitStarter$ChooseTrackClickListener;->starter:Lsergentum/export/MifitStarter;
+    iget-object v2, p0, Lsergentum/export/MifitStarter$ChooseTrackClickListener;->this$0:Lsergentum/export/MifitStarter;
 
-    invoke-virtual {v1}, Ljava/lang/Long;->longValue()J
-
-    move-result-wide v4
-
-    invoke-virtual {v2, v4, v5}, Lsergentum/export/MifitStarter;->readRawDataWithId(J)V
+    invoke-virtual {v2, v1}, Lsergentum/export/MifitStarter;->exportTrack(Ljava/lang/Long;)V
 
     goto :goto_28
 .end method

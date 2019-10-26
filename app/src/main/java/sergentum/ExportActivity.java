@@ -1,22 +1,25 @@
-//package cn.com.smartdevices.bracelet.gps.ui.sport.detail;
+//package sergentum;
 //
 //import android.Manifest;
-//import android.annotation.TargetApi;
 //import android.app.Activity;
 //import android.app.FragmentTransaction;
 //import android.content.SharedPreferences;
 //import android.content.pm.PackageManager;
-//import android.os.Build;
+//import android.database.sqlite.SQLiteDatabase;
 //import android.os.Bundle;
+//import android.os.Environment;
+//import android.os.StrictMode;
 //import android.support.v4.app.ActivityCompat;
-//
 //import android.support.v4.content.ContextCompat;
 //import android.support.v7.app.AppCompatActivity;
 //import android.view.View;
-//import android.widget.*;
-//import cn.com.smartdevices.bracelet.gps.ui.sport.detail.export.MifitStarter;
-//import com.example.username.mifittrackexporter.MainActivity;
+//import android.widget.Button;
+//import android.widget.CompoundButton;
+//import android.widget.Switch;
+//import android.widget.Toast;
 //import com.example.username.mifittrackexporter.R;
+//import sergentum.export.MifitStarter;
+//import sergentum.sync.EndomondoSynchronizer;
 //
 //// The activity allow to test export feature with empty android project
 //// It shouldn't be copied in mifit project
@@ -104,42 +107,42 @@
 //                    MifitStarter starter = new MifitStarter(this);
 //                    starter.showTracks();
 //
-////                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-////                    StrictMode.setThreadPolicy(policy);
-////                    EndomondoSynchronizer endomondoSynchronizer = new EndomondoSynchronizer();
-//////                    Synchronizer.Status connect = endomondoSynchronizer.connect();
-////                    String path = Environment.getExternalStorageDirectory().getPath();
-////                    SQLiteDatabase sqLiteDatabase = SQLiteDatabase.openOrCreateDatabase(path + "/Android/end/runnerup.db", null);
-//////                    endomondoSynchronizer.upload(sqLiteDatabase, 3);
-////                    sqLiteDatabase.close();
+//                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+//                    StrictMode.setThreadPolicy(policy);
+//                    EndomondoSynchronizer endomondoSynchronizer = new EndomondoSynchronizer();
+////                    Synchronizer.Status connect = endomondoSynchronizer.connect();
+//                    String path = Environment.getExternalStorageDirectory().getPath();
+//                    SQLiteDatabase sqLiteDatabase = SQLiteDatabase.openOrCreateDatabase(path + "/Android/end/runnerup.db", null);
+//                    endomondoSynchronizer.upload(sqLiteDatabase, 3);
+//                    sqLiteDatabase.close();
+//
+//                    fragment.changeColor();
+////                    ExportView exportView = new ExportView(this);
+////                    setContentView(exportView, exportView.getLayoutParams());
+//
+//
+////                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+////                            LinearLayout.LayoutParams.FILL_PARENT,
+////                            LinearLayout.LayoutParams.FILL_PARENT);
+////                    LinearLayout linearLayout = new LinearLayout (this);
 ////
-////                    fragment.changeColor();
-//////                    ExportView exportView = new ExportView(this);
-//////                    setContentView(exportView, exportView.getLayoutParams());
+////                    Button btn1 = new Button(this);
+////                    btn1.setText("Button_text");
+////                    linearLayout.addView(btn1);
+////                    btn1.setOnClickListener(new View.OnClickListener()
+////                    {
+////                        @Override
+////                        public void onClick(View v) {
+////                            // put code on click operation
+////                            Toast onClick = Toast.makeText(ExportActivity.this, "onClick", Toast.LENGTH_SHORT);
+////                            onClick.show();
+////                        }
+////                    });
 ////
-////
-//////                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-//////                            LinearLayout.LayoutParams.FILL_PARENT,
-//////                            LinearLayout.LayoutParams.FILL_PARENT);
-//////                    LinearLayout linearLayout = new LinearLayout (this);
-//////
-//////                    Button btn1 = new Button(this);
-//////                    btn1.setText("Button_text");
-//////                    linearLayout.addView(btn1);
-//////                    btn1.setOnClickListener(new View.OnClickListener()
-//////                    {
-//////                        @Override
-//////                        public void onClick(View v) {
-//////                            // put code on click operation
-//////                            Toast onClick = Toast.makeText(ExportActivity.this, "onClick", Toast.LENGTH_SHORT);
-//////                            onClick.show();
-//////                        }
-//////                    });
-//////
-//////                    setContentView(linearLayout, layoutParams);
-////
-//////                    FragmentManager fragmentManager = getFragmentManager();
-//////                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+////                    setContentView(linearLayout, layoutParams);
+//
+////                    FragmentManager fragmentManager = getFragmentManager();
+////                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 //
 //
 //                } else {

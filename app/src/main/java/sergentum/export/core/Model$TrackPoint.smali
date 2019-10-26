@@ -1,4 +1,4 @@
-.class Lsergentum/export/core/Model$TrackPoint;
+.class public Lsergentum/export/core/Model$TrackPoint;
 .super Ljava/lang/Object;
 .source "Model.java"
 
@@ -9,7 +9,7 @@
 .end annotation
 
 .annotation system Ldalvik/annotation/InnerClass;
-    accessFlags = 0x8
+    accessFlags = 0x9
     name = "TrackPoint"
 .end annotation
 
@@ -33,11 +33,11 @@
 
 
 # direct methods
-.method constructor <init>()V
+.method public constructor <init>()V
     .registers 1
 
     .prologue
-    .line 122
+    .line 78
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
@@ -46,216 +46,128 @@
 
 # virtual methods
 .method getAltitudeString()Ljava/lang/String;
-    .registers 6
+    .registers 3
 
     .prologue
-    .line 168
-    iget-object v2, p0, Lsergentum/export/core/Model$TrackPoint;->altitude:Ljava/lang/Long;
+    .line 112
+    iget-object v0, p0, Lsergentum/export/core/Model$TrackPoint;->altitude:Ljava/lang/Long;
 
-    invoke-virtual {v2}, Ljava/lang/Long;->toString()Ljava/lang/String;
+    const/4 v1, 0x2
 
-    move-result-object v1
+    invoke-static {v0, v1}, Lsergentum/export/core/Model;->access$000(Ljava/lang/Long;I)Ljava/lang/String;
 
-    .line 169
-    .local v1, "altString":Ljava/lang/String;
-    invoke-virtual {v1}, Ljava/lang/String;->length()I
+    move-result-object v0
+
+    return-object v0
+.end method
+
+.method public getCadenceString()Ljava/lang/String;
+    .registers 2
+
+    .prologue
+    .line 124
+    iget-object v0, p0, Lsergentum/export/core/Model$TrackPoint;->cadence:Ljava/lang/Integer;
+
+    if-eqz v0, :cond_c
+
+    iget-object v0, p0, Lsergentum/export/core/Model$TrackPoint;->cadence:Ljava/lang/Integer;
+
+    invoke-virtual {v0}, Ljava/lang/Integer;->intValue()I
 
     move-result v0
 
-    .line 170
-    .local v0, "altL":I
-    const/4 v2, 0x2
+    if-nez v0, :cond_f
 
-    if-le v0, v2, :cond_32
+    .line 125
+    :cond_c
+    const-string v0, ""
 
-    .line 171
-    new-instance v2, Ljava/lang/StringBuilder;
+    .line 127
+    :goto_e
+    return-object v0
 
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+    :cond_f
+    iget-object v0, p0, Lsergentum/export/core/Model$TrackPoint;->cadence:Ljava/lang/Integer;
 
-    const/4 v3, 0x0
+    invoke-static {v0}, Ljava/lang/String;->valueOf(Ljava/lang/Object;)Ljava/lang/String;
 
-    add-int/lit8 v4, v0, -0x2
+    move-result-object v0
 
-    invoke-virtual {v1, v3, v4}, Ljava/lang/String;->substring(II)Ljava/lang/String;
+    goto :goto_e
+.end method
 
-    move-result-object v3
+.method public getHeartRateString()Ljava/lang/String;
+    .registers 2
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    .prologue
+    .line 116
+    iget-object v0, p0, Lsergentum/export/core/Model$TrackPoint;->heartRate:Ljava/lang/Integer;
 
-    move-result-object v2
+    if-eqz v0, :cond_c
 
-    const-string v3, "."
+    iget-object v0, p0, Lsergentum/export/core/Model$TrackPoint;->heartRate:Ljava/lang/Integer;
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0}, Ljava/lang/Integer;->intValue()I
 
-    move-result-object v2
+    move-result v0
 
-    add-int/lit8 v3, v0, -0x2
+    if-nez v0, :cond_f
 
-    invoke-virtual {v1, v3, v0}, Ljava/lang/String;->substring(II)Ljava/lang/String;
+    .line 117
+    :cond_c
+    const-string v0, ""
 
-    move-result-object v3
+    .line 119
+    :goto_e
+    return-object v0
 
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    :cond_f
+    iget-object v0, p0, Lsergentum/export/core/Model$TrackPoint;->heartRate:Ljava/lang/Integer;
 
-    move-result-object v2
+    invoke-static {v0}, Ljava/lang/String;->valueOf(Ljava/lang/Object;)Ljava/lang/String;
 
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    move-result-object v0
 
-    move-result-object v2
-
-    .line 173
-    :goto_31
-    return-object v2
-
-    :cond_32
-    const-string v2, "0.00"
-
-    goto :goto_31
+    goto :goto_e
 .end method
 
 .method getLatitudeString()Ljava/lang/String;
-    .registers 6
+    .registers 3
 
     .prologue
-    .line 148
-    iget-object v2, p0, Lsergentum/export/core/Model$TrackPoint;->latitude:Ljava/lang/Long;
+    .line 104
+    iget-object v0, p0, Lsergentum/export/core/Model$TrackPoint;->latitude:Ljava/lang/Long;
 
-    invoke-virtual {v2}, Ljava/lang/Long;->toString()Ljava/lang/String;
+    const/16 v1, 0x8
 
-    move-result-object v1
+    invoke-static {v0, v1}, Lsergentum/export/core/Model;->access$000(Ljava/lang/Long;I)Ljava/lang/String;
 
-    .line 149
-    .local v1, "latString":Ljava/lang/String;
-    invoke-virtual {v1}, Ljava/lang/String;->length()I
+    move-result-object v0
 
-    move-result v0
-
-    .line 150
-    .local v0, "latL":I
-    if-lez v0, :cond_31
-
-    .line 151
-    new-instance v2, Ljava/lang/StringBuilder;
-
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
-
-    const/4 v3, 0x0
-
-    add-int/lit8 v4, v0, -0x8
-
-    invoke-virtual {v1, v3, v4}, Ljava/lang/String;->substring(II)Ljava/lang/String;
-
-    move-result-object v3
-
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    move-result-object v2
-
-    const-string v3, "."
-
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    move-result-object v2
-
-    add-int/lit8 v3, v0, -0x8
-
-    invoke-virtual {v1, v3, v0}, Ljava/lang/String;->substring(II)Ljava/lang/String;
-
-    move-result-object v3
-
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    move-result-object v2
-
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v2
-
-    .line 153
-    :goto_30
-    return-object v2
-
-    :cond_31
-    const-string v2, ""
-
-    goto :goto_30
+    return-object v0
 .end method
 
 .method getLongitudeString()Ljava/lang/String;
-    .registers 6
+    .registers 3
 
     .prologue
-    .line 158
-    iget-object v2, p0, Lsergentum/export/core/Model$TrackPoint;->longitude:Ljava/lang/Long;
+    .line 108
+    iget-object v0, p0, Lsergentum/export/core/Model$TrackPoint;->longitude:Ljava/lang/Long;
 
-    invoke-virtual {v2}, Ljava/lang/Long;->toString()Ljava/lang/String;
+    const/16 v1, 0x8
 
-    move-result-object v1
+    invoke-static {v0, v1}, Lsergentum/export/core/Model;->access$000(Ljava/lang/Long;I)Ljava/lang/String;
 
-    .line 159
-    .local v1, "lonString":Ljava/lang/String;
-    invoke-virtual {v1}, Ljava/lang/String;->length()I
+    move-result-object v0
 
-    move-result v0
-
-    .line 160
-    .local v0, "lonL":I
-    if-lez v0, :cond_31
-
-    .line 161
-    new-instance v2, Ljava/lang/StringBuilder;
-
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
-
-    const/4 v3, 0x0
-
-    add-int/lit8 v4, v0, -0x8
-
-    invoke-virtual {v1, v3, v4}, Ljava/lang/String;->substring(II)Ljava/lang/String;
-
-    move-result-object v3
-
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    move-result-object v2
-
-    const-string v3, "."
-
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    move-result-object v2
-
-    add-int/lit8 v3, v0, -0x8
-
-    invoke-virtual {v1, v3, v0}, Ljava/lang/String;->substring(II)Ljava/lang/String;
-
-    move-result-object v3
-
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    move-result-object v2
-
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v2
-
-    .line 163
-    :goto_30
-    return-object v2
-
-    :cond_31
-    const-string v2, ""
-
-    goto :goto_30
+    return-object v0
 .end method
 
 .method public toString()Ljava/lang/String;
     .registers 5
 
     .prologue
-    .line 134
+    .line 90
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -280,7 +192,7 @@
 
     iget-object v1, p0, Lsergentum/export/core/Model$TrackPoint;->timestamp:Ljava/lang/Long;
 
-    .line 136
+    .line 92
     invoke-virtual {v1}, Ljava/lang/Long;->longValue()J
 
     move-result-wide v2
@@ -375,6 +287,6 @@
 
     move-result-object v0
 
-    .line 134
+    .line 90
     return-object v0
 .end method

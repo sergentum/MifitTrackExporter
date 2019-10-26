@@ -30,18 +30,18 @@
     .param p5, "altitude"    # J
 
     .prologue
-    .line 55
+    .line 56
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 56
+    .line 57
     iput-wide p1, p0, Lsergentum/export/core/Model$Coordinate;->latitude:J
 
-    .line 57
+    .line 58
     iput-wide p3, p0, Lsergentum/export/core/Model$Coordinate;->longitude:J
 
-    .line 58
+    .line 59
     iput-wide p5, p0, Lsergentum/export/core/Model$Coordinate;->altitude:J
 
-    .line 59
+    .line 60
     return-void
 .end method

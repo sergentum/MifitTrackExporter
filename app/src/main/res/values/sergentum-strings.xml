@@ -3,11 +3,13 @@
     <string-array name="export_format_entries">
         <item>gpx</item>
         <item>tcx</item>
+        <item>endomondo</item>
         <item>all</item>
     </string-array>
     <string-array name="export_format_values">
         <item>.gpx</item>
         <item>.tcx</item>
+        <item>endomondo</item>
         <item>null</item>
     </string-array>
 </resources>
