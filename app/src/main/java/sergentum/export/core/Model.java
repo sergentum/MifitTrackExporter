@@ -89,16 +89,15 @@ public class Model {
         public String toString() {
             return "TrackPoint{" +
                     "timestamp=" + timestamp +
-                    ", dateTime=" + formatTimestamp(timestamp) +
-                    ", heartRate=" + heartRate +
                     ", latitude=" + latitude +
                     ", longitude=" + longitude +
                     ", altitude=" + altitude +
+                    ", heartRate=" + heartRate +
                     ", pace=" + pace +
                     ", cadence=" + cadence +
+                    ", stride=" + stride +
                     '}';
         }
-
 
         String getLatitudeString() {
             return formatNullableNumberAsString(latitude, 8);

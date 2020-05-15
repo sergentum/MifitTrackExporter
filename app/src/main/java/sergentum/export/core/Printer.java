@@ -21,7 +21,10 @@ public class Printer {
             Map<Long, TrackPoint> coordTrackPoints,
             Map<Long, TrackPoint> stepTrackPoints
     ) {
-        StringBuilder trackPointsBuilder = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("sep=" + CSV_COLUMN_DELIMITER);
+        stringBuilder.append("\r\n");
 
         int csvSize = Math.max(hrTrackPoints.size(), coordTrackPoints.size());
         Iterator<Map.Entry<Long, TrackPoint>> iteratorCoords = coordTrackPoints.entrySet().iterator();
@@ -30,41 +33,45 @@ public class Printer {
 
             if (i < hrTrackPoints.size()) {
                 TrackPoint trackPoint = hrTrackPoints.get(i);
-                trackPointsBuilder.append(formatTimestamp(trackPoint.timestamp)).append(CSV_COLUMN_DELIMITER);
-                trackPointsBuilder.append(trackPoint.heartRate).append(CSV_COLUMN_DELIMITER);
+                stringBuilder.append(formatTimestamp(trackPoint.timestamp)).append(CSV_COLUMN_DELIMITER);
+                stringBuilder.append(trackPoint.heartRate).append(CSV_COLUMN_DELIMITER);
             } else {
-                trackPointsBuilder.append(EMPTY_VALUE).append(CSV_COLUMN_DELIMITER);
-                trackPointsBuilder.append(EMPTY_VALUE).append(CSV_COLUMN_DELIMITER);
+                stringBuilder.append(EMPTY_VALUE).append(CSV_COLUMN_DELIMITER);
+                stringBuilder.append(EMPTY_VALUE).append(CSV_COLUMN_DELIMITER);
             }
+
+            stringBuilder.append(" ").append(CSV_COLUMN_DELIMITER);
 
             if (iteratorCoords.hasNext()) {
                 TrackPoint trackPoint = iteratorCoords.next().getValue();
-                trackPointsBuilder.append(trackPoint.altitude).append(CSV_COLUMN_DELIMITER);
-                trackPointsBuilder.append(trackPoint.latitude).append(CSV_COLUMN_DELIMITER);
-                trackPointsBuilder.append(trackPoint.longitude).append(CSV_COLUMN_DELIMITER);
-                trackPointsBuilder.append(formatTimestamp(trackPoint.timestamp)).append(CSV_COLUMN_DELIMITER);
+                stringBuilder.append(trackPoint.altitude).append(CSV_COLUMN_DELIMITER);
+                stringBuilder.append(trackPoint.latitude).append(CSV_COLUMN_DELIMITER);
+                stringBuilder.append(trackPoint.longitude).append(CSV_COLUMN_DELIMITER);
+                stringBuilder.append(formatTimestamp(trackPoint.timestamp)).append(CSV_COLUMN_DELIMITER);
             } else {
-                trackPointsBuilder.append(EMPTY_VALUE).append(CSV_COLUMN_DELIMITER);
-                trackPointsBuilder.append(EMPTY_VALUE).append(CSV_COLUMN_DELIMITER);
-                trackPointsBuilder.append(EMPTY_VALUE).append(CSV_COLUMN_DELIMITER);
-                trackPointsBuilder.append(EMPTY_VALUE).append(CSV_COLUMN_DELIMITER);
+                stringBuilder.append(EMPTY_VALUE).append(CSV_COLUMN_DELIMITER);
+                stringBuilder.append(EMPTY_VALUE).append(CSV_COLUMN_DELIMITER);
+                stringBuilder.append(EMPTY_VALUE).append(CSV_COLUMN_DELIMITER);
+                stringBuilder.append(EMPTY_VALUE).append(CSV_COLUMN_DELIMITER);
             }
+
+            stringBuilder.append(" ").append(CSV_COLUMN_DELIMITER);
 
             if (iteratorSteps.hasNext()) {
                 TrackPoint trackPoint = iteratorSteps.next().getValue();
-                trackPointsBuilder.append(formatTimestamp(trackPoint.timestamp)).append(CSV_COLUMN_DELIMITER);
-                trackPointsBuilder.append("second").append(CSV_COLUMN_DELIMITER);
-                trackPointsBuilder.append(trackPoint.cadence).append(CSV_COLUMN_DELIMITER);
-                trackPointsBuilder.append(trackPoint.stride).append(CSV_COLUMN_DELIMITER);
+                stringBuilder.append(formatTimestamp(trackPoint.timestamp)).append(CSV_COLUMN_DELIMITER);
+                stringBuilder.append("second").append(CSV_COLUMN_DELIMITER);
+                stringBuilder.append(trackPoint.cadence).append(CSV_COLUMN_DELIMITER);
+                stringBuilder.append(trackPoint.stride).append(CSV_COLUMN_DELIMITER);
             } else {
-                trackPointsBuilder.append(EMPTY_VALUE).append(CSV_COLUMN_DELIMITER);
-                trackPointsBuilder.append(EMPTY_VALUE).append(CSV_COLUMN_DELIMITER);
-                trackPointsBuilder.append(EMPTY_VALUE).append(CSV_COLUMN_DELIMITER);
-                trackPointsBuilder.append(EMPTY_VALUE).append(CSV_COLUMN_DELIMITER);
+                stringBuilder.append(EMPTY_VALUE).append(CSV_COLUMN_DELIMITER);
+                stringBuilder.append(EMPTY_VALUE).append(CSV_COLUMN_DELIMITER);
+                stringBuilder.append(EMPTY_VALUE).append(CSV_COLUMN_DELIMITER);
+                stringBuilder.append(EMPTY_VALUE).append(CSV_COLUMN_DELIMITER);
             }
-            trackPointsBuilder.append("\r\n");
+            stringBuilder.append("\r\n");
         }
-        return trackPointsBuilder.toString();
+        return stringBuilder.toString();
     }
 
     public static String printTcx(Track track) {
@@ -177,7 +184,7 @@ public class Printer {
                 "    xmlns=\"http://www.topografix.com/GPX/1/1\"\n" +
                 "    xmlns:gpxtpx=\"http://www.garmin.com/xmlschemas/TrackPointExtension/v1\"\n" +
                 "    xmlns:gpxx=\"http://www.garmin.com/xmlschemas/GpxExtensions/v3\"\n" +
-                "    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">" +
+                "    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n" +
                 "    <metadata>\n" +
                 "        <time>" + formatTimestamp(track.summary.startTime) + " </time>\n" +
                 "    </metadata>" +

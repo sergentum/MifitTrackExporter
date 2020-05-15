@@ -14,7 +14,13 @@ import sergentum.util.FormValues;
 import sergentum.util.SyncHelper;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
@@ -22,6 +28,7 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 
+import static sergentum.export.Starter.EXT_DB_NAME;
 import static sergentum.export.Starter.TAG;
 import static sergentum.util.HttpUtil.parseKVP;
 
@@ -154,6 +161,31 @@ public class SettingsActivity extends PreferenceActivity {
                 Log.e(TAG, "Exception occurred while connecting: ", e);
             }
             return response;
+        }
+    }
+
+    private void copyDb() {
+        if (starter instanceof MifitStarter) {
+            String originDb = ((MifitStarter) starter).findOriginDb();
+            String s = Starter.getFullPath() + EXT_DB_NAME;
+            try {
+                copyFileUsingStream(originDb, s);
+                System.out.println("Origin DB successfully copied");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static void copyFileUsingStream(String source, String dest) throws IOException {
+        try (InputStream is = new FileInputStream(source);
+             OutputStream os = new FileOutputStream(dest)
+        ) {
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = is.read(buffer)) > 0) {
+                os.write(buffer, 0, length);
+            }
         }
     }
 }

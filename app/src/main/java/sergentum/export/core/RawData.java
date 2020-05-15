@@ -31,8 +31,9 @@ public class RawData {
             rawTrackData.coordinates = parseCoordinates(queryData.BULKLL, queryData.BULKAL);
 
             // sometimes size is zero but actually data is exist
-            int size = (queryData.size != null && queryData.size.length() > 0) ? Integer.parseInt(queryData.size) : 0;
-            rawTrackData.size = size != 0 ? size : rawTrackData.times.size();
+//            int size = (queryData.size != null && queryData.size.length() > 0) ? Integer.parseInt(queryData.size) : 0;
+//            rawTrackData.size = size != 0 ? size : rawTrackData.times.size();
+            rawTrackData.size = rawTrackData.costTime;
 
             ArrayList<Integer> HRs = parseHR(queryData.BULKHR);
             rawTrackData.hrPoints = HRs;
@@ -109,19 +110,7 @@ public class RawData {
             for (int index = 0; index < BULKTIME_split.length; index++) {
                 String timeString = BULKTIME_split[index];
                 int time = (timeString != null && timeString.length() > 0) ? Integer.parseInt(timeString) : 0;
-
-                // first number somewhy contains a big number, 20 for example and 20 next numbers will be zero.
-                // don't know what's the point but coordinates are correct
-                if (index == 0) {
-                    firstNumber = time;
-                }
-
-                if (firstNumber > 0) {
-                    times.add(1);
-                    firstNumber--;
-                } else {
-                    times.add(time);
-                }
+                times.add(time);
             }
         }
         return times;
@@ -220,9 +209,10 @@ public class RawData {
 
         ArrayList<Model.Step> steps = new ArrayList<>();
 
-        @Override
-        public String toString() {
+        public String toCsv() {
             StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("sep=" + CSV_COLUMN_DELIMITER);
+            stringBuilder.append("\r\n");
             stringBuilder.append(String.format(Locale.US, "Start: %d", startTime)).append(CSV_COLUMN_DELIMITER);
             stringBuilder.append(String.format(Locale.US, "Duration: %d", costTime)).append(CSV_COLUMN_DELIMITER);
             stringBuilder.append(String.format(Locale.US, "End: %d", endTime)).append(CSV_COLUMN_DELIMITER);
@@ -279,6 +269,22 @@ public class RawData {
                 stringBuilder.append("\r\n");
             }
             return stringBuilder.toString();
+        }
+
+        @Override
+        public String toString() {
+            return "RawTrackData{" +
+                    "startTime=" + startTime + " ms" +
+                    ", endTime=" + endTime + " ms" +
+                    ", distance=" + distance + " m" +
+                    ", costTime=" + costTime + " s" +
+                    ", activityType=" + activityType + "" +
+                    ", size=" + size + "" +
+                    ", times=" + times.size() + " pts" +
+                    ", coordinates=" + coordinates.size() + " pts" +
+                    ", hrPoints=" + hrPoints.size() + " pts" +
+                    ", steps=" + steps.size() + " pts" +
+                    '}';
         }
     }
 

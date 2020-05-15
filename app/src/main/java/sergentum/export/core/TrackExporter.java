@@ -13,6 +13,7 @@ import java.util.*;
 
 import static sergentum.export.Starter.*;
 import static sergentum.export.core.Model.ActivityType.*;
+import static sergentum.export.core.Model.formatTimestampHumanReadable;
 
 
 public class TrackExporter {
@@ -48,14 +49,13 @@ public class TrackExporter {
 
         if (starter.getDebug()) {
             starter.log("Will try to write raw data to file.");
-            String filename = queryData.startTime + RAW_CSV;
-            String filePath = EXPORT_PATH + DEBUG_OUT_PATH + filename;
-            String fullPath = getFullPath() + filename;
-            boolean b = starter.writeStringToFile(rawTrackData.toString(), fullPath);
+            String filename = formatTimestampHumanReadable(rawTrackData.startTime) + RAW_CSV;
+            String fullPath = getDebugPath() + filename;
+            boolean b = starter.writeStringToFile(rawTrackData.toCsv(), fullPath);
             if (b) {
-                starter.log(filePath + " saved");
+                starter.log(fullPath + " saved");
             } else {
-                starter.log(filePath + " can't save");
+                starter.log(fullPath + " can't save");
             }
         }
 
@@ -64,6 +64,7 @@ public class TrackExporter {
 
 
     private Track compileDataToTrack(RawTrackData rawTrackData) {
+        starter.log("Received:" + rawTrackData);
         Track track = new Track();
         TrackSummary trackSummary = new TrackSummary();
         long timestamp = rawTrackData.startTime;
@@ -74,7 +75,7 @@ public class TrackExporter {
         trackSummary.endTime = rawTrackData.endTime;
         trackSummary.duration = rawTrackData.costTime;
         trackSummary.distance = rawTrackData.distance;
-        trackSummary.size = rawTrackData.size;
+        trackSummary.size = rawTrackData.costTime;
         track.summary = trackSummary;
 
         // HR points is a base for track export
@@ -92,20 +93,18 @@ public class TrackExporter {
 
         timestamp = rawTrackData.startTime;
         Map<Long, TrackPoint> coordTrackPointMap = new TreeMap<>();
-        for (int i = 0; i < rawTrackData.size; i++) {
+        for (int i = 0; i < rawTrackData.times.size(); i++) {
             TrackPoint trackPoint = new TrackPoint();
             Integer integer = rawTrackData.times.get(i);
-            if (integer == 0) {
-                integer = 1;
+            for (int j = 0; j < integer; j++) {
+                trackPoint.altitude = rawTrackData.coordinates.get(i).altitude;
+                trackPoint.latitude = rawTrackData.coordinates.get(i).latitude;
+                trackPoint.longitude = rawTrackData.coordinates.get(i).longitude;
+                timestamp += 1;
+                trackPoint.timestamp = timestamp;
+                coordTrackPointMap.put(timestamp, trackPoint);
             }
-            trackPoint.altitude = rawTrackData.coordinates.get(i).altitude;
-            trackPoint.latitude = rawTrackData.coordinates.get(i).latitude;
-            trackPoint.longitude = rawTrackData.coordinates.get(i).longitude;
-            timestamp += integer;
-            trackPoint.timestamp = timestamp;
-            coordTrackPointMap.put(timestamp, trackPoint);
         }
-
 
         timestamp = rawTrackData.startTime;
         Map<Long, TrackPoint> stepTrackPointsMap = new TreeMap<>();
@@ -122,11 +121,45 @@ public class TrackExporter {
 
         if (starter.getDebug()) {
             String debugPoints = Printer.printRawPoints(hrTrackPoints, coordTrackPointMap, stepTrackPointsMap);
-            starter.writeStringToFile(debugPoints, getDebugPath() + rawTrackData.startTime + "-points.csv");
+            String filename = formatTimestampHumanReadable(rawTrackData.startTime) + "-points.csv";
+            String fullPath = getDebugPath() + filename;
+            starter.writeStringToFile(debugPoints, fullPath);
         }
 
         track.trackPoints = joinPointArrays(hrTrackPoints, coordTrackPointMap, stepTrackPointsMap);
+        if (rawTrackData.coordinates != null && rawTrackData.coordinates.size() > 1) {
+            cleanCoordPoints(track.trackPoints);
+        }
+
         return track;
+    }
+
+    private void cleanCoordPoints(ArrayList<TrackPoint> trackPoints) {
+        starter.log("Fixing incorrect altitude");
+        Long lastAltitude = null;
+        for (TrackPoint trackPoint : trackPoints) {
+            if (trackPoint.altitude != null && trackPoint.altitude.equals(-2000000L)) {
+                if (lastAltitude == null) {
+                    trackPoint.altitude = 0L;
+                } else {
+                    trackPoint.altitude = lastAltitude;
+                }
+            } else {
+                lastAltitude = trackPoint.altitude;
+            }
+        }
+
+        // that means track contains coordinates, so points without coordinates should be removed
+        // otherwise gpx would be incorrect for some services
+        starter.log("Removing points without coordinates");
+        if (trackPoints.size() > 1) {
+            for (Iterator<TrackPoint> iterator = trackPoints.iterator(); iterator.hasNext(); ) {
+                TrackPoint trackPoint = iterator.next();
+                if (trackPoint.latitude == null || trackPoint.longitude == null) {
+                    iterator.remove();
+                }
+            }
+        }
     }
 
     private ArrayList<TrackPoint> joinPointArrays(

@@ -32,7 +32,7 @@ public abstract class Starter {
     public static final String DEBUG_OUT_PATH = "debug/";
     public static final String DEBUG_LOG_FILE = "log.txt";
 
-    public static final String TAG = "mifit";
+    public static final String TAG = "mifit1";
     static final String EXT_DB_NAME = "origin.db";
     static Boolean debug;
 

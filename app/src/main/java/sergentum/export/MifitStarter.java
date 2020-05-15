@@ -238,7 +238,7 @@ public class MifitStarter extends Starter {
         String mifit_dir_path = getFullPath();
         checkIfPathExistAndCreate(mifit_dir_path);
         File mifit_dir = new File(mifit_dir_path);
-        log("search for ext db in:" + mifit_dir_path);
+        log("search for external db: " + mifit_dir_path + EXT_DB_NAME);
         if (mifit_dir.exists()) {
             try {
                 String[] list = mifit_dir.list();
@@ -259,7 +259,7 @@ public class MifitStarter extends Starter {
         return null;
     }
 
-    private String findOriginDb() {
+    String findOriginDb() {
         Pattern pattern = Pattern.compile("^origin_db_[A-Za-z0-9]*$");
 
         String pathToDb = dbPathFinder();
