@@ -5,10 +5,8 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.design.widget.CoordinatorLayout;
@@ -33,11 +31,8 @@ import sergentum.export.MifitStarter;
 import sergentum.export.SettingsActivity;
 import sergentum.export.core.Model.Track;
 import sergentum.sync.EndomondoSyncronizer;
-import sergentum.sync.Synchronizer.Status;
 
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
 
 import static sergentum.export.SettingsActivity.ENDOMONDO_APIKEY;
 import static sergentum.export.Starter.TAG;
@@ -131,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (checkStoragePermission()) {
-                    MifitStarter starter = new MifitStarter(MainActivity.this);
+                    MifitStarter starter = new MifitStarter(MainActivity.this, true);
                     starter.showTracks();
 
                 } else {
@@ -144,28 +139,12 @@ public class MainActivity extends AppCompatActivity {
 
 
         Button btn3 = new Button(this);
-        btn3.setText("get workouts");
+        btn3.setText("invoke synchronization");
         btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//
-//                String string = sp.getString(ENDOMONDO_APIKEY, "");
-//                EndomondoRunnerSynchronizer synchronizer = new EndomondoRunnerSynchronizer();
-//                synchronizer.authToken = string;
-//                EndomondoRunnerSynchronizer.GetFeedTask getFeedTask = new EndomondoRunnerSynchronizer.GetFeedTask(synchronizer);
-//
-//                FutureTask<Status> futureTask = new FutureTask<>(getFeedTask);
-//                new Thread(futureTask).start();
-//
-//                try {
-//                    Status status = futureTask.get();
-//                    System.out.println(status);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                } catch (ExecutionException e) {
-//                    e.printStackTrace();
-//                }
-
+                MifitStarter mifitStarter = new MifitStarter(MainActivity.this, false);
+                mifitStarter.invokeSync();
             }
         });
         linLayout.addView(btn3, layoutParams);
@@ -180,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
                     StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                     StrictMode.setThreadPolicy(policy);
 
-                    MifitStarter start = new MifitStarter(MainActivity.this);
+                    MifitStarter start = new MifitStarter(MainActivity.this, true);
 
                     EndomondoSyncronizer endomondoSyncronizer =
                             new EndomondoSyncronizer(sp.getString(ENDOMONDO_APIKEY, null), start);
@@ -263,4 +242,28 @@ public class MainActivity extends AppCompatActivity {
         } else
             return true;
     }
+
+    @Override
+    protected void onResumeFragments() {
+//        super.onResumeFragments();
+        System.out.println("mifit method onResumeFragments");
+
+        printClassHierarchy(this);
+    }
+
+    private static void printClassHierarchy(Object object) {
+        Class<?> aClass = object.getClass();
+        while (true) {
+            Class<?> superclass = aClass.getSuperclass();
+            if (superclass != null) {
+                System.out.println(superclass);
+                aClass = superclass;
+            } else {
+                break;
+            }
+        }
+        System.out.println(aClass);
+    }
+
+
 }

@@ -12,12 +12,13 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
+
 import sergentum.export.core.Model.Track;
 import sergentum.export.core.Model.TrackSummary;
 import sergentum.export.core.RawData.QueryData;
 import sergentum.export.core.TrackExporter;
 import sergentum.sync.EndomondoSyncronizer;
-import sergentum.sync.Synchronizer.Status;
+import sergentum.sync.SergSynchronizer.Status;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -38,6 +39,7 @@ public class MifitStarter extends Starter {
     private String dbPath;
     private String logFilePath;
     private SharedPreferences sp;
+    private final boolean UIthread;
 
     private static final String TMP_DB_QUERY = "" +
             "CREATE TABLE IF NOT EXISTS dummy " +
@@ -46,6 +48,17 @@ public class MifitStarter extends Starter {
 
     public MifitStarter(Activity activity) {
         this.activity = activity;
+        UIthread = true;
+        init();
+    }
+
+    public MifitStarter(Activity activity, boolean UIthread) {
+        this.activity = activity;
+        this.UIthread = UIthread;
+        init();
+    }
+
+    private void init() {
         DEVICE_PATH = Environment.getExternalStorageDirectory().getPath() + "/";
         sp = PreferenceManager.getDefaultSharedPreferences(activity);
         FILE_FORMAT = sp.getString("export_format", "");
@@ -55,12 +68,66 @@ public class MifitStarter extends Starter {
         String language = Locale.getDefault().getLanguage();
         Log.e(TAG, "Locale.getDefault().getLanguage(): " + language);
 
-        if (checkFilePath()) {
+        if (checkLogFilePath()) {
             dbPath = getDbPath();
         } else {
             Toast.makeText(activity, "can't get access to filesystem", Toast.LENGTH_SHORT).show();
             Log.e(TAG, "can't get access to filesystem");
         }
+    }
+
+    public void invokeSync() {
+        log("invokeSync");
+        Thread t = new Thread(new EndoRunnable(this));
+        t.start();
+    }
+
+    void synchronize() {
+        long start = System.currentTimeMillis();
+        int counterToUpload = 0;
+        try {
+            log("synchronize called");
+            // check if endomondo enabled
+            String endoApi = sp.getString(ENDOMONDO_APIKEY, "");
+            if (endoApi.length() < 8) {
+                log("Endomondo sync isn't enabled");
+                return;
+            }
+
+            // if sync was enabled just now, so we store timestamp of that moment
+            long syncOnDate = sp.getLong(LAST_TRACK_DATE, 0L);
+            if (syncOnDate == 0) {
+                syncOnDate = new Date().getTime();
+                // we store current time minus 24 hrs as last sync date
+                sp.edit().putLong(LAST_TRACK_DATE, syncOnDate - 86400000).apply();
+                return;
+            }
+
+            Date lastTrackDate = new Date(syncOnDate);
+
+            TreeMap<Long, TrackSummary> longTrackSummaryTreeMap = loadTrackSummaryFromDb();
+            for (Map.Entry<Long, TrackSummary> entry : longTrackSummaryTreeMap.entrySet()) {
+                TrackSummary value = entry.getValue();
+                Date date = new Date(value.startTime);
+                if (lastTrackDate.before(date)) {
+                    exportTrack(value.id);
+                    log("Track with " + value.id + " uploaded");
+                    counterToUpload++;
+                    boolean commit = sp.edit().putLong(LAST_TRACK_DATE, date.getTime()).commit();
+                    if (commit) {
+                        log("Track with " + value.id + " marked as uploaded");
+                    } else {
+                        log("Track with " + value.id + " WASN'T marked as uploaded");
+                    }
+                }
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Log.e(TAG, "Can't sync: ", ex);
+        }
+        long stop = System.currentTimeMillis();
+        log(String.format("Sync took %s ms for %s tracks", stop - start, counterToUpload));
     }
 
     @Override
@@ -76,18 +143,20 @@ public class MifitStarter extends Starter {
                 cursor.moveToFirst();
                 StringBuilder stringBuilder = new StringBuilder();
                 while (!cursor.isAfterLast()) {
+
+                    TrackSummary trackHeader = new TrackSummary();
                     for (int i = 0; i < cursor.getColumnCount(); i++) {
                         stringBuilder.append(cursor.getString(i)).append(" ");
                         if (i == 0) {
                             String string = cursor.getString(i);
                             long l = Long.parseLong(string);
                             Date date = new Date(l * 1000);
+                            trackHeader.startTime = date.getTime();
                             stringBuilder.append(date).append(" ");
                         }
                     }
                     stringBuilder.append("\n");
 
-                    TrackSummary trackHeader = new TrackSummary();
                     long trackId = cursor.getLong(0);
                     trackHeader.id = trackId;
                     int miSportType = cursor.getInt(1);
@@ -155,7 +224,12 @@ public class MifitStarter extends Starter {
                 Intent intent = new Intent(MifitStarter.this.activity, SettingsActivity.class);
                 MifitStarter.this.activity.startActivity(intent);
             } else {
-                exportTrack(trackId);
+                try {
+                    exportTrack(trackId);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    log("Export error:", e);
+                }
             }
         }
     }
@@ -168,7 +242,7 @@ public class MifitStarter extends Starter {
         return track;
     }
 
-    public void exportTrack(Long trackId) {
+    public void exportTrack(Long trackId) throws Exception {
         Track track = fetchTrackById(trackId);
         long start = System.currentTimeMillis();
         String message = "";
@@ -292,10 +366,10 @@ public class MifitStarter extends Starter {
         return tmpDb.getParent();
     }
 
-    private boolean checkFilePath() {
+    private boolean checkLogFilePath() {
         String filePath = getDebugPath();
+        logFilePath = filePath + DEBUG_LOG_FILE;
         if (checkIfPathExistAndCreate(filePath)) {
-            logFilePath = filePath + DEBUG_LOG_FILE;
             return log(".");
         } else {
             return false;
@@ -319,6 +393,8 @@ public class MifitStarter extends Starter {
 
     @Override
     public void showToast(String string, int length) {
-        Toast.makeText(activity, string, length).show();
+        if (UIthread) {
+            Toast.makeText(activity, string, length).show();
+        }
     }
 }

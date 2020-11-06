@@ -25,9 +25,10 @@ import static sergentum.export.core.Model.ActivityType.CYCLING;
 import static sergentum.export.core.Model.ActivityType.RUNNING;
 import static sergentum.export.core.Model.ActivityType.TREADMILL;
 import static sergentum.export.core.Model.ActivityType.WALKING;
+import static sergentum.export.core.Model.formatTimestampHumanReadable;
 import static sergentum.util.HttpUtil.parseKVP;
 
-public class EndomondoSyncronizer extends Synchronizer {
+public class EndomondoSyncronizer extends SergSynchronizer {
     private static final String UPLOAD_URL = "https://api.mobile.endomondo.com/mobile/track";
 
     private String authToken;
@@ -68,8 +69,8 @@ public class EndomondoSyncronizer extends Synchronizer {
         HttpURLConnection conn;
 //        Exception ex = null;
         try {
-            StringWriter writer = new StringWriter();
-            writer.write(Printer.printEndomondoTrack(track));
+            StringWriter trackWriter = new StringWriter();
+            trackWriter.write(Printer.printEndomondoTrack(track));
             StringBuilder url = new StringBuilder();
             url.append(UPLOAD_URL).append("?authToken=").append(authToken);
             url.append("&workoutId=").append(track.summary.startTime);
@@ -78,19 +79,18 @@ public class EndomondoSyncronizer extends Synchronizer {
             // distance in km is expected
             url.append("&distance=").append(((double) track.summary.distance) / 1000);
 
-            /* todo can be implemented further
-            if (track.hr != null) {
-                url.append("&heartRateAvg=").append(summary.hr.toString());
+            if (track.summary.avgRr != 0) {
+                url.append("&heartRateAvg=").append(track.summary.avgRr);
             }
-            */
+
             url.append("&gzip=true");
             url.append("&extendedResponse=true");
 
             if (starter.getDebug()) {
-                String fileName = track.summary.startTime + "-" + track.summary.activityType + ".txt";
+                String fileName = formatTimestampHumanReadable(track.summary.startTime) + "_endo.txt";
                 String fullFilePath = getDebugPath() + fileName;
                 starter.writeStringToFile(url.toString(), fullFilePath);
-                starter.writeStringToFile(writer.getBuffer().toString(), fullFilePath);
+                starter.writeStringToFile(trackWriter.getBuffer().toString(), fullFilePath);
             }
 
             conn = (HttpURLConnection) new URL(url.toString()).openConnection();
@@ -98,7 +98,7 @@ public class EndomondoSyncronizer extends Synchronizer {
             conn.setRequestMethod(RequestMethod.POST.name());
             conn.addRequestProperty("Content-Type", "application/octet-stream");
             OutputStream out = new GZIPOutputStream(new BufferedOutputStream(conn.getOutputStream()));
-            out.write(writer.getBuffer().toString().getBytes());
+            out.write(trackWriter.getBuffer().toString().getBytes());
             out.flush();
             out.close();
 
@@ -147,7 +147,7 @@ public class EndomondoSyncronizer extends Synchronizer {
             status.ex.printStackTrace();
         }
         Log.d(TAG, "" + status.toConsoleString());
-
+        // fixme this should throw exception
         return status;
     }
 }

@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 import static sergentum.export.core.Model.ActivityType.CYCLING;
 import static sergentum.export.core.Model.ActivityType.RUNNING;
+import static sergentum.export.core.Model.ActivityType.OPEN_WATER;
 import static sergentum.export.core.Model.ActivityType.TREADMILL;
 import static sergentum.export.core.Model.ActivityType.WALKING;
 
@@ -23,11 +24,12 @@ public class Model {
         sport2desc.put(WALKING, "Walking");
         sport2desc.put(TREADMILL, "Treadmill");
         sport2desc.put(RUNNING, "Running");
+        sport2desc.put(OPEN_WATER, "Open water");
     }
 
     // TODO: 2019-10-25 switch to enum instead of string
     public enum ActivityType {
-        RUNNING, TREADMILL, WALKING, CYCLING
+        RUNNING, TREADMILL, WALKING, CYCLING, OPEN_WATER
     }
 
     /**
@@ -150,6 +152,7 @@ public class Model {
         public int duration;
         public int distance;
         public int size;
+        public int avgRr;
 
         public String getStartTimeAsDate() {
             return formatTimestamp(startTime);

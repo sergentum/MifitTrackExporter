@@ -37,6 +37,7 @@ public class TrackExporter {
         mi2sport.put(7, RUNNING);
         mi2sport.put(8, TREADMILL);
         mi2sport.put(9, CYCLING);
+        mi2sport.put(15, OPEN_WATER);
     }
 
     public TrackExporter(Starter starter) {
@@ -76,6 +77,7 @@ public class TrackExporter {
         trackSummary.duration = rawTrackData.costTime;
         trackSummary.distance = rawTrackData.distance;
         trackSummary.size = rawTrackData.costTime;
+        trackSummary.avgRr = rawTrackData.avgHr;
         track.summary = trackSummary;
 
         // HR points is a base for track export

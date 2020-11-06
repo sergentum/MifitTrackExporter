@@ -24,6 +24,8 @@ public abstract class Starter {
     public static final String SEMICOLON = ";";
     public static final String EMPTY_VALUE = "-";
     public static final String CSV_COLUMN_DELIMITER = ";";
+    public static final String LAST_TRACK_DATE = "lastTrackDate";
+    public static final String SYNCED_IDS = "syncedIds";
 
     public static String DEVICE_PATH = "";
     public static String FILE_FORMAT;
@@ -61,7 +63,8 @@ public abstract class Starter {
                     "TRACKDATA.BULKFLAG," +
                     "TRACKRECORD.COSTTIME," +
                     "TRACKRECORD.ENDTIME, " +
-                    "TRACKRECORD.DISTANCE " +
+                    "TRACKRECORD.DISTANCE, " +
+                    "TRACKRECORD.AVGHR " +
                     "FROM TRACKDATA, TRACKRECORD " +
                     "WHERE TRACKDATA.TRACKID = TRACKRECORD.TRACKID " +
                     "AND TRACKDATA.TRACKID = ";
@@ -80,19 +83,10 @@ public abstract class Starter {
 
     public abstract QueryData readRawDataWithId(long id);
 
-    public boolean log(String... args) {
-        String s = stringArrayToString(args);
-        System.out.println(s);
-        return true;
-    }
-
     String stringArrayToString(String... args) {
         StringBuilder stringBuilder = new StringBuilder();
-        String pattern = "yyyy-MM-dd_HH:mm:ss.SSSZ";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-        String date = simpleDateFormat.format(new Date());
 
-        stringBuilder.append(date).append(" : ");
+        stringBuilder.append(" : ");
         for (String arg : args) {
             if (arg != null) {
                 String replace = arg.replace("\n", " @ ");
@@ -104,8 +98,19 @@ public abstract class Starter {
         return stringBuilder.toString();
     }
 
+    public boolean log(String... args) {
+        String s = stringArrayToString(args);
+
+        String pattern = "yyyy-MM-dd_HH:mm:ss.SSSZ";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        String date = simpleDateFormat.format(new Date());
+
+        System.out.println(TAG + " " + date + s);
+        return true;
+    }
+
     public boolean log(String string, Exception e) {
-        System.out.println(string);
+        System.out.println(TAG + " " + string);
         e.printStackTrace();
         return true;
     }
@@ -145,9 +150,9 @@ public abstract class Starter {
     }
 
     private static String generateFileName(Model.Track track) {
-        return String.format(Locale.US, "%s_%d",
+        return String.format(Locale.US, "%s_%s",
                 formatTimestampHumanReadable(track.summary.startTime),
-                track.summary.distance);
+                track.summary.activityType);
     }
 
     boolean checkIfPathExistAndCreate(String filePath) {
@@ -191,6 +196,8 @@ public abstract class Starter {
                 queryData.activityType = columnValue;
             } else if (columnName.equalsIgnoreCase("DISTANCE")) {
                 queryData.distance = columnValue;
+            } else if (columnName.equalsIgnoreCase("AVGHR")) {
+                queryData.avgHr = columnValue;
             } else if (columnName.equalsIgnoreCase("BULKLL")) {
                 queryData.BULKLL = columnValue;
             } else if (columnName.equalsIgnoreCase("BULKGAIT")) {

@@ -9,12 +9,11 @@ import android.util.Log;
 import org.json.JSONObject;
 
 import sergentum.sync.Response;
-import sergentum.sync.Synchronizer.RequestMethod;
+import sergentum.sync.SergSynchronizer.RequestMethod;
 import sergentum.util.FormValues;
 import sergentum.util.SyncHelper;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -51,7 +50,7 @@ public class SettingsActivity extends PreferenceActivity {
         addPreferencesFromResource(identifier);
 
         sp = PreferenceManager.getDefaultSharedPreferences(this);
-        starter = new MifitStarter(this);
+        starter = new MifitStarter(this, true);
 
         addAuthToggleListener();
     }
@@ -96,7 +95,7 @@ public class SettingsActivity extends PreferenceActivity {
                     } else {
                         // user tries to disable sync
                         Log.i(TAG, "synchronization disabled, apikey removed");
-                        sp.edit().putString(ENDOMONDO_APIKEY, "apikey").apply();
+                        sp.edit().putString(ENDOMONDO_APIKEY, "").apply();
                         allowToggle = true;
                     }
 
@@ -187,5 +186,11 @@ public class SettingsActivity extends PreferenceActivity {
                 os.write(buffer, 0, length);
             }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        System.out.println("mifit method onResume");
     }
 }

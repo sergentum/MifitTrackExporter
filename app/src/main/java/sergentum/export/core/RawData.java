@@ -26,6 +26,7 @@ public class RawData {
             rawTrackData.costTime = Integer.parseInt(queryData.costTime);
             rawTrackData.distance = Integer.parseInt(queryData.distance);
             rawTrackData.activityType = Integer.parseInt(queryData.activityType);
+            rawTrackData.avgHr = Integer.parseInt(queryData.avgHr);
 
             rawTrackData.times = parseTime(queryData.BULKTIME);
             rawTrackData.coordinates = parseCoordinates(queryData.BULKLL, queryData.BULKAL);
@@ -165,6 +166,7 @@ public class RawData {
         public String endTime ;
         public String costTime ;
         public String size ;
+        public String avgHr ;
         public String distance ;
         public String activityType ;
         public String BULKLL ;
@@ -197,6 +199,7 @@ public class RawData {
         int costTime;
         int activityType;
         int size;
+        int avgHr;
 
         // theese data is synced between each other, so it's size should be equal
         ArrayList<Integer> times = new ArrayList<>();
