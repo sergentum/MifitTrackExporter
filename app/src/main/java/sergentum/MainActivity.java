@@ -1,4 +1,4 @@
-package sergentum.sync;
+package sergentum;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -7,13 +7,18 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.preference.PreferenceManager;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,23 +27,26 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-//import cn.com.smartdevices.bracelet.gps.ui.sport.detail.CodeActivity;
-import sergentum.export.SettingsActivity;
 import sergentum.export.MifitStarter;
+import sergentum.export.SettingsActivity;
+import sergentum.export.core.Model.Track;
+import sergentum.sync.EndomondoSyncronizer;
+
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
 
 import static sergentum.export.SettingsActivity.ENDOMONDO_APIKEY;
 import static sergentum.export.Starter.TAG;
 
+//import cn.com.smartdevices.bracelet.gps.ui.sport.detail.CodeActivity;
+
 public class MainActivity extends AppCompatActivity {
     FragmentActivity activity;
     int mainActWindow;
-
     private FrameLayout root;
-
     private SharedPreferences sp;
+    TextView sharedPrefView;
+    FloatingActionButton fab;
+
 
     private int getResource(String name, String defType) {
         int identifier = getResources().getIdentifier(name, defType, getPackageName());
@@ -46,6 +54,32 @@ public class MainActivity extends AppCompatActivity {
         return identifier;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        Map<String, ?> all = sp.getAll();
+        String spString = "";
+        for (Map.Entry<String, ?> stringEntry : all.entrySet()) {
+            spString = spString + stringEntry.getKey() + " - " + stringEntry.getValue() + "\r\n";
+        }
+        sharedPrefView.setText(spString);
+        Log.i("mifit", spString);
+
+
+        if (fab != null) {
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+            });
+            fab.show();
+        }
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,22 +95,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(getResource("toolbar", "toolbar"));
         setSupportActionBar(toolbar);
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//
-////                FragmentManager fragmentManager = activity.getFragmentManager();
-////                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-////                fragmentTransaction.replace(R.id.mainFragment , prefFrag);
-////                fragmentTransaction.commit();
-//
-////                Intent intent = new Intent(MainActivity.this, CodeActivity.class);
-////                startActivity(intent);
-//            }
-//        });
 
         // creating LinearLayout
         LinearLayout linLayout = new LinearLayout(this);
@@ -87,7 +105,8 @@ public class MainActivity extends AppCompatActivity {
         // set LinearLayout as a root element of the screen
         setContentView(linLayout, linLayoutParam);
 
-        LinearLayout.LayoutParams lpView = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
         Button btn = new Button(this);
         btn.setText("export settings");
@@ -98,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        linLayout.addView(btn, lpView);
+        linLayout.addView(btn, layoutParams);
 
 
         Button btn2 = new Button(this);
@@ -107,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (checkStoragePermission()) {
-                    MifitStarter starter = new MifitStarter(MainActivity.this);
+                    MifitStarter starter = new MifitStarter(MainActivity.this, true);
                     starter.showTracks();
 
                 } else {
@@ -116,54 +135,64 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        linLayout.addView(btn2, lpView);
-
+        linLayout.addView(btn2, layoutParams);
 
 
         Button btn3 = new Button(this);
-        btn3.setText("get workouts");
+        btn3.setText("invoke synchronization");
         btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-//                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-//                startActivity(intent);
-                String string = sp.getString(ENDOMONDO_APIKEY, "");
-                EndomondoSynchronizer synchronizer = new EndomondoSynchronizer();
-                synchronizer.authToken = string;
-                EndomondoSynchronizer.GetFeedTask getFeedTask = new EndomondoSynchronizer.GetFeedTask(synchronizer);
-
-                FutureTask<DefSynchronizer.Status> futureTask = new FutureTask<>(getFeedTask);
-                new Thread(futureTask).start();
-
-                try {
-                    DefSynchronizer.Status status = futureTask.get();
-                    System.out.println(status);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                }
-
+                MifitStarter mifitStarter = new MifitStarter(MainActivity.this, false);
+                mifitStarter.invokeSync();
             }
         });
-        linLayout.addView(btn3, lpView);
+        linLayout.addView(btn3, layoutParams);
+
+        Button export = new Button(this);
+        export.setText("upload");
+        export.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (checkStoragePermission()) {
+                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                    StrictMode.setThreadPolicy(policy);
+
+                    MifitStarter start = new MifitStarter(MainActivity.this, true);
+
+                    EndomondoSyncronizer endomondoSyncronizer =
+                            new EndomondoSyncronizer(sp.getString(ENDOMONDO_APIKEY, null), start);
+
+                    Track track = start.fetchTrackById(1555498976L);
+                    endomondoSyncronizer.upload(track);
+
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            "don't have write storage permission", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        linLayout.addView(export, layoutParams);
 
 
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        Map<String, ?> all = sp.getAll();
-        String spString = "";
-        for (Map.Entry<String, ?> stringEntry : all.entrySet()) {
-            spString = spString + stringEntry.getKey() + " - " + stringEntry.getValue() + "\r\n";
-        }
-        TextView spView = new TextView(this);
-        spView.setText(spString);
-        Log.i("mifit", spString);
-        linLayout.addView(spView, lpView);
+        sharedPrefView = new TextView(this);
+        linLayout.addView(sharedPrefView, layoutParams);
+
+        fab = new FloatingActionButton(this);
+        CoordinatorLayout.LayoutParams lp = new CoordinatorLayout.LayoutParams(layoutParams);
+        lp.anchorGravity = Gravity.CENTER; // or you can add Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL
+        fab.setLayoutParams(lp);
+
+//        layoutParams.gravity = Gravity.CENTER;
+//        fab.setLayoutParams(layoutParams);
+//
+//        CoordinatorLayout.LayoutParams lp = new CoordinatorLayout.LayoutParams(fab.getLayoutParams());
+//        lp.anchorGravity = Gravity.CENTER; // or you can add Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL
+//        fab.setLayoutParams(lp);
 
 
-//        Intent intent = new Intent(this, ExportActivity.class);
-//        startActivity(intent);
+        linLayout.addView(fab);
     }
 
     @Override
@@ -213,4 +242,28 @@ public class MainActivity extends AppCompatActivity {
         } else
             return true;
     }
+
+    @Override
+    protected void onResumeFragments() {
+//        super.onResumeFragments();
+        System.out.println("mifit method onResumeFragments");
+
+        printClassHierarchy(this);
+    }
+
+    private static void printClassHierarchy(Object object) {
+        Class<?> aClass = object.getClass();
+        while (true) {
+            Class<?> superclass = aClass.getSuperclass();
+            if (superclass != null) {
+                System.out.println(superclass);
+                aClass = superclass;
+            } else {
+                break;
+            }
+        }
+        System.out.println(aClass);
+    }
+
+
 }

@@ -15,14 +15,14 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package sergentum.sync.util;
+package sergentum.util;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
 
-
+// TODO: 2019-10-27 move that code
 public class FormValues extends HashMap<String, String> implements Writable {
     /**
      *

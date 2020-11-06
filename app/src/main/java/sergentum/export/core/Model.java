@@ -1,5 +1,7 @@
 package sergentum.export.core;
 
+import android.annotation.SuppressLint;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -7,26 +9,27 @@ import java.util.HashMap;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
+import static sergentum.export.core.Model.ActivityType.CYCLING;
+import static sergentum.export.core.Model.ActivityType.RUNNING;
+import static sergentum.export.core.Model.ActivityType.OPEN_WATER;
+import static sergentum.export.core.Model.ActivityType.TREADMILL;
+import static sergentum.export.core.Model.ActivityType.WALKING;
+
 public class Model {
 
-    private static HashMap<Integer, String> activityTypeMapping = new HashMap<>();
-
+    @SuppressLint("UseSparseArrays")
+    private static HashMap<ActivityType, String> sport2desc = new HashMap<>();
     static {
-        String defaultActivity = "Running";
-        activityTypeMapping.put(0, defaultActivity);
-        activityTypeMapping.put(1, "Outdoor running");
-        activityTypeMapping.put(2, defaultActivity);
-        activityTypeMapping.put(3, defaultActivity);
-        activityTypeMapping.put(4, defaultActivity);
-        activityTypeMapping.put(5, defaultActivity);
-        activityTypeMapping.put(6, "Walking");
-        activityTypeMapping.put(7, defaultActivity);
-        activityTypeMapping.put(8, "Treadmill");
-        activityTypeMapping.put(9, "Outdoor Cycling");
+        sport2desc.put(CYCLING, "Cycling");
+        sport2desc.put(WALKING, "Walking");
+        sport2desc.put(TREADMILL, "Treadmill");
+        sport2desc.put(RUNNING, "Running");
+        sport2desc.put(OPEN_WATER, "Open water");
     }
 
-    private static String getActivityTypeDescription(int i) {
-        return activityTypeMapping.get(i);
+    // TODO: 2019-10-25 switch to enum instead of string
+    public enum ActivityType {
+        RUNNING, TREADMILL, WALKING, CYCLING, OPEN_WATER
     }
 
     /**
@@ -39,7 +42,7 @@ public class Model {
         return yyyyMMddTHHmmssSDF.format(date);
     }
 
-    static String formatTimestampHumanReadable(long timestamp) {
+    public static String formatTimestampHumanReadable(long timestamp) {
         Date date = new Date(timestamp * 1000);
         SimpleDateFormat yyyyMMddTHHmmssSDF = new SimpleDateFormat("yyyy-MM-dd_HH-mm");
         yyyyMMddTHHmmssSDF.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -74,18 +77,97 @@ public class Model {
         }
     }
 
-    public static class TrackHeader {
+    public static class TrackPoint {
+        Long timestamp;
+        Long latitude;
+        Long longitude;
+        Long altitude;
+        Integer heartRate;
+        Integer pace;
+        Integer cadence;
+        Integer stride;
+
+        @Override
+        public String toString() {
+            return "TrackPoint{" +
+                    "timestamp=" + timestamp +
+                    ", latitude=" + latitude +
+                    ", longitude=" + longitude +
+                    ", altitude=" + altitude +
+                    ", heartRate=" + heartRate +
+                    ", pace=" + pace +
+                    ", cadence=" + cadence +
+                    ", stride=" + stride +
+                    '}';
+        }
+
+        String getLatitudeString() {
+            return formatNullableNumberAsString(latitude, 8);
+        }
+
+        String getLongitudeString() {
+            return formatNullableNumberAsString(longitude, 8);
+        }
+
+        String getAltitudeString() {
+            return formatNullableNumberAsString(altitude, 2);
+        }
+
+        public String getHeartRateString() {
+            if (heartRate == null || heartRate == 0) {
+                return "";
+            } else {
+                return String.valueOf(heartRate);
+            }
+        }
+
+        public String getCadenceString() {
+            if (cadence == null || cadence == 0) {
+                return "";
+            } else {
+                return String.valueOf(cadence);
+            }
+        }
+    }
+
+    private static String formatNullableNumberAsString(Long number, int decimalPlace) {
+        String result = "";
+        if (number != null) {
+            String lonString = String.valueOf(number);
+            int lonL = lonString.length();
+            if (lonL > 0 && lonL > decimalPlace) {
+                return lonString.substring(0, lonL - decimalPlace) + "." + lonString.substring(lonL - decimalPlace, lonL);
+            } else {
+                System.out.println("Number format went wrong with number: " + number + " and decimal place : " + decimalPlace);
+            }
+        }
+        return result;
+    }
+
+    public static class TrackSummary {
         public long id;
-        public int type;
+        public ActivityType activityType;
+        public long startTime;
+        public long endTime;
         public int duration;
         public int distance;
+        public int size;
+        public int avgRr;
 
-        private String getActivityType() {
-            return getActivityTypeDescription(type) + " ";
+        public String getStartTimeAsDate() {
+            return formatTimestamp(startTime);
+        }
+
+        public String getEndTimeAsDate() {
+            return formatTimestamp(endTime);
+        }
+
+        public String getActivityTypeDescription() {
+            return sport2desc.get(activityType);
         }
 
         private String getTimestamp() {
-            return formatTimestampHumanReadable(id) + " ";
+            return formatTimestampHumanReadable(id);
         }
 
         private String getDuration() {
@@ -103,101 +185,26 @@ public class Model {
 
         @Override
         public String toString() {
-            return getTimestamp()
-                    + getActivityType()  + "\n"
+            return getTimestamp() + " "
+                    + getActivityTypeDescription()  + "\n"
                     + getDuration()
                     + getDistance()
                     ;
         }
 
         public String toStringConsole() {
-            return getTimestamp()
-                    + getActivityType()
+            return getTimestamp() + " "
+                    + getActivityTypeDescription() + " "
                     + getDuration()
                     + getDistance()
                     ;
         }
     }
 
-    static class TrackPoint {
-        Long timestamp;
-        Long latitude;
-        Long longitude;
-        Long altitude;
-        Integer heartRate;
-        Integer pace;
-        Integer cadence;
-        Integer stride;
-
-        @Override
-        public String toString() {
-            return "TrackPoint{" +
-                    "timestamp=" + timestamp +
-                    ", dateTime=" + formatTimestamp(timestamp) +
-                    ", heartRate=" + heartRate +
-                    ", latitude=" + latitude +
-                    ", longitude=" + longitude +
-                    ", altitude=" + altitude +
-                    ", pace=" + pace +
-                    ", cadence=" + cadence +
-                    '}';
-        }
-
-
-        String getLatitudeString() {
-            String latString = latitude.toString();
-            int latL = latString.length();
-            if (latL > 0) {
-                return latString.substring(0, latL - 8) + "." + latString.substring(latL - 8, latL);
-            } else {
-                return "";
-            }
-        }
-
-        String getLongitudeString() {
-            String lonString = longitude.toString();
-            int lonL = lonString.length();
-            if (lonL > 0) {
-                return lonString.substring(0, lonL - 8) + "." + lonString.substring(lonL - 8, lonL);
-            } else {
-                return "";
-            }
-        }
-
-        String getAltitudeString() {
-            String altString = altitude.toString();
-            int altL = altString.length();
-            if (altL > 2) {
-                return altString.substring(0, altL - 2) + "." + altString.substring(altL - 2, altL);
-            } else {
-                return "0.00";
-            }
-        }
-    }
-
     public static class Track {
-
-        long startTime;
-        long duration;
-        long endTime;
-        int distance;
-        int activityType;
-        int size;
-
+        public TrackSummary summary;
 //        ArrayList<Integer> pause;
         ArrayList<TrackPoint> trackPoints = new ArrayList<>();
-
-        String getStartTimeAsDate() {
-            return formatTimestamp(startTime);
-        }
-
-        private String getEndTimeAsDate() {
-            return formatTimestamp(endTime);
-        }
-
-        String getActivityTypeDescription() {
-            return Model.getActivityTypeDescription(activityType);
-        }
 
         private String printTrackPoints() {
             StringBuilder stringBuffer = new StringBuilder();
@@ -215,12 +222,12 @@ public class Model {
         @Override
         public String toString() {
             return "Track{" +
-                    "id=" + startTime +
-                    ", duration=" + duration +
-                    ", size=" + size +
-                    ", startTime=" + getStartTimeAsDate() +
-                    ", endTime=" + getEndTimeAsDate() +
-                    ", type='" + getActivityTypeDescription() + '\'' +
+                    "id=" + summary.startTime +
+                    ", duration=" + summary.duration +
+                    ", size=" + summary.size +
+                    ", startTime=" + summary.getStartTimeAsDate() +
+                    ", endTime=" + summary.getEndTimeAsDate() +
+                    ", type='" + summary.getActivityTypeDescription() + '\'' +
                     ", points: " + printTrackPoints() +
                     '}';
         }

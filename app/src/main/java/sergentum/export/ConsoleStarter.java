@@ -2,7 +2,7 @@ package sergentum.export;
 
 import sergentum.export.core.Model;
 import sergentum.export.core.RawData.QueryData;
-import sergentum.export.core.TrackExporter;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.sql.Connection;
@@ -11,18 +11,15 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 
-public class ConsoleStarter extends Starter{
+import static sergentum.export.core.TrackExporter.mi2sport;
+
+public class ConsoleStarter extends Starter {
     private static final String LOCAL_DB_URL = "jdbc:sqlite:" + EXT_DB_NAME;
 
     @Override
-    public TreeMap<Long, Model.TrackHeader> loadTrackHeadersFromDb() {
+    public TreeMap<Long, Model.TrackSummary> loadTrackSummaryFromDb() {
         try (Connection conn = DriverManager.getConnection(LOCAL_DB_URL)) {
             System.out.println("Connection to SQLite has been established.");
             Statement statement = conn.createStatement();
@@ -31,7 +28,7 @@ public class ConsoleStarter extends Starter{
             ResultSetMetaData rsmd = rs.getMetaData();
             int columnCount = rsmd.getColumnCount();
             StringBuilder stringBuilder = new StringBuilder();
-            TreeMap<Long, Model.TrackHeader> trackHeaderMap = new TreeMap<>();
+            TreeMap<Long, Model.TrackSummary> trackHeaderMap = new TreeMap<>();
             while (rs.next()) {
                 for (int i = 1; i <= columnCount; i++) {
                     stringBuilder.append(rs.getString(i)).append(" ");
@@ -44,13 +41,14 @@ public class ConsoleStarter extends Starter{
                 }
                 stringBuilder.append("\n");
 
-                Model.TrackHeader trackHeader = new Model.TrackHeader();
+                Model.TrackSummary summary = new Model.TrackSummary();
                 long trackId = rs.getLong(1);
-                trackHeader.id = trackId;
-                trackHeader.type = rs.getInt(2);
-                trackHeader.distance = rs.getInt(3);
-                trackHeader.duration = rs.getInt(4);
-                trackHeaderMap.put(trackId, trackHeader);
+                summary.id = trackId;
+                int miSportType = rs.getInt(2);
+                summary.activityType = mi2sport.get(miSportType);
+                summary.distance = rs.getInt(3);
+                summary.duration = rs.getInt(4);
+                trackHeaderMap.put(trackId, summary);
             }
             return trackHeaderMap;
         } catch (Exception ex) {
@@ -62,11 +60,11 @@ public class ConsoleStarter extends Starter{
 
     @Override
     public void showTracks() {
-        TreeMap<Long, Model.TrackHeader> trackHeaderMap = loadTrackHeadersFromDb();
-        Set<Map.Entry<Long, Model.TrackHeader>> entries = trackHeaderMap.entrySet();
+        TreeMap<Long, Model.TrackSummary> trackSummaryMap = loadTrackSummaryFromDb();
+        Set<Map.Entry<Long, Model.TrackSummary>> entries = trackSummaryMap.entrySet();
         int i = 1;
         Map<Integer, Long> noIdMap = new HashMap<>();
-        for (Map.Entry<Long, Model.TrackHeader> entry : entries) {
+        for (Map.Entry<Long, Model.TrackSummary> entry : entries) {
             System.out.println("[" + i + "] id:" + entry.getKey() + " " + entry.getValue().toStringConsole());
             noIdMap.put(i, entry.getKey());
             i++;
@@ -78,7 +76,7 @@ public class ConsoleStarter extends Starter{
                 int l = Integer.parseInt(input);
                 Long trackId = noIdMap.get(l);
                 if (trackId != null) {
-                    Model.TrackHeader trackHeader = trackHeaderMap.get(trackId);
+                    Model.TrackSummary trackHeader = trackSummaryMap.get(trackId);
                     if (trackHeader != null) {
                         readRawDataWithId(trackHeader.id);
                     }
@@ -93,8 +91,9 @@ public class ConsoleStarter extends Starter{
     }
 
     @Override
-    public void readRawDataWithId(long id) {
+    public QueryData readRawDataWithId(long id) {
         Connection conn = null;
+        QueryData queryData = new QueryData();
         try {
             conn = DriverManager.getConnection(LOCAL_DB_URL);
             System.out.println("Connection to SQLite has been established.");
@@ -106,9 +105,8 @@ public class ConsoleStarter extends Starter{
             ResultSetMetaData rsmd = rs.getMetaData();
             int columnCount = rsmd.getColumnCount();
             boolean header = true;
-            ArrayList<QueryData> queryDataList = new ArrayList<>();
             while (rs.next()) {
-                QueryData queryData = new QueryData();
+
                 for (int i = 1; i <= columnCount; i++) {
                     if (header) {
                         for (int j = 1; j <= columnCount; j++) {
@@ -122,17 +120,10 @@ public class ConsoleStarter extends Starter{
                     String columnValue = rs.getString(i);
                     mapRawDataToQueryData(queryData, columnName, columnValue);
                 }
-                queryDataList.add(queryData);
             }
 
             // show coarse data
-            for (QueryData queryData : queryDataList) {
-                System.out.println(queryData);
-            }
-
-            TrackExporter trackExporter = new TrackExporter(this);
-            trackExporter.launchExport(queryDataList);
-
+            System.out.println(queryData);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -144,5 +135,6 @@ public class ConsoleStarter extends Starter{
                 ex.printStackTrace();
             }
         }
+        return queryData;
     }
 }

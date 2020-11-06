@@ -15,26 +15,26 @@
 // *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // */
 //
-//package sergentum.sync;
+//package sergentum.runner;
 //
 //import android.app.Activity;
 //import android.content.ContentValues;
 //import android.content.Intent;
 //import android.database.sqlite.SQLiteDatabase;
-//import android.util.Log;
 //import android.util.Pair;
 //import sergentum.util.FormValues;
-//import sergentum.util.SyncHelper;
-//
+//import sergentum.runner.util.SyncHelper;
 //import java.io.BufferedReader;
 //import java.io.File;
 //import java.io.IOException;
 //import java.io.InputStreamReader;
 //import java.net.HttpURLConnection;
-//import java.util.*;
+//import java.util.HashSet;
+//import java.util.List;
+//import java.util.Map;
+//import java.util.Set;
 //
-//
-//public abstract class DefaultSynchronizer implements Synchronizer {
+//public abstract class DefaultSynchronizer implements DefSynchronizer {
 //
 //    final Set<String> cookies = new HashSet<>();
 //    final FormValues formValues = new FormValues();
@@ -62,7 +62,7 @@
 //
 //    @Override
 //    public int getColorId() {
-//        return R.color.serviceDefault;
+//        return 0;
 //    }
 //
 //    @Override
@@ -102,7 +102,7 @@
 //
 //    public Status upload(SQLiteDatabase db, long mID) {
 //        Status s = Status.ERROR;
-//        s.activityId = mID;
+////        s.activityId = mID;
 //        return s;
 //    }
 //
@@ -110,7 +110,7 @@
 //        return Status.ERROR;
 //    }
 //
-//    public boolean checkSupport(SergSynchronizer.Feature f) {
+//    public boolean checkSupport(DefSynchronizer.Feature f) {
 //        return false;
 //    }
 //
@@ -121,68 +121,15 @@
 //    public void downloadWorkout(File dst, String key) throws Exception {
 //    }
 //
-//    @Override
-//    public Status listActivities(List<SyncActivityItem> list) {
-//        return Status.INCORRECT_USAGE;
-//    }
-//
-//    @Override
-//    public final Status download(SQLiteDatabase db, SyncActivityItem item) {
-//        return persistActivity(db, download(item));
-//    }
-//
-//    ActivityEntity download(SyncActivityItem item) {
-//        Log.e(Constants.LOG, "No download method implemented for the synchronizer " + getName());
-//        return null;
-//    }
-//
-//    private Status persistActivity(SQLiteDatabase db, ActivityEntity activity) {
-//        //no activity at all means something went wrong
-//        if (activity == null) {
-//            return Status.ERROR;
-//        }
-//        //manual activity need to have at least this information
-//        if (activity.getSport() == null || activity.getStartTime() == null || activity.getTime() == null || activity.getDistance() == null) {
-//            return Status.ERROR;
-//        }
-//
-//        db.beginTransaction();
-//        if (activity.insert(db) == SyncManager.ERROR_ACTIVITY_ID) {
-//            db.endTransaction();
-//            return Status.ERROR;
-//        }
-//
-//        //update with activity id
-//        activity.putPoints(new ArrayList<>(activity.getLocationPoints()));
-//        // insert location and end transaction unsuccessfully
-//        if (DBHelper.bulkInsert(activity.getLocationPoints(), db) != activity.getLocationPoints().size()) {
-//            db.endTransaction();
-//            return Status.ERROR;
-//        }
-//
-//        //update with activity id
-//        activity.putLaps(new ArrayList<>(activity.getLaps()));
-//        // insert all lap objects
-//        if (DBHelper.bulkInsert(activity.getLaps(), db) != activity.getLaps().size()) {
-//            db.endTransaction();
-//            return Status.ERROR;
-//        }
-//        db.setTransactionSuccessful();
-//        db.endTransaction();
-//
-//        Status s = Status.OK;
-//        s.activityId = activity.getId();
-//        return s;
-//    }
 //
 //    public void logout() {
 //        clearCookies();
 //        formValues.clear();
 //    }
 //
-//    public Status getFeed(FeedUpdater feedUpdater) {
-//        return Status.OK;
-//    }
+////    public Status getFeed(FeedUpdater feedUpdater) {
+////        return Status.OK;
+////    }
 //
 //    @Override
 //    public Status refreshToken() {
